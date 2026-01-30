@@ -9,6 +9,7 @@ include(${CMAKE_SOURCE_DIR}/cmake/mingw64.cmake)
 # Ensure CMAKE_PREFIX_PATH is set correctly for find_package
 list(APPEND CMAKE_PREFIX_PATH "${QT_ROOT_DIR}")
 
+
 project(FemApp)
 
 # Set C++ standard
@@ -29,37 +30,72 @@ add_subdirectory(OpenXLSX)
 
 # Add source files
 set(SOURCES
-  fem/src/main.cpp
-  fem/src/FileAssociation.cpp
-  fem/src/femapp.cpp
+        fem/src/main.cpp
+        fem/src/FileAssociation.cpp
+        fem/src/xlsx_proc.cpp
+        fem/src/femapp.cpp
 )
 
 set(HEADERS
-  fem/include/
+        fem/include/
 )
 
 set(UI_HEADERS
-  fem/include/ui_mainwindow.h
+        fem/include/ui_mainwindow.h
 )
+
+FILE(GLOB TRANSLATION_TS translations/*.ts)
 
 # Create executable (removed WIN32 to show console for debugging cout)
 add_executable(FemApp ${SOURCES})
 
 # Include directories
-target_include_directories(FemApp PRIVATE 
-    ${HEADERS}
-    ${CMAKE_SOURCE_DIR}/FEMConfig/include
+target_include_directories(FemApp PRIVATE
+        ${HEADERS}
+        ${CMAKE_SOURCE_DIR}/FEMConfig/include
 )
 
 # Link libraries
-target_link_libraries(FemApp PRIVATE 
-    Qt6::Core 
-    Qt6::Widgets 
-    FEMConfig
-    OpenXLSX
-    shlwapi
-    shell32
+target_link_libraries(FemApp PRIVATE
+        Qt6::Core
+        Qt6::Widgets
+        FEMConfig
+        OpenXLSX
+        shlwapi
+        shell32
 )
+
+# 生成 / 更新 .ts 文件
+add_custom_target(update_translations
+        COMMAND lupdate
+        ${SOURCES} ${HEADERS}
+        -ts ${TRANSLATION_TS}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Update Qt translation files (.ts)"
+)
+
+# 编译 .ts -> .qm
+add_custom_target(compile_translations
+        COMMAND lrelease ${TRANSLATION_TS}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Compile Qt translation files (.qm)"
+)
+
+# 添加到 FemApp 编译依赖
+add_dependencies(FemApp
+        update_translations
+        compile_translations
+)
+
 
 # Deploy Qt dependencies (integrated in toolchain configuration)
 deploy_qt_dependencies(FemApp)
+
+# Move translation files to output directory after build
+add_custom_command(TARGET FemApp POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:FemApp>/translations
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_SOURCE_DIR}/translations/*.qm
+        $<TARGET_FILE_DIR:FemApp>/translations
+        COMMENT "Copying translation files to output directory"
+)

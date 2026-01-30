@@ -31,3 +31,6 @@ OpenXLSX)
 add_executable(FEMConfig_test ${SOURCES_TEST})
 target_link_libraries(FEMConfig_test PRIVATE FEMConfig)
 target_include_directories(FEMConfig_test PRIVATE ${HEADERS})
+target_link_libraries(
+FEMConfig_test PRIVATE OpenXLSX
+)

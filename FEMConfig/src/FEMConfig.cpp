@@ -2,15 +2,16 @@
 #include <fstream>
 #include <sstream>
 #include <windows.h>
-#include <cstring>
 #include <algorithm>
 #include <cctype>
 
+#include <string>
+#include <stdexcept>
 #include <filesystem>
 #include <regex>
-#include "string"
 #include "iostream"
 
+#include "OpenXLSX.hpp"
 
 namespace fs = std::filesystem;
 
@@ -258,7 +259,7 @@ namespace cc::neolux::femconfig {
   // 简单通配符匹配，* 匹配 0 个或多个字符
   inline bool WildcardMatch(const std::string &str, const std::string &pattern) {
     size_t s = 0, p = 0, star = std::string::npos, ss = 0;
-    std::cout << "Matching string: " << str << " with pattern: " << pattern << std::endl;
+    // std::cout << "Matching string: " << str << " with pattern: " << pattern << std::endl;
     while (s < str.size()) {
       if (p < pattern.size() && (pattern[p] == '?' || pattern[p] == str[s])) {
         s++;
@@ -298,8 +299,7 @@ namespace cc::neolux::femconfig {
   }
 
 
-  std::vector<std::string> FEMConfig::ExpandFilenamePattern(const std::string &folder, const FEMData &data)
-  {
+  std::vector<std::string> FEMConfig::ExpandFilenamePattern(const std::string &folder, const FEMData &data) {
     std::vector<std::string> result;
 
     fs::path folderPath(folder);
@@ -307,7 +307,7 @@ namespace cc::neolux::femconfig {
     if (!fs::exists(folderPath) || !fs::is_directory(folderPath))
       return result;
 
-    for (const auto &entry : fs::directory_iterator(folderPath)) {
+    for (const auto &entry: fs::directory_iterator(folderPath)) {
       if (!fs::is_regular_file(entry.status()))
         continue;
 
@@ -319,11 +319,11 @@ namespace cc::neolux::femconfig {
 
     return result;
   }
-  std::vector<std::string> FEMConfig::ExpandFilenamePattern(FEMData &data)
-  {
+
+  std::vector<std::string> FEMConfig::ExpandFilenamePattern(FEMData &data) {
     auto folders = ExpandFolderPattern(data);
     std::vector<std::string> result;
-    for (const auto &folder : folders) {
+    for (const auto &folder: folders) {
       auto filenames = ExpandFilenamePattern(folder, data);
       result.insert(result.end(), filenames.begin(), filenames.end());
     }
@@ -332,11 +332,70 @@ namespace cc::neolux::femconfig {
 
   // 展开工作表通配符
   // 这里暂时只是返回 pattern 本身或匹配列表（如果有 sheet 列表可用）
-  std::vector<std::string> FEMConfig::ExpandSheetPattern(FEMData &data) {
-    // 如果你有实际 sheet 名称列表，可以在这里匹配
-    // 暂时返回 pattern 自己作为示例
-    std::vector<std::string> sheets;
-    sheets.push_back(data.sheetPattern);
-    return sheets;
+  std::vector<std::string> FEMConfig::ExpandSheetPattern(const std::string &filepath, const FEMData &data) {
+    OpenXLSX::XLDocument doc;
+    try {
+      doc.open(filepath);
+    } catch (const std::exception &e) {
+      std::cerr << "[ERROR] Failed to open Excel file: " << e.what() << std::endl;
+      return {};
+    }
+    auto sheetNames = doc.workbook().sheetNames();
+    std::vector<std::string> result;
+    for (const auto &sheetName: sheetNames) {
+      if (WildcardMatch(sheetName, data.sheetPattern)) {
+        result.push_back(sheetName);
+      }
+    }
+    return result;
+  }
+
+
+  int FEMConfig::columnLetterToNumber(const std::string &col) {
+    // 将 Excel 列字母转为数字，例如 A -> 1, B -> 2, Z -> 26, AA -> 27
+    int result = 0;
+    for (char c: col) {
+      if (!std::isalpha(c))
+        throw std::invalid_argument("Invalid column letter");
+      result = result * 26 + (std::toupper(c) - 'A' + 1);
+    }
+    return result;
+  }
+
+  int FEMConfig::calculateNo(const std::string &str) {
+    // 支持两种格式：
+    // 1. 列范围 "B:K"
+    // 2. 行范围 "2:60"
+
+    auto pos = str.find(':');
+    if (pos == std::string::npos) {
+      throw std::invalid_argument("Invalid range format, missing ':'");
+    }
+
+    std::string left = str.substr(0, pos);
+    std::string right = str.substr(pos + 1);
+
+    // 去掉空格
+    left.erase(std::remove_if(left.begin(), left.end(), ::isspace), left.end());
+    right.erase(std::remove_if(right.begin(), right.end(), ::isspace), right.end());
+
+    // 判断是数字还是字母
+    bool isColumn = std::isalpha(left[0]);
+
+    if (isColumn) {
+      // 列范围
+      int colStart = columnLetterToNumber(left);
+      int colEnd = columnLetterToNumber(right);
+      if (colEnd < colStart)
+        throw std::invalid_argument("Invalid column range");
+      return colEnd - colStart + 1;
+    } else {
+      // 行范围
+      int rowStart = std::stoi(left);
+      int rowEnd = std::stoi(right);
+      if (rowEnd < rowStart)
+        throw std::invalid_argument("Invalid row range");
+      return rowEnd - rowStart + 1;
+    }
   }
 } // namespace cc::neolux::femconfig

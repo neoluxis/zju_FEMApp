@@ -1,41 +1,150 @@
 #include "femapp.h"
 #include "iostream"
 #include "QDebug"
+#include "filesystem"
+
+#include "cc/neolux/fem/xlsx_proc.h"
+
+#include <QMessageBox>
 
 using cc::neolux::femconfig::FEMConfig;
+namespace fs = std::filesystem;
+namespace app = cc::neolux::fem;
+
+void showError(QWidget *parent, const QString &text) {
+  QMessageBox::critical(parent, "Error", text, QMessageBox::Ok);
+}
+
+void showWarning(QWidget *parent, const QString &text) {
+  QMessageBox::warning(parent, "Warning", text, QMessageBox::Ok);
+}
+
+void showInfo(QWidget *parent, const QString &text) {
+  QMessageBox::information(parent, "Info", text, QMessageBox::Ok);
+}
+
 
 FemApp::FemApp(QWidget *parent)
-    : QWidget(parent)
-{
-    ui.setupUi(this);
+  : QWidget(parent) {
+  ui.setupUi(this);
 }
 
-void FemApp::loadFEMConfig(void)
-{
-    this->loadFEMConfig(
-        this->femc_info->absoluteFilePath());
+void FemApp::loadFEMConfig(void) {
+  this->loadFEMConfig(
+    this->femc_info->absoluteFilePath());
 }
 
-void FemApp::loadFEMConfig(const QString &filePath)
-{
-    if (filePath.isEmpty())
-    {
-        // raise a error window here
-        qWarning() << "file path is Empty!\n";
-        return;
+void FemApp::loadFEMConfig(const QString &filePath) {
+  if (filePath.isEmpty()) {
+    // raise a error window here
+    qWarning() << "file path is Empty!\n";
+    return;
+  }
+  qDebug() << "Loading config file from " << filePath << "\n";
+
+  // 切换工作文件夹
+  std::filesystem::path folder = std::filesystem::path(filePath.toStdString()).parent_path();
+  std::filesystem::current_path(folder);
+
+
+  if (!FEMConfig::ReadFile(filePath.toStdString(), this->femdata)) {
+    qDebug() << "Failed to read file.";
+    return;
+  }
+  this->onLoadFile();
+}
+
+void FemApp::onLoadFile(void) {
+  auto folders = FEMConfig::ExpandFolderPattern(this->femdata);
+  qDebug() << "Expanded Folders:" << folders.size();
+  for (const auto &folder: folders) {
+    qDebug() << "  " << QString::fromStdString(folder);
+  }
+  if (folders.empty()) {
+    showError(this, tr("No folders matched the folder pattern. "));
+    return;
+  }
+  if (folders.size() > 1) {
+    showError(this, tr("Multiple folders matched the folder pattern. Please ensure only one folder matches."));
+    return;
+  }
+  // 只处理第一个匹配到的文件夹
+  auto folder = folders.front();
+  this->ui.lnFolder->setText(QString::fromStdString(folder));
+
+  // 处理文件名通配符
+  auto filenames = FEMConfig::ExpandFilenamePattern(folder, this->femdata);
+  qDebug() << "Expanded Filenames:" << filenames.size();
+  for (const auto &filename: filenames) {
+    qDebug() << "  " << QString::fromStdString(filename);
+  }
+  if (filenames.empty()) {
+    showError(this, tr("No filenames matched the filename pattern. "));
+    return;
+  }
+  if (filenames.size() > 1) {
+    showError(this, tr("Multiple filenames matched the filename pattern. Please ensure only one filename matches."));
+    return;
+  }
+
+  // 把文件夹中所有文件(include but not only matched), 添加到 ui.cbFile中，并默认选中匹配到的一个
+  this->ui.cbFile->clear();
+  for (const auto &entry: fs::directory_iterator(folder)) {
+    if (!fs::is_regular_file(entry.status()))
+      continue;
+    QString qFilename = QString::fromStdString(entry.path().filename().u8string());
+    this->ui.cbFile->addItem(qFilename);
+    if (entry.path().string() == filenames.front()) {
+      this->ui.cbFile->setCurrentText(qFilename);
     }
-    qDebug() << "Loading config file from " << filePath << "\n";
-    if (!FEMConfig::ReadFile(filePath.toStdString(), this->femdata))
-    {
-        qDebug() << "Failed to read file.";
-        return;
-    }
-    this->onLoadFile();
-}
+  }
 
-void FemApp::onLoadFile(void)
-{
-    ui.lnFolder->setText(QString::fromLocal8Bit(femdata.folderPattern));
+  // 把工作表填入，并选中匹配到者
+  auto sheets = cc::neolux::femconfig::FEMConfig::ExpandSheetPattern(
+    filenames.front(),
+    this->femdata);
+  if (sheets.empty()) {
+    showError(this, tr("No sheets matched the sheet pattern. "));
+    return;
+  }
+  if (sheets.size() > 1) {
+    showError(this, tr("Multiple sheets matched the sheet pattern. Please ensure only one sheet matches."));
+    return;
+  }
+
+  this->ui.cbSheet->clear();
+  // 获取所有工作表名称
+  auto allSheets = cc::neolux::fem::XlsxProc::GetSheetNames(filenames.front());
+  for (const auto &sheetName: allSheets) {
+    QString qSheetName = QString::fromStdString(sheetName);
+    this->ui.cbSheet->addItem(qSheetName);
+    if (sheetName == sheets.front()) {
+      this->ui.cbSheet->setCurrentText(qSheetName);
+    }
+  }
+
+  // =======================
+  // Dose
+  this->ui.cbDMode->setCurrentText(QString::fromStdString(this->femdata.dose.mode));
+  this->ui.cbDUnit->setCurrentText(QString::fromStdString(this->femdata.dose.unit));
+  this->ui.spnDCenter->setValue(static_cast<int>(this->femdata.dose.center)); // TODO: 需要询问此处数据类型，改控件和代码
+  this->ui.dspnDStep->setValue(this->femdata.dose.step);
+  this->ui.lblDNoVal->setText(QString::number(this->femdata.dose.no));
+  this->ui.lnDCols->setText(QString::fromStdString(this->femdata.dose.cols));
+
+  // Focus
+  this->ui.cbFMode->setCurrentText(QString::fromStdString(this->femdata.focus.mode));
+  this->ui.cbFUnit->setCurrentText(QString::fromStdString(this->femdata.focus.unit));
+  this->ui.spnFCenter->setValue(static_cast<int>(this->femdata.focus.center)); // TODO: 需要询问此处数据类型，改控件和代码
+  this->ui.dspnFStep->setValue(this->femdata.focus.step);
+  this->ui.lblFNoVal->setText(QString::number(this->femdata.focus.no));
+  this->ui.lnFRows->setText(QString::fromStdString(this->femdata.focus.rows));
+
+  // FEM
+  this->ui.cbFEMMode->setCurrentText(QString::fromStdString(this->femdata.fem.mode));
+  this->ui.cbFEMUnit->setCurrentText(QString::fromStdString(this->femdata.fem.unit));
+  this->ui.spnFEMTarg->setValue(static_cast<int>(this->femdata.fem.target));
+  this->ui.spnFEMSpec->setValue(static_cast<int>(this->femdata.fem.spec));
 }
 
 FemApp::~FemApp() = default;

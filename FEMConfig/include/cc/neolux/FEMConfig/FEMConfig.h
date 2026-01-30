@@ -92,7 +92,11 @@ namespace cc::neolux::femconfig {
      * @param data FEM配置信息
      * @return std::vector<std::string> 展开的工作表列表
      */
-    static std::vector<std::string> ExpandSheetPattern(FEMData &data);
+    static std::vector<std::string> ExpandSheetPattern(const std::string &filepath, const FEMData &data);
+
+    static int columnLetterToNumber(const std::string &col);
+
+    static int calculateNo(const std::string &str);
 
   private:
     // Parse content to FEMData

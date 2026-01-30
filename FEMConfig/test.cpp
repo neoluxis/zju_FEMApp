@@ -7,12 +7,15 @@
 #include "cc/neolux/FEMConfig/FEMConfig.h"
 #include "filesystem"
 
+#include "OpenXLSX.hpp"
+
 
 using std::string;
 using std::cout;
 using std::endl;
 using namespace cc::neolux::femconfig;
 namespace fs = std::filesystem;
+namespace oxl = OpenXLSX;
 
 void test_print_fem_data(const FEMData &data);
 
@@ -51,6 +54,17 @@ int main(int argc, char *argv[]) {
   for (const auto &filename: filenames) {
     cout << "  " << filename << std::endl;
   }
+
+  auto filename = filenames.empty() ? "" : filenames[0];
+  cout << "Using file " << filename << std::endl;
+
+  auto sheets = FEMConfig::ExpandSheetPattern(filename, data);
+  cout << "Expanded Sheets:" << sheets.size() << std::endl;
+  for (const auto &sheet: sheets) {
+    cout << "  " << sheet << std::endl;
+  }
+
+
 
   return 0;
 }

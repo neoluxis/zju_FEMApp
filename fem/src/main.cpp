@@ -2,9 +2,13 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QDebug>
+#include <QTranslator>
+#include <QLocale>
+
+
 #include <iostream>
 #include <string>
-#include <exception>
+
 #include "cc/neolux/fem/FileAssociation.h"
 #include "cc/neolux/FEMConfig/FEMConfig.h"
 #include "femapp.h"
@@ -37,12 +41,22 @@ void fileAssociat()
 
 int main(int argc, char *argv[])
 {
-
-    // fileAssociat();
-
     QApplication app(argc, argv);
 
+    QLocale locale = QLocale::system();  // 自动检测系统语言
+    QString languageCode = locale.name(); // 例如 "zh_CN" 或 "en_US"
+
+    QTranslator translator;
+
+    QString qmFile = QString("translations/femapp.%1.qm").arg(languageCode);
+    if (!translator.load(qmFile)) {
+        auto _ = translator.load("translations/femapp.en_US.qm");
+    }
+
+    QApplication::installTranslator(&translator);
+
     FemApp w;
+    w.show();
 
     if (argc>1) {
         QString qFilePath = QString::fromLocal8Bit(argv[1]);
@@ -50,7 +64,6 @@ int main(int argc, char *argv[])
         w.loadFEMConfig();
     }
 
-    w.show();
 
     return app.exec();
 
