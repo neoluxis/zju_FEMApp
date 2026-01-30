@@ -9,10 +9,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(SOURCES
   src/FEMConfig.cpp
 )
+set(SOURCES_TEST
+  test.cpp
+)
 
 set(HEADERS
   include/
-  
 )
 
 # Create Lib
@@ -22,6 +24,10 @@ add_library(FEMConfig ${SOURCES})
 target_include_directories(FEMConfig PRIVATE ${HEADERS})
 
 # Link libraries (add as needed)
-target_link_libraries(FEMConfig 
-PRIVATE 
+target_link_libraries(FEMConfig
+PRIVATE
 OpenXLSX)
+
+add_executable(FEMConfig_test ${SOURCES_TEST})
+target_link_libraries(FEMConfig_test PRIVATE FEMConfig)
+target_include_directories(FEMConfig_test PRIVATE ${HEADERS})
