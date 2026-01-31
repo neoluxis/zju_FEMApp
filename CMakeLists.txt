@@ -34,6 +34,7 @@ set(SOURCES
         fem/src/FileAssociation.cpp
         fem/src/xlsx_proc.cpp
         fem/src/femapp.cpp
+        fem/src/femapp_slots.cpp
 )
 
 set(HEADERS

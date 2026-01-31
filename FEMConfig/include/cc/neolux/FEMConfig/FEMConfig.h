@@ -84,6 +84,7 @@ namespace cc::neolux::femconfig {
      * @return std::vector<std::string> 展开的文件名列表
      */
     static std::vector<std::string> ExpandFilenamePattern(FEMData &data);
+
     static std::vector<std::string> ExpandFilenamePattern(const std::string &folder, const FEMData &data);
 
     /**
@@ -97,6 +98,10 @@ namespace cc::neolux::femconfig {
     static int columnLetterToNumber(const std::string &col);
 
     static int calculateNo(const std::string &str);
+
+    static bool dumpFEMData(const FEMData &data, std::ostream &os);
+
+    static bool dumpFEMData(const FEMData &data, const std::string &path);
 
   private:
     // Parse content to FEMData

@@ -64,6 +64,11 @@ int main(int argc, char *argv[]) {
     cout << "  " << sheet << std::endl;
   }
 
+  FEMConfig::dumpFEMData(data, "./output.fem");
+
+  FEMData data1;
+  FEMConfig::ReadFile("./output.fem", data1);
+  test_print_fem_data(data1);
 
 
   return 0;

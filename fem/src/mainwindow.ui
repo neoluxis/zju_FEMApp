@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>973</width>
-    <height>694</height>
+    <height>693</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -84,7 +84,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="btnFolderMatch">
          <property name="maximumSize">
           <size>
            <width>60</width>
@@ -478,4 +478,28 @@
  </widget>
  <resources/>
  <connections/>
+ <slots>
+  <slot>onLoadClicked()</slot>
+  <slot>onSaveClicked()</slot>
+  <slot>onSaveAsClicked()</slot>
+  <slot>onBrowseClicked()</slot>
+  <slot>onMatchClicked()</slot>
+  <slot>onFolderEdited()</slot>
+  <slot>onFileChanged()</slot>
+  <slot>onSheetChanged()</slot>
+  <slot>onDModeChanged()</slot>
+  <slot>onDUnitChanged()</slot>
+  <slot>onDCenterChanged()</slot>
+  <slot>onDStepChanged()</slot>
+  <slot>onDColsEdited()</slot>
+  <slot>onFModeChanged()</slot>
+  <slot>onFUnitChanged()</slot>
+  <slot>onFCenterChanged()</slot>
+  <slot>onFStepChanged()</slot>
+  <slot>onFRowsEdited()</slot>
+  <slot>onFEMModeChanged()</slot>
+  <slot>onFEMUnitChanged()</slot>
+  <slot>onFEMTargChanged()</slot>
+  <slot>onFEMSpecChanged()</slot>
+ </slots>
 </ui>

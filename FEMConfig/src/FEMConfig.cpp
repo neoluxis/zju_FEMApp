@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <algorithm>
 #include <cctype>
+#include <iomanip> // for std::setprecision
 
 #include <string>
 #include <stdexcept>
@@ -331,7 +332,6 @@ namespace cc::neolux::femconfig {
   }
 
   // 展开工作表通配符
-  // 这里暂时只是返回 pattern 本身或匹配列表（如果有 sheet 列表可用）
   std::vector<std::string> FEMConfig::ExpandSheetPattern(const std::string &filepath, const FEMData &data) {
     OpenXLSX::XLDocument doc;
     try {
@@ -397,5 +397,58 @@ namespace cc::neolux::femconfig {
         throw std::invalid_argument("Invalid row range");
       return rowEnd - rowStart + 1;
     }
+  }
+
+
+  bool FEMConfig::dumpFEMData(const FEMData &data, std::ostream &os)
+  {
+    if (!os) return false;
+
+    // 注释和基本信息
+    os << "// 在当前文件夹检索文件夹名，有重复的或者检索不到则报错\n";
+    os << "folder = " << data.folderPattern << "\n";
+    os << "// 在指定的文件夹检索文件名，有重复的或者检索不到则报错\n";
+    os << "filename = " << data.filenamePattern << "\n";
+    os << "// 在excel中检索sheet，有重复的或者检索不到则报错\n";
+    os << "sheet = " << data.sheetPattern << "\n";
+
+    // Dose
+    os << "// dose的range和Excel对应的列\n";
+    os << "dose={";
+    os << "\"mode\":\"" << data.dose.mode << "\", \"unit\":\"" << data.dose.unit << "\",\n";
+    os << "\"center\":" << std::setprecision(8) << data.dose.center
+       << ", \"step\":" << data.dose.step
+       << ", \"no\": " << data.dose.no
+       << ",\n\"cols\":\"" << data.dose.cols << "\"\n";
+    os << "}\n\n";
+
+    // Focus
+    os << "// focus的range和Excel对应的行\n";
+    os << "focus={";
+    os << "\"mode\":\"" << data.focus.mode << "\", \"unit\":\"" << data.focus.unit << "\",\n";
+    os << "\"center\":" << std::setprecision(8) << data.focus.center
+       << ", \"step\":" << data.focus.step
+       << ", \"no\": " << data.focus.no
+       << ",\n\"rows\":\"" << data.focus.rows << "\"\n";
+    os << "}\n\n";
+
+    // FEM
+    os << "// fem的要求\n";
+    os << "fem={";
+    os << "\"mode\":\"" << data.fem.mode << "\", \"unit\":\"" << data.fem.unit << "\",\n";
+    os << "\"target\":" << std::setprecision(8) << data.fem.target
+       << ", \"spec\":" << data.fem.spec << "\n";
+    os << "}\n";
+
+    return true;
+  }
+
+
+  bool FEMConfig::dumpFEMData(const FEMData &data, const std::string &path) {
+    std::ofstream ofs(path);
+    if (!ofs.is_open()) {
+      return false;
+    }
+    return dumpFEMData(data, ofs);
   }
 } // namespace cc::neolux::femconfig

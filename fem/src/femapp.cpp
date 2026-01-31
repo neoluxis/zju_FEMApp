@@ -27,6 +27,33 @@ void showInfo(QWidget *parent, const QString &text) {
 FemApp::FemApp(QWidget *parent)
   : QWidget(parent) {
   ui.setupUi(this);
+
+  QObject::connect(this->ui.btnLoad, SIGNAL(clicked()), this, SLOT(onLoadClicked()));
+  QObject::connect(this->ui.btnSave, SIGNAL(clicked()), this, SLOT(onSaveClicked()));
+  QObject::connect(this->ui.btnSaveas, SIGNAL(clicked()), this, SLOT(onSaveAsClicked()));
+  QObject::connect(this->ui.btnFolderBrowse, SIGNAL(clicked()), this, SLOT(onBrowseClicked()));
+  QObject::connect(this->ui.btnFolderMatch, SIGNAL(clicked()), this, SLOT(onMatchClicked()));
+  QObject::connect(this->ui.lnFolder, SIGNAL(textEdited(QString)), this, SLOT(onFolderEdited()));
+  QObject::connect(this->ui.cbFile, SIGNAL(currentTextChanged(QString)), this, SLOT(onFileChanged()));
+  QObject::connect(this->ui.cbSheet, SIGNAL(currentTextChanged(QString)), this, SLOT(onSheetChanged()));
+
+  QObject::connect(this->ui.cbDMode, SIGNAL(currentTextChanged(QString)), this, SLOT(onDModeChanged()));
+  QObject::connect(this->ui.cbDUnit, SIGNAL(currentTextChanged(QString)), this, SLOT(onDUnitChanged()));
+  QObject::connect(this->ui.spnDCenter, SIGNAL(valueChanged(int)), this, SLOT(onDCenterChanged()));
+  QObject::connect(this->ui.dspnDStep, SIGNAL(valueChanged(double)), this, SLOT(onDStepChanged()));
+  QObject::connect(this->ui.lnDCols, SIGNAL(textEdited(QString)), this, SLOT(onDColsEdited()));
+
+  QObject::connect(this->ui.cbFMode, SIGNAL(currentTextChanged(QString)), this, SLOT(onFModeChanged()));
+  QObject::connect(this->ui.cbFUnit, SIGNAL(currentTextChanged(QString)), this, SLOT(onFUnitChanged()));
+  QObject::connect(this->ui.spnFCenter, SIGNAL(valueChanged(int)), this, SLOT(onFCenterChanged()));
+  QObject::connect(this->ui.dspnFStep, SIGNAL(valueChanged(double)), this, SLOT(onFStepChanged()));
+  QObject::connect(this->ui.lnFRows, SIGNAL(textEdited(QString)), this, SLOT(onFRowsEdited()));
+
+  QObject::connect(this->ui.cbFEMMode, SIGNAL(currentTextChanged(QString)), this, SLOT(onFEMModeChanged()));
+  QObject::connect(this->ui.cbFEMUnit, SIGNAL(currentTextChanged(QString)), this, SLOT(onFEMUnitChanged()));
+  QObject::connect(this->ui.spnFEMTarg, SIGNAL(valueChanged(int)), this, SLOT(onFEMTargChanged()));
+  QObject::connect(this->ui.spnFEMSpec, SIGNAL(valueChanged(int)), this, SLOT(onFEMSpecChanged()));
+
 }
 
 void FemApp::loadFEMConfig(void) {
