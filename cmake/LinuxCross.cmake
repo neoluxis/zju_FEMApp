@@ -26,15 +26,28 @@ set(QT_PLUGINS_DIR "${CROSS_PREFIX}/lib/qt6/plugins")
 # MinGW runtime path
 set(MINGW_BIN_DIR "${CROSS_PREFIX}/bin")
 
-# Static linking for MinGW runtime
-## Do not inject -static-libgcc/-static-libstdc++ into global C/CXX flags
-## for cross-compilation; this prevents shared libraries from getting
-## the static libgcc embedded which can cause duplicate symbol errors
-## like multiple definition of _Unwind_Resume. Apply these only to
-## executable linker flags.
-#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++")
-#set(CMAKE_EXE_LINKER_FLAGS_C "${CMAKE_EXE_LINKER_FLAGS_C} -static-libgcc")
-#set(CMAKE_EXE_LINKER_FLAGS_CXX "${CMAKE_EXE_LINKER_FLAGS_CXX} -static-libgcc -static-libstdc++")
+# ============================================================================
+# Compiler and Linker Flags for Proper Symbol Handling
+# ============================================================================
+# For cross-compilation to Windows, we need to handle libstdc++ symbols carefully.
+#
+# Problem: Some codecvt (character conversion) symbols from libstdc++ are not
+# available in Wine's shared libstdc++-6.dll. We need to embed libstdc++ into DLLs.
+#
+# However, linking with -static-libgcc -static-libstdc++ causes duplicate symbol
+# errors (_Unwind_Resume) when multiple DLLs are linked into the final executable.
+#
+# Solution: Use -Wl,--allow-multiple-definition to permit duplicate symbols.
+# This is safe because both copies are identical and only the first is used.
+
+# For shared libraries, statically link libstdc++ but allow duplicate symbols
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static-libgcc -static-libstdc++ -Wl,--allow-multiple-definition")
+
+# For executables, use static linking to reduce runtime dependencies
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++")
+
+# Add flag to ensure proper C++ ABI compatibility and symbol visibility
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -fvisibility-inlines-hidden")
 
 message(STATUS "Cross-compilation prefix: ${CROSS_PREFIX}")
 message(STATUS "Qt root: ${QT_ROOT_DIR}")

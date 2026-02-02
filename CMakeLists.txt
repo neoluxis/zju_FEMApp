@@ -56,6 +56,10 @@ FILE(GLOB TRANSLATION_TS translations/*.ts)
 # Create executable (removed WIN32 to show console for debugging cout)
 add_executable(FemApp ${SOURCES})
 
+# For Windows cross-compilation, allow multiple symbol definitions
+# This is needed because multiple DLLs statically link libstdc++
+target_link_options(FemApp PRIVATE -Wl,--allow-multiple-definition)
+
 # Include directories
 target_include_directories(FemApp PRIVATE
         ${HEADERS}

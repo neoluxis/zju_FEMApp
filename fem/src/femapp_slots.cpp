@@ -4,9 +4,11 @@
 
 #include "femapp.h"
 #include "string"
+#include "sstream"
 #include "QDebug"
 #include "QFileDialog"
 #include "QDir"
+
 
 void FemApp::onLoadClicked() {
   QString femconfig_path = QFileDialog::getOpenFileName(
@@ -22,9 +24,20 @@ void FemApp::onLoadClicked() {
 }
 
 void FemApp::onSaveClicked() {
+  // Update raw content by dumping current femdata
+  std::ostringstream oss;
+  if (!cc::neolux::femconfig::FEMConfig::dumpFEMData(femdata, oss)) {
+    showError(this, tr("Failed to generate FEM config content."));
+    return;
+  }
+  femdata.rawContent = oss.str();
+  ui.txtConfigRaw->setPlainText(QString::fromUtf8(femdata.rawContent.c_str()));
+
+  // Save to file
   if (!cc::neolux::femconfig::FEMConfig::dumpFEMData(femdata,
                                                      this->femc_info->absoluteFilePath().toUtf8().toStdString())) {
     showError(this, tr("Failed to save FEM config file."));
+    return;
   }
   clearModifiedFlag();
   qInfo() << "Saved FEM config file to " << this->femc_info->absoluteFilePath();
@@ -39,9 +52,21 @@ void FemApp::onSaveAsClicked() {
   if (femconfig_path.isEmpty()) {
     return;
   }
+
+  // Update raw content by dumping current femdata
+  std::ostringstream oss;
+  if (!cc::neolux::femconfig::FEMConfig::dumpFEMData(femdata, oss)) {
+    showError(this, tr("Failed to generate FEM config content."));
+    return;
+  }
+  femdata.rawContent = oss.str();
+  ui.txtConfigRaw->setPlainText(QString::fromUtf8(femdata.rawContent.c_str()));
+
+  // Save to file
   if (!cc::neolux::femconfig::FEMConfig::dumpFEMData(femdata,
                                                      femconfig_path.toUtf8().toStdString())) {
     showError(this, tr("Failed to save FEM config file."));
+    return;
   }
   currentFilePath = femconfig_path;
   clearModifiedFlag();
@@ -88,7 +113,21 @@ void FemApp::onFileChanged(const QString &text) {
   femdata.filenamePattern = text.toUtf8().toStdString();
   markAsModified();
   qInfo() << "File pattern changed to " << text;
-  updateSheetList(getCurrentSelectedFile().toUtf8().toStdString());
+
+  // Skip automatic sheet matching during file loading to avoid errors
+  // The loading process (onLoadFile) handles sheet matching itself
+  if (isLoading) {
+    return;
+  }
+
+  // Only update sheet list if a file is selected
+  QString selectedFile = getCurrentSelectedFile();
+  if (!selectedFile.isEmpty()) {
+    auto sheet = getSheetMatched(selectedFile.toUtf8().toStdString());
+    if (!sheet.empty()) {
+      qInfo() << "Sheet auto-selected: " << QString::fromUtf8(sheet.c_str());
+    }
+  }
 }
 
 void FemApp::onSheetChanged(const QString &text) {
