@@ -267,6 +267,12 @@ std::string FemApp::getSheetMatched(std::string filename) {
 
 void FemApp::updateSheetList(const std::string &filename) {
   this->ui.cbSheet->clear();
+
+  // Skip if filename is empty to avoid attempting to open non-existent files
+  if (filename.empty()) {
+    return;
+  }
+
   try {
     app::XlsxProc xlsxproc;
     auto all_sheets = xlsxproc.GetSheetNames(filename);

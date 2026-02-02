@@ -44,46 +44,52 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="278"/>
+        <location filename="../fem/src/femapp.cpp" line="284"/>
         <source>Failed to read Excel file: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp_slots.cpp" line="14"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="16"/>
         <source>Open FEM Config File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp_slots.cpp" line="16"/>
-        <location filename="../fem/src/femapp_slots.cpp" line="38"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="18"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="51"/>
         <source>FEM Config Files (*.fem);;All Files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp_slots.cpp" line="27"/>
-        <location filename="../fem/src/femapp_slots.cpp" line="44"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="30"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="59"/>
+        <source>Failed to generate FEM config content.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fem/src/femapp_slots.cpp" line="39"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="68"/>
         <source>Failed to save FEM config file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp_slots.cpp" line="36"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="49"/>
         <source>Save FEM Config File As</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp_slots.cpp" line="54"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="79"/>
         <source>Select Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp_slots.cpp" line="210"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="249"/>
         <source>Failed to parse raw FEM config content.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="14"/>
-        <location filename="../fem/src/femapp.cpp" line="341"/>
-        <location filename="../fem/src/femapp.cpp" line="348"/>
+        <location filename="../fem/src/femapp.cpp" line="347"/>
+        <location filename="../fem/src/femapp.cpp" line="354"/>
         <source>FemApp</source>
         <translation type="unfinished"></translation>
     </message>
