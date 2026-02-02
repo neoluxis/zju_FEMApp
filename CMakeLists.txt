@@ -5,6 +5,8 @@ cmake_minimum_required(VERSION 3.10)
 #include(${CMAKE_SOURCE_DIR}/cmake/LinuxCross.cmake)
 #include(${CMAKE_SOURCE_DIR}/cmake/mingw64.cmake)
 
+include(${CMAKE_SOURCE_DIR}/cmake/BuildType.cmake)
+
 
 # Ensure CMAKE_PREFIX_PATH is set correctly for find_package
 list(APPEND CMAKE_PREFIX_PATH "${QT_ROOT_DIR}")
