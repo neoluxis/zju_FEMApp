@@ -27,11 +27,11 @@ set(CMAKE_AUTOUIC ON)
 # 添加 FEMConfig 库子项目
 add_subdirectory(FEMConfig)
 add_subdirectory(OpenXLSX)
+add_subdirectory(FileAssocLib)
 
 # Add source files
 set(SOURCES
         fem/src/main.cpp
-        fem/src/FileAssociation.cpp
         fem/src/xlsx_proc.cpp
         fem/src/femapp.cpp
         fem/src/femapp_slots.cpp
@@ -58,6 +58,7 @@ add_executable(FemApp ${SOURCES})
 target_include_directories(FemApp PRIVATE
         ${HEADERS}
         ${CMAKE_SOURCE_DIR}/FEMConfig/include
+        ${CMAKE_SOURCE_DIR}/FileAssocLib/include
 )
 
 # Link libraries
@@ -66,6 +67,7 @@ target_link_libraries(FemApp PRIVATE
         Qt6::Widgets
         FEMConfig
         OpenXLSX
+        FileAssocLib
         shlwapi
         shell32
 )
@@ -111,6 +113,14 @@ if(WIN32)
                 $<TARGET_FILE:FEMConfig>
                 $<TARGET_FILE_DIR:FemApp>
             COMMENT "Copying FEMConfig runtime to output directory"
+        )
+    endif()
+    if(TARGET FileAssocLib)
+        add_custom_command(TARGET FemApp POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                $<TARGET_FILE:FileAssocLib>
+                $<TARGET_FILE_DIR:FemApp>
+            COMMENT "Copying FileAssocLib runtime to output directory"
         )
     endif()
 endif()
