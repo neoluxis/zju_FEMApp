@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Toolchain must be included BEFORE project()
-# include(${CMAKE_SOURCE_DIR}/cmake/WindowsOfficialQt.cmake)
-include(${CMAKE_SOURCE_DIR}/cmake/LinuxCross.cmake)
-include(${CMAKE_SOURCE_DIR}/cmake/mingw64.cmake)
+ include(${CMAKE_SOURCE_DIR}/cmake/WindowsOfficialQt.cmake)
+#include(${CMAKE_SOURCE_DIR}/cmake/LinuxCross.cmake)
+#include(${CMAKE_SOURCE_DIR}/cmake/mingw64.cmake)
 
 
 # Ensure CMAKE_PREFIX_PATH is set correctly for find_package
@@ -17,7 +17,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Find Qt6
-find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets LinguistTools)
 
 # Enable Qt MOC
 set(CMAKE_AUTOMOC ON)
@@ -70,18 +70,18 @@ target_link_libraries(FemApp PRIVATE
         shell32
 )
 
-# 生成 / 更新 .ts 文件
+# 生成 / 更新 .ts 文件 (use Qt-provided lupdate)
 add_custom_target(update_translations
-        COMMAND lupdate
+        COMMAND $<TARGET_FILE:Qt6::lupdate>
         ${SOURCES} ${HEADERS} ${UI_FILES}
         -ts ${TRANSLATION_TS}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         COMMENT "Update Qt translation files (.ts)"
 )
 
-# 编译 .ts -> .qm
+# 编译 .ts -> .qm (use Qt-provided lrelease)
 add_custom_target(compile_translations
-        COMMAND lrelease ${TRANSLATION_TS}
+        COMMAND $<TARGET_FILE:Qt6::lrelease> ${TRANSLATION_TS}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         COMMENT "Compile Qt translation files (.qm)"
 )
@@ -96,11 +96,31 @@ add_dependencies(FemApp
 # Deploy Qt dependencies (integrated in toolchain configuration)
 deploy_qt_dependencies(FemApp)
 
+if(WIN32)
+    if(TARGET OpenXLSX)
+        add_custom_command(TARGET FemApp POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                $<TARGET_FILE:OpenXLSX>
+                $<TARGET_FILE_DIR:FemApp>
+            COMMENT "Copying OpenXLSX runtime to output directory"
+        )
+    endif()
+    if(TARGET FEMConfig)
+        add_custom_command(TARGET FemApp POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                $<TARGET_FILE:FEMConfig>
+                $<TARGET_FILE_DIR:FemApp>
+            COMMENT "Copying FEMConfig runtime to output directory"
+        )
+    endif()
+endif()
+
 # Move translation files to output directory after build
 add_custom_command(TARGET FemApp POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:FemApp>/translations
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${CMAKE_SOURCE_DIR}/translations/*.qm
-        $<TARGET_FILE_DIR:FemApp>/translations
+        COMMAND ${CMAKE_COMMAND}
+                -DSRC_DIR=${CMAKE_SOURCE_DIR}/translations
+                -DDST_DIR=$<TARGET_FILE_DIR:FemApp>/translations
+                -P ${CMAKE_SOURCE_DIR}/cmake/CopyQm.cmake
         COMMENT "Copying translation files to output directory"
 )

@@ -198,7 +198,7 @@ namespace cc::neolux::femconfig {
   }
 
   std::string FEMConfig::GetFileContent(const std::string &filePath) {
-    std::ifstream file(filePath);
+    std::ifstream file(fs::u8path(filePath), std::ios::binary);
     if (!file.is_open()) {
       return "";
     }
@@ -349,9 +349,9 @@ namespace cc::neolux::femconfig {
       if (!fs::is_directory(entry.status()))
         continue;
 
-      std::string dirname = entry.path().filename().u8string(); // 支持 UTF-8
+      std::string dirname = entry.path().filename().u8string(); // UTF-8
       if (WildcardMatch(dirname, data.folderPattern)) {
-        result.push_back(entry.path().string());
+        result.push_back(entry.path().u8string());
       }
     }
     return result;
@@ -361,7 +361,7 @@ namespace cc::neolux::femconfig {
   std::vector<std::string> FEMConfig::ExpandFilenamePattern(const std::string &folder, const FEMData &data) {
     std::vector<std::string> result;
 
-    fs::path folderPath(folder);
+    fs::path folderPath = fs::u8path(folder);
 
     if (!fs::exists(folderPath) || !fs::is_directory(folderPath))
       return result;
@@ -370,9 +370,9 @@ namespace cc::neolux::femconfig {
       if (!fs::is_regular_file(entry.status()))
         continue;
 
-      std::string filename = entry.path().filename().u8string(); // 支持 UTF-8
+      std::string filename = entry.path().filename().u8string(); // UTF-8
       if (WildcardMatch(filename, data.filenamePattern)) {
-        result.push_back(entry.path().string());
+        result.push_back(entry.path().u8string());
       }
     }
 
@@ -393,7 +393,8 @@ namespace cc::neolux::femconfig {
   std::vector<std::string> FEMConfig::ExpandSheetPattern(const std::string &filepath, const FEMData &data) {
     OpenXLSX::XLDocument doc;
     try {
-      doc.open(filepath);
+      const auto normalizedPath = fs::u8path(filepath).u8string();
+      doc.open(normalizedPath);
     } catch (const std::exception &e) {
       std::cerr << "[ERROR] Failed to open Excel file: " << e.what() << std::endl;
       return {};
@@ -502,7 +503,7 @@ namespace cc::neolux::femconfig {
 
 
   bool FEMConfig::dumpFEMData(const FEMData &data, const std::string &path) {
-    std::ofstream ofs(path);
+    std::ofstream ofs(fs::u8path(path));
     if (!ofs.is_open()) {
       return false;
     }

@@ -6,9 +6,19 @@
 #include <map>
 #include <vector>
 
+#if defined(_WIN32) || defined(__CYGWIN__)
+  #ifdef FEMCONFIG_EXPORTS
+    #define FEMCONFIG_API __declspec(dllexport)
+  #else
+    #define FEMCONFIG_API __declspec(dllimport)
+  #endif
+#else
+  #define FEMCONFIG_API
+#endif
+
 namespace cc::neolux::femconfig {
   // Dose configuration
-  struct DoseConfig {
+  struct FEMCONFIG_API DoseConfig {
     std::string mode; // LowHigh, HighLow, etc.
     std::string unit; // mJ/cm2, etc.
     double center; // Center value
@@ -18,7 +28,7 @@ namespace cc::neolux::femconfig {
   };
 
   // Focus configuration
-  struct FocusConfig {
+  struct FEMCONFIG_API FocusConfig {
     std::string mode; // NegPos2, PosNeg2, etc.
     std::string unit; // μm, etc.
     double center; // Center value
@@ -28,7 +38,7 @@ namespace cc::neolux::femconfig {
   };
 
   // FEM configuration
-  struct FEMConfigData {
+  struct FEMCONFIG_API FEMConfigData {
     std::string mode; // Focus2DoseLinear, etc.
     std::string unit; // mJ/cm2, etc.
     double target; // Target value
@@ -36,7 +46,7 @@ namespace cc::neolux::femconfig {
   };
 
   // Complete FEM project data
-  struct FEMData {
+  struct FEMCONFIG_API FEMData {
     std::string folderPattern; // folder = *data*
     std::string filenamePattern; // filename = *AT00580.27*
     std::string sheetPattern; // sheet = *DNo.3*
@@ -48,7 +58,7 @@ namespace cc::neolux::femconfig {
     std::string rawContent; // Raw file content
   };
 
-  class FEMConfig {
+  class FEMCONFIG_API FEMConfig {
   public:
     // Read and parse .fem file
     static bool ReadFile(const std::string &filePath, FEMData &data);

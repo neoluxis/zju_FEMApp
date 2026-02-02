@@ -4,11 +4,13 @@
 
 #include "cc/neolux/fem/xlsx_proc.h"
 #include "iostream"
+#include <filesystem>
 
 namespace cc::neolux::fem {
   std::vector<std::string> XlsxProc::GetSheetNames(const std::string &filePath) {
     oxl::XLDocument doc;
-    doc.open(filePath);
+    const auto normalizedPath = std::filesystem::u8path(filePath).u8string();
+    doc.open(normalizedPath);
     std::cout << "Opened Excel file successfully." << std::endl;
 
     auto wbs = doc.workbook();

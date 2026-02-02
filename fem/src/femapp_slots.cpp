@@ -23,7 +23,7 @@ void FemApp::onLoadClicked() {
 
 void FemApp::onSaveClicked() {
   if (!cc::neolux::femconfig::FEMConfig::dumpFEMData(femdata,
-                                                     this->femc_info->absoluteFilePath().toStdString())) {
+                                                     this->femc_info->absoluteFilePath().toUtf8().toStdString())) {
     showError(this, tr("Failed to save FEM config file."));
   }
   qInfo() << "Saved FEM config file to " << this->femc_info->absoluteFilePath();
@@ -39,7 +39,7 @@ void FemApp::onSaveAsClicked() {
     return;
   }
   if (!cc::neolux::femconfig::FEMConfig::dumpFEMData(femdata,
-                                                     femconfig_path.toStdString())) {
+                                                     femconfig_path.toUtf8().toStdString())) {
     showError(this, tr("Failed to save FEM config file."));
   }
   qInfo() << "Saved FEM config file to " << femconfig_path;
@@ -58,8 +58,8 @@ void FemApp::onBrowseClicked() {
   QDir cwd = QDir::current();
   QString relativePath = cwd.relativeFilePath(dir);
   this->ui.lnFolder->setText(relativePath);
-  femdata.folderPattern = relativePath.toStdString();
-  updateFileList(relativePath.toStdString());
+  femdata.folderPattern = relativePath.toUtf8().toStdString();
+  updateFileList(relativePath.toUtf8().toStdString());
   qInfo() << "Folder selected: " << dir;
 }
 
@@ -68,35 +68,35 @@ void FemApp::onMatchClicked() {
   if (folder.empty()) {
     return;
   }
-  this->ui.lnFolder->setText(QString::fromStdString(folder));
+  this->ui.lnFolder->setText(QString::fromUtf8(folder.c_str()));
   femdata.folderPattern = folder;
   updateFileList(folder);
-  qInfo() << "Folder matched: " << QString::fromStdString(folder);
+  qInfo() << "Folder matched: " << QString::fromUtf8(folder.c_str());
 }
 
 void FemApp::onFolderEdited(const QString &text) {
-  femdata.folderPattern = text.toStdString();
+  femdata.folderPattern = text.toUtf8().toStdString();
   qInfo() << "Folder pattern changed to " << text;
 }
 
 
 void FemApp::onFileChanged(const QString &text) {
-  femdata.filenamePattern = text.toStdString();
+  femdata.filenamePattern = text.toUtf8().toStdString();
   qInfo() << "File pattern changed to " << text;
-  updateSheetList(getCurrentSelectedFile().toStdString());
+  updateSheetList(getCurrentSelectedFile().toUtf8().toStdString());
 }
 
 void FemApp::onSheetChanged(const QString &text) {
-  femdata.sheetPattern = text.toStdString();
+  femdata.sheetPattern = text.toUtf8().toStdString();
 }
 
 void FemApp::onDModeChanged(const QString &text) {
-  femdata.dose.mode = text.toStdString();
+  femdata.dose.mode = text.toUtf8().toStdString();
   qInfo() << "Dose mode changed to " << text;
 }
 
 void FemApp::onDUnitChanged(const QString &text) {
-  femdata.dose.unit = text.toStdString();
+  femdata.dose.unit = text.toUtf8().toStdString();
   qInfo() << "Dose unit changed to " << text;
 }
 
@@ -117,17 +117,17 @@ void FemApp::onDNoChanged(int value) {
 
 void FemApp::onDColsEdited() {
   auto text = ui.lnDCols->text();
-  femdata.dose.cols = text.toStdString();
+  femdata.dose.cols = text.toUtf8().toStdString();
   qInfo() << "Dose cols changed to " << text;
 }
 
 void FemApp::onFModeChanged(const QString &text) {
-  femdata.focus.mode = text.toStdString();
+  femdata.focus.mode = text.toUtf8().toStdString();
   qInfo() << "Focus mode changed to " << text;
 }
 
 void FemApp::onFUnitChanged(const QString &text) {
-  femdata.focus.unit = text.toStdString();
+  femdata.focus.unit = text.toUtf8().toStdString();
   qInfo() << "Focus unit changed to " << text;
 }
 
@@ -148,17 +148,17 @@ void FemApp::onFNoChanged(int value) {
 
 void FemApp::onFRowsEdited() {
   auto text = ui.lnFRows->text();
-  femdata.focus.rows = text.toStdString();
+  femdata.focus.rows = text.toUtf8().toStdString();
   qInfo() << "Focus rows changed to " << text;
 }
 
 void FemApp::onFEMModeChanged(const QString &text) {
-  femdata.fem.mode = text.toStdString();
+  femdata.fem.mode = text.toUtf8().toStdString();
   qInfo() << "FEM mode changed to " << text;
 }
 
 void FemApp::onFEMUnitChanged(const QString &text) {
-  femdata.fem.unit = text.toStdString();
+  femdata.fem.unit = text.toUtf8().toStdString();
   qInfo() << "FEM unit changed to " << text;
 }
 

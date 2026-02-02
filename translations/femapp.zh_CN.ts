@@ -171,17 +171,17 @@
         <translation type="unfinished">多个文件匹配到，请确保只有一个文件匹配</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="198"/>
+        <location filename="../fem/src/femapp.cpp" line="193"/>
         <source>No sheets matched the sheet pattern. </source>
         <translation type="unfinished">没有表名匹配</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="202"/>
+        <location filename="../fem/src/femapp.cpp" line="197"/>
         <source>Multiple sheets matched the sheet pattern. Please ensure only one sheet matches.</source>
         <translation type="unfinished">匹配到多个表，请检查文件以匹配单个表</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="229"/>
+        <location filename="../fem/src/femapp.cpp" line="224"/>
         <source>Failed to read Excel file: </source>
         <translation type="unfinished">读取 Excel 文件失败</translation>
     </message>

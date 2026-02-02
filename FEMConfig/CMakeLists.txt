@@ -18,10 +18,13 @@ set(HEADERS
 )
 
 # Create Lib
-add_library(FEMConfig ${SOURCES})
+add_library(FEMConfig SHARED ${SOURCES})
 
 # Include directories
-target_include_directories(FEMConfig PRIVATE ${HEADERS})
+target_include_directories(FEMConfig PUBLIC ${HEADERS})
+
+# Export symbols from this target when building the DLL
+target_compile_definitions(FEMConfig PRIVATE FEMCONFIG_EXPORTS)
 
 # Link libraries (add as needed)
 target_link_libraries(FEMConfig

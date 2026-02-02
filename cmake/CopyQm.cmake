@@ -1,0 +1,11 @@
+if(NOT DEFINED SRC_DIR OR NOT DEFINED DST_DIR)
+  message(FATAL_ERROR "SRC_DIR and DST_DIR must be set")
+endif()
+
+file(GLOB QM_FILES "${SRC_DIR}/*.qm")
+if(QM_FILES)
+  file(MAKE_DIRECTORY "${DST_DIR}")
+  foreach(QM_FILE IN LISTS QM_FILES)
+    file(COPY "${QM_FILE}" DESTINATION "${DST_DIR}")
+  endforeach()
+endif()

@@ -1,14 +1,15 @@
 #include "femapp.h"
+
+#include <QDir>
+
 #include "iostream"
 #include "QDebug"
-#include "filesystem"
 
 #include "cc/neolux/fem/xlsx_proc.h"
 
 #include <QMessageBox>
 
 using cc::neolux::femconfig::FEMConfig;
-namespace fs = std::filesystem;
 namespace app = cc::neolux::fem;
 
 void FemApp::showError(QWidget *parent, const QString &text) {
@@ -80,11 +81,10 @@ void FemApp::loadFEMConfig(const QString &filePath) {
   qDebug() << "Loading config file from " << filePath << "\n";
 
   // 切换工作文件夹
-  std::filesystem::path folder = std::filesystem::path(filePath.toStdString()).parent_path();
-  std::filesystem::current_path(folder);
+  QFileInfo fileInfo(filePath);
+  QDir::setCurrent(fileInfo.absolutePath());
 
-
-  if (!FEMConfig::ReadFile(filePath.toStdString(), this->femdata)) {
+  if (!FEMConfig::ReadFile(filePath.toUtf8().toStdString(), this->femdata)) {
     qDebug() << "Failed to read file.";
     return;
   }
@@ -95,7 +95,7 @@ std::string FemApp::getFolderMatched() {
   auto folders = FEMConfig::ExpandFolderPattern(this->femdata);
   qDebug() << "Expanded Folders:" << folders.size();
   for (const auto &folder: folders) {
-    qDebug() << "  " << QString::fromStdString(folder);
+    qDebug() << "  " << QString::fromUtf8(folder.c_str());
   }
   if (folders.empty()) {
     showError(this, tr("No folders matched the folder pattern. "));
@@ -109,10 +109,10 @@ std::string FemApp::getFolderMatched() {
   auto folder = folders.front();
 
   // 获取相对路径
-  fs::path cwd = fs::current_path();
-  fs::path folderPath(folder);
-  fs::path relativePath = fs::relative(folderPath, cwd);
-  return relativePath.u8string();
+  QDir cwd(QDir::currentPath());
+  QFileInfo folderInfo(QString::fromUtf8(folder.c_str()));
+  QString relativePath = cwd.relativeFilePath(folderInfo.absoluteFilePath());
+  return relativePath.toUtf8().toStdString();
 }
 
 std::string FemApp::getFileMatched(std::string folder) {
@@ -122,7 +122,7 @@ std::string FemApp::getFileMatched(std::string folder) {
 
   // 输出匹配的文件名
   for (const auto &filename: filenames) {
-    qDebug() << "  " << QString::fromStdString(filename);
+    qDebug() << "  " << QString::fromUtf8(filename.c_str());
   }
 
   // 若没有匹配的文件
@@ -143,8 +143,8 @@ std::string FemApp::getFileMatched(std::string folder) {
   this->updateFileList(folder);
 
   // 从路径获取文件名
-  fs::path p = fs::u8path(file);
-  QString matchedFilename = QString::fromUtf8(p.filename().u8string().c_str());
+  QFileInfo fileInfo(QString::fromUtf8(file.c_str()));
+  QString matchedFilename = fileInfo.fileName();
 
   qInfo() << "Matched filename: " << matchedFilename;
 
@@ -172,17 +172,12 @@ void FemApp::updateFileList(const std::string &folder) {
   ui.cbFile->clear();
 
   // 遍历文件夹并添加文件名及其路径到ComboBox
-  for (const auto &entry: fs::directory_iterator(folder)) {
-    if (!entry.is_regular_file()) {
-      continue;
-    }
-
-    // 获取文件名和完整路径
-    QString filename = QString::fromUtf8(entry.path().filename().u8string().c_str());
-    QString fullpath = QString::fromUtf8(entry.path().u8string().c_str());
-
+  QDir dir(QString::fromUtf8(folder.c_str()));
+  QStringList files = dir.entryList(QDir::Files);
+  for (const QString &file : files) {
+    QString fullpath = dir.absoluteFilePath(file);
     // 将文件名添加到ComboBox，并设置userData为完整路径
-    ui.cbFile->addItem(filename, fullpath);
+    ui.cbFile->addItem(file, fullpath);
   }
 }
 
@@ -192,7 +187,7 @@ std::string FemApp::getSheetMatched(std::string filename) {
     this->femdata);
   qDebug() << "Expanded Sheets:" << sheets.size();
   for (const auto &sheet: sheets) {
-    qDebug() << "  " << QString::fromStdString(sheet);
+    qDebug() << "  " << QString::fromUtf8(sheet.c_str());
   }
   if (sheets.empty()) {
     showError(this, tr("No sheets matched the sheet pattern. "));
@@ -205,7 +200,7 @@ std::string FemApp::getSheetMatched(std::string filename) {
 
   // 把工作表填入 ui.cbSheet 中，并默认选中匹配到的一个
   this->updateSheetList(filename);
-  QString matchedSheet = QString::fromStdString(sheets.front());;
+  QString matchedSheet = QString::fromUtf8(sheets.front().c_str());
   int index = ui.cbSheet->findText(matchedSheet);
   if (index >= 0) {
     ui.cbSheet->setCurrentIndex(index);
@@ -222,7 +217,7 @@ void FemApp::updateSheetList(const std::string &filename) {
     app::XlsxProc xlsxproc;
     auto all_sheets = xlsxproc.GetSheetNames(filename);
     for (const auto &sheet: all_sheets) {
-      QString qSheetName = QString::fromStdString(sheet);
+      QString qSheetName = QString::fromUtf8(sheet.c_str());
       this->ui.cbSheet->addItem(qSheetName);
     }
   } catch (const std::exception &e) {
@@ -235,7 +230,7 @@ void FemApp::onLoadFile(void) {
   if (folder.empty()) {
     return;
   }
-  this->ui.lnFolder->setText(QString::fromStdString(folder));
+  this->ui.lnFolder->setText(QString::fromUtf8(folder.c_str()));
 
   // 处理文件名通配符
   auto filename = getFileMatched(folder);
@@ -253,26 +248,26 @@ void FemApp::onLoadFile(void) {
 
   // =======================
   // Dose
-  this->ui.cbDMode->setCurrentText(QString::fromStdString(this->femdata.dose.mode));
-  this->ui.cbDUnit->setCurrentText(QString::fromStdString(this->femdata.dose.unit));
+  this->ui.cbDMode->setCurrentText(QString::fromUtf8(this->femdata.dose.mode.c_str()));
+  this->ui.cbDUnit->setCurrentText(QString::fromUtf8(this->femdata.dose.unit.c_str()));
   this->ui.spnDCenter->setValue(static_cast<int>(this->femdata.dose.center)); // TODO: 需要询问此处数据类型，改控件和代码
   this->ui.dspnDStep->setValue(this->femdata.dose.step);
   // this->ui.lblDNoVal->setText(QString::number(this->femdata.dose.no));
   this->ui.spnDNo->setValue(this->femdata.dose.no);
-  this->ui.lnDCols->setText(QString::fromStdString(this->femdata.dose.cols));
+  this->ui.lnDCols->setText(QString::fromUtf8(this->femdata.dose.cols.c_str()));
 
   // Focus
-  this->ui.cbFMode->setCurrentText(QString::fromStdString(this->femdata.focus.mode));
-  this->ui.cbFUnit->setCurrentText(QString::fromStdString(this->femdata.focus.unit));
+  this->ui.cbFMode->setCurrentText(QString::fromUtf8(this->femdata.focus.mode.c_str()));
+  this->ui.cbFUnit->setCurrentText(QString::fromUtf8(this->femdata.focus.unit.c_str()));
   this->ui.spnFCenter->setValue(static_cast<int>(this->femdata.focus.center)); // TODO: 需要询问此处数据类型，改控件和代码
   this->ui.dspnFStep->setValue(this->femdata.focus.step);
   // this->ui.lblFNoVal->setText(QString::number(this->femdata.focus.no));
   this->ui.spnFNo->setValue(this->femdata.focus.no);
-  this->ui.lnFRows->setText(QString::fromStdString(this->femdata.focus.rows));
+  this->ui.lnFRows->setText(QString::fromUtf8(this->femdata.focus.rows.c_str()));
 
   // FEM
-  this->ui.cbFEMMode->setCurrentText(QString::fromStdString(this->femdata.fem.mode));
-  this->ui.cbFEMUnit->setCurrentText(QString::fromStdString(this->femdata.fem.unit));
+  this->ui.cbFEMMode->setCurrentText(QString::fromUtf8(this->femdata.fem.mode.c_str()));
+  this->ui.cbFEMUnit->setCurrentText(QString::fromUtf8(this->femdata.fem.unit.c_str()));
   this->ui.spnFEMTarg->setValue(static_cast<int>(this->femdata.fem.target));
   this->ui.spnFEMSpec->setValue(static_cast<int>(this->femdata.fem.spec));
 }
