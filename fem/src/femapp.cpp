@@ -1,6 +1,8 @@
 #include "femapp.h"
 
 #include <QDir>
+#include <QShortcut>
+#include <QCloseEvent>
 
 #include "iostream"
 #include "QDebug"
@@ -13,20 +15,20 @@ using cc::neolux::femconfig::FEMConfig;
 namespace app = cc::neolux::fem;
 
 void FemApp::showError(QWidget *parent, const QString &text) {
-  QMessageBox::critical(parent, "Error", text, QMessageBox::Ok);
+  QMessageBox::critical(parent, tr("Error"), text, QMessageBox::Ok);
 }
 
 void FemApp::showWarning(QWidget *parent, const QString &text) {
-  QMessageBox::warning(parent, "Warning", text, QMessageBox::Ok);
+  QMessageBox::warning(parent, tr("Warning"), text, QMessageBox::Ok);
 }
 
 void FemApp::showInfo(QWidget *parent, const QString &text) {
-  QMessageBox::information(parent, "Info", text, QMessageBox::Ok);
+  QMessageBox::information(parent, tr("Info"), text, QMessageBox::Ok);
 }
 
 //TODO: 1. 回写 .fem 文件时，规范化。给folder, filename, sheet 添加上双引号。并为此双引号修复解析器
 FemApp::FemApp(QWidget *parent)
-  : QWidget(parent) {
+  : QWidget(parent), currentFilePath(""), isModified(false) {
   ui.setupUi(this);
 
   connect(ui.btnLoad, &QPushButton::clicked, this, &FemApp::onLoadClicked);
@@ -59,7 +61,23 @@ FemApp::FemApp(QWidget *parent)
 
   connect(ui.btnTxtReset, &QPushButton::clicked, this, &FemApp::onTxtResetClicked);
   connect(ui.btnTxtApply, &QPushButton::clicked, this, &FemApp::onTxtApplyClicked);
-  // connect(ui.txtConfigRaw, &QPlainTextEdit::textChanged, this, &FemApp::onRawFileEdited);
+  connect(ui.txtConfigRaw, &QPlainTextEdit::textChanged, this, &FemApp::onRawFileEdited);
+
+  // Setup keyboard shortcuts
+  // Ctrl+Q to exit
+  new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this, [this]() { this->close(); });
+
+  // Ctrl+S to save
+  new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_S), this, [this]() { this->onSaveClicked(); });
+
+  // Ctrl+Shift+S to save as
+  new QShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_S), this, [this]() { this->onSaveAsClicked(); });
+
+  // Alt+S to apply text edit
+  new QShortcut(QKeySequence(Qt::ALT | Qt::Key_S), this, [this]() { this->onTxtApplyClicked(); });
+
+  // Initialize label
+  updateFileLabel();
 }
 
 void FemApp::changeEvent(QEvent *event) {
@@ -69,6 +87,33 @@ void FemApp::changeEvent(QEvent *event) {
   QWidget::changeEvent(event);
 }
 
+void FemApp::closeEvent(QCloseEvent *event) {
+  // Check if there are unsaved changes
+  if (isModified && !currentFilePath.isEmpty()) {
+    int result = QMessageBox::warning(
+      this,
+      tr("Unsaved Changes"),
+      tr("You have unsaved changes. Do you want to save before closing?"),
+      QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel,
+      QMessageBox::Save
+    );
+
+    if (result == QMessageBox::Save) {
+      // Save the file
+      onSaveClicked();
+      event->accept();
+    } else if (result == QMessageBox::Discard) {
+      // Discard changes and close
+      event->accept();
+    } else {
+      // Cancel closing
+      event->ignore();
+    }
+  } else {
+    // No unsaved changes, close normally
+    event->accept();
+  }
+}
 
 void FemApp::loadFEMConfig() {
   this->loadFEMConfig(
@@ -91,6 +136,12 @@ void FemApp::loadFEMConfig(const QString &filePath) {
     qDebug() << "Failed to read file.";
     return;
   }
+
+  // Track the current file path and clear modified flag
+  currentFilePath = filePath;
+  isModified = false;
+  updateFileLabel();
+
   this->onLoadFile();
 }
 
@@ -229,11 +280,15 @@ void FemApp::updateSheetList(const std::string &filename) {
 }
 
 void FemApp::onLoadFile() {
+  // Set loading flag to prevent marking as modified during control updates
+  isLoading = true;
+
   // 先把原始内容填入文本框，即便出错也能修改重加载
   this->ui.txtConfigRaw->setPlainText(QString::fromUtf8(this->femdata.rawContent.c_str()));
 
   auto folder = getFolderMatched();
   if (folder.empty()) {
+    isLoading = false;
     return;
   }
   this->ui.lnFolder->setText(QString::fromUtf8(folder.c_str()));
@@ -241,6 +296,7 @@ void FemApp::onLoadFile() {
   // 处理文件名通配符
   auto filename = getFileMatched(folder);
   if (filename.empty()) {
+    isLoading = false;
     return;
   }
 
@@ -248,6 +304,7 @@ void FemApp::onLoadFile() {
   // 把工作表填入，并选中匹配到者
   auto sheet = getSheetMatched(filename);
   if (sheet.empty()) {
+    isLoading = false;
     return;
   }
 
@@ -258,7 +315,6 @@ void FemApp::onLoadFile() {
   this->ui.cbDUnit->setCurrentText(QString::fromUtf8(this->femdata.dose.unit.c_str()));
   this->ui.dspnDCenter->setValue(static_cast<int>(this->femdata.dose.center)); // TODO: 需要询问此处数据类型，改控件和代码
   this->ui.dspnDStep->setValue(this->femdata.dose.step);
-  // this->ui.lblDNoVal->setText(QString::number(this->femdata.dose.no));
   this->ui.spnDNo->setValue(this->femdata.dose.no);
   this->ui.lnDCols->setText(QString::fromUtf8(this->femdata.dose.cols.c_str()));
 
@@ -267,7 +323,6 @@ void FemApp::onLoadFile() {
   this->ui.cbFUnit->setCurrentText(QString::fromUtf8(this->femdata.focus.unit.c_str()));
   this->ui.dspnFCenter->setValue(static_cast<int>(this->femdata.focus.center)); // TODO: 需要询问此处数据类型，改控件和代码
   this->ui.dspnFStep->setValue(this->femdata.focus.step);
-  // this->ui.lblFNoVal->setText(QString::number(this->femdata.focus.no));
   this->ui.spnFNo->setValue(this->femdata.focus.no);
   this->ui.lnFRows->setText(QString::fromUtf8(this->femdata.focus.rows.c_str()));
 
@@ -276,6 +331,42 @@ void FemApp::onLoadFile() {
   this->ui.cbFEMUnit->setCurrentText(QString::fromUtf8(this->femdata.fem.unit.c_str()));
   this->ui.dspnFEMTarg->setValue(static_cast<int>(this->femdata.fem.target));
   this->ui.dspnFEMSpec->setValue(static_cast<int>(this->femdata.fem.spec));
+
+  // Clear loading flag after all controls are updated
+  isLoading = false;
+}
+
+void FemApp::updateFileLabel() {
+  QString displayText;
+  QString windowTitle = tr("FemApp");
+
+  if (currentFilePath.isEmpty()) {
+    displayText = "";
+  } else {
+    QFileInfo fileInfo(currentFilePath);
+    displayText = fileInfo.fileName();
+    windowTitle = tr("FemApp") + " - " + displayText;
+
+    if (isModified) {
+      displayText += " *";
+      windowTitle += " *";
+    }
+  }
+
+  ui.labelFEMFile->setText(displayText);
+  this->setWindowTitle(windowTitle);
+}
+
+void FemApp::markAsModified() {
+  if (!isLoading) {
+    isModified = true;
+    updateFileLabel();
+  }
+}
+
+void FemApp::clearModifiedFlag() {
+  isModified = false;
+  updateFileLabel();
 }
 
 FemApp::~FemApp() = default;

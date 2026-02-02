@@ -26,6 +26,7 @@ void FemApp::onSaveClicked() {
                                                      this->femc_info->absoluteFilePath().toUtf8().toStdString())) {
     showError(this, tr("Failed to save FEM config file."));
   }
+  clearModifiedFlag();
   qInfo() << "Saved FEM config file to " << this->femc_info->absoluteFilePath();
 }
 
@@ -42,6 +43,8 @@ void FemApp::onSaveAsClicked() {
                                                      femconfig_path.toUtf8().toStdString())) {
     showError(this, tr("Failed to save FEM config file."));
   }
+  currentFilePath = femconfig_path;
+  clearModifiedFlag();
   qInfo() << "Saved FEM config file to " << femconfig_path;
 }
 
@@ -76,113 +79,123 @@ void FemApp::onMatchClicked() {
 
 void FemApp::onFolderEdited(const QString &text) {
   femdata.folderPattern = text.toUtf8().toStdString();
+  markAsModified();
   qInfo() << "Folder pattern changed to " << text;
 }
 
 
 void FemApp::onFileChanged(const QString &text) {
   femdata.filenamePattern = text.toUtf8().toStdString();
+  markAsModified();
   qInfo() << "File pattern changed to " << text;
   updateSheetList(getCurrentSelectedFile().toUtf8().toStdString());
 }
 
 void FemApp::onSheetChanged(const QString &text) {
   femdata.sheetPattern = text.toUtf8().toStdString();
+  markAsModified();
 }
 
 void FemApp::onDModeChanged(const QString &text) {
   femdata.dose.mode = text.toUtf8().toStdString();
+  markAsModified();
   qInfo() << "Dose mode changed to " << text;
 }
 
 void FemApp::onDUnitChanged(const QString &text) {
   femdata.dose.unit = text.toUtf8().toStdString();
+  markAsModified();
   qInfo() << "Dose unit changed to " << text;
 }
 
 void FemApp::onDCenterChanged(double value) {
   femdata.dose.center = value;
+  markAsModified();
   qInfo() << "Dose center changed to " << value;
 }
 
 void FemApp::onDStepChanged(double value) {
   femdata.dose.step = value;
+  markAsModified();
   qInfo() << "Dose step changed to " << value;
 }
 
 void FemApp::onDNoChanged(int value) {
   femdata.dose.no = value;
+  markAsModified();
   qInfo() << "Dose no changed to " << value;
 }
 
 void FemApp::onDColsEdited() {
   auto text = ui.lnDCols->text();
   femdata.dose.cols = text.toUtf8().toStdString();
+  markAsModified();
   qInfo() << "Dose cols changed to " << text;
 }
 
 void FemApp::onFModeChanged(const QString &text) {
   femdata.focus.mode = text.toUtf8().toStdString();
+  markAsModified();
   qInfo() << "Focus mode changed to " << text;
 }
 
 void FemApp::onFUnitChanged(const QString &text) {
   femdata.focus.unit = text.toUtf8().toStdString();
+  markAsModified();
   qInfo() << "Focus unit changed to " << text;
 }
 
 void FemApp::onFCenterChanged(double value) {
   femdata.focus.center = value;
+  markAsModified();
   qInfo() << "Focus center changed to " << value;
 }
 
 void FemApp::onFStepChanged(double value) {
   femdata.focus.step = value;
+  markAsModified();
   qInfo() << "Focus step changed to " << value;
 }
 
 void FemApp::onFNoChanged(int value) {
   femdata.focus.no = value;
+  markAsModified();
   qInfo() << "Focus no changed to " << value;
 }
 
 void FemApp::onFRowsEdited() {
   auto text = ui.lnFRows->text();
   femdata.focus.rows = text.toUtf8().toStdString();
+  markAsModified();
   qInfo() << "Focus rows changed to " << text;
 }
 
 void FemApp::onFEMModeChanged(const QString &text) {
   femdata.fem.mode = text.toUtf8().toStdString();
+  markAsModified();
   qInfo() << "FEM mode changed to " << text;
 }
 
 void FemApp::onFEMUnitChanged(const QString &text) {
   femdata.fem.unit = text.toUtf8().toStdString();
+  markAsModified();
   qInfo() << "FEM unit changed to " << text;
 }
 
 void FemApp::onFEMTargChanged(double value) {
   femdata.fem.target = value;
+  markAsModified();
   qInfo() << "FEM target changed to " << value;
 }
 
 void FemApp::onFEMSpecChanged(double value) {
   femdata.fem.spec = value;
+  markAsModified();
   qInfo() << "FEM spec changed to " << value;
 }
 
 void FemApp::onRawFileEdited() {
-  std::string text = ui.txtConfigRaw->toPlainText().toUtf8().toStdString();
-  auto *newdata = new cc::neolux::femconfig::FEMData();
-  if (!cc::neolux::femconfig::FEMConfig::ParseContent(text, *newdata)) {
-    showError(this, tr("Failed to parse raw FEM config content."));
-    delete newdata;
-    return;
-  }
-  this->femdata = *newdata;
-  delete newdata;
-  this->onLoadFile();
+  markAsModified();
 }
 
 

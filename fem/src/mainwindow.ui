@@ -20,11 +20,22 @@
       <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
      </property>
      <item>
-      <widget class="QLabel" name="labelSetting">
-       <property name="text">
-        <string>Project Setting</string>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="hboxHeader">
+       <item>
+        <widget class="QLabel" name="labelSetting">
+         <property name="text">
+          <string>Project Setting</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelFEMFile">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <layout class="QHBoxLayout" name="hbPeoject">

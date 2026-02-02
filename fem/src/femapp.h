@@ -42,6 +42,7 @@ public:
 
 protected:
   void changeEvent(QEvent *event) override;
+  void closeEvent(QCloseEvent *event) override;
 
   // ----------- Slots can be defined here if needed -----------
 private slots:
@@ -83,4 +84,11 @@ private slots:
 private:
   Ui::FemApp ui;
   cc::neolux::femconfig::FEMData femdata; // Instance of FEMConfig
+  QString currentFilePath;  // Track current opened file path
+  bool isModified = false;  // Track if file has been modified
+  bool isLoading = false;   // Flag to prevent marking as modified during file load
+
+  void updateFileLabel();  // Update labelFEMFile with current filename and modification status
+  void markAsModified();   // Mark file as modified and update label
+  void clearModifiedFlag(); // Clear modified flag and update label
 };
