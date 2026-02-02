@@ -24,7 +24,7 @@ void FemApp::showInfo(QWidget *parent, const QString &text) {
   QMessageBox::information(parent, "Info", text, QMessageBox::Ok);
 }
 
-
+//TODO: 1. 回写 .fem 文件时，规范化。给folder, filename, sheet 添加上双引号。并为此双引号修复解析器
 FemApp::FemApp(QWidget *parent)
   : QWidget(parent) {
   ui.setupUi(this);
@@ -40,26 +40,29 @@ FemApp::FemApp(QWidget *parent)
 
   connect(ui.cbDMode, &QComboBox::currentTextChanged, this, &FemApp::onDModeChanged);
   connect(ui.cbDUnit, &QComboBox::currentTextChanged, this, &FemApp::onDUnitChanged);
-  connect(ui.spnDCenter, qOverload<int>(&QSpinBox::valueChanged), this, &FemApp::onDCenterChanged);
+  connect(ui.dspnDCenter, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &FemApp::onDCenterChanged);
   connect(ui.dspnDStep, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &FemApp::onDStepChanged);
   connect(ui.spnDNo, qOverload<int>(&QSpinBox::valueChanged), this, &FemApp::onDNoChanged);
   connect(ui.lnDCols, &QLineEdit::editingFinished, this, &FemApp::onDColsEdited);
 
   connect(ui.cbFMode, &QComboBox::currentTextChanged, this, &FemApp::onFModeChanged);
   connect(ui.cbFUnit, &QComboBox::currentTextChanged, this, &FemApp::onFUnitChanged);
-  connect(ui.spnFCenter, qOverload<int>(&QSpinBox::valueChanged), this, &FemApp::onFCenterChanged);
+  connect(ui.dspnFCenter, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &FemApp::onFCenterChanged);
   connect(ui.dspnFStep, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &FemApp::onFStepChanged);
   connect(ui.spnFNo, qOverload<int>(&QSpinBox::valueChanged), this, &FemApp::onFNoChanged);
   connect(ui.lnFRows, &QLineEdit::editingFinished, this, &FemApp::onFRowsEdited);
 
   connect(ui.cbFEMMode, &QComboBox::currentTextChanged, this, &FemApp::onFEMModeChanged);
   connect(ui.cbFEMUnit, &QComboBox::currentTextChanged, this, &FemApp::onFEMUnitChanged);
-  connect(ui.spnFEMTarg, qOverload<int>(&QSpinBox::valueChanged), this, &FemApp::onFEMTargChanged);
-  connect(ui.spnFEMSpec, qOverload<int>(&QSpinBox::valueChanged), this, &FemApp::onFEMSpecChanged);
+  connect(ui.dspnFEMTarg, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &FemApp::onFEMTargChanged);
+  connect(ui.dspnFEMSpec, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &FemApp::onFEMSpecChanged);
+
+  connect(ui.btnTxtReset, &QPushButton::clicked, this, &FemApp::onTxtResetClicked);
+  connect(ui.btnTxtApply, &QPushButton::clicked, this, &FemApp::onTxtApplyClicked);
+  // connect(ui.txtConfigRaw, &QPlainTextEdit::textChanged, this, &FemApp::onRawFileEdited);
 }
 
-void FemApp::changeEvent(QEvent *event)
-{
+void FemApp::changeEvent(QEvent *event) {
   if (event->type() == QEvent::LanguageChange) {
     ui.retranslateUi(this);
   }
@@ -67,7 +70,7 @@ void FemApp::changeEvent(QEvent *event)
 }
 
 
-void FemApp::loadFEMConfig(void) {
+void FemApp::loadFEMConfig() {
   this->loadFEMConfig(
     this->femc_info->absoluteFilePath());
 }
@@ -174,7 +177,7 @@ void FemApp::updateFileList(const std::string &folder) {
   // 遍历文件夹并添加文件名及其路径到ComboBox
   QDir dir(QString::fromUtf8(folder.c_str()));
   QStringList files = dir.entryList(QDir::Files);
-  for (const QString &file : files) {
+  for (const QString &file: files) {
     QString fullpath = dir.absoluteFilePath(file);
     // 将文件名添加到ComboBox，并设置userData为完整路径
     ui.cbFile->addItem(file, fullpath);
@@ -225,7 +228,10 @@ void FemApp::updateSheetList(const std::string &filename) {
   }
 }
 
-void FemApp::onLoadFile(void) {
+void FemApp::onLoadFile() {
+  // 先把原始内容填入文本框，即便出错也能修改重加载
+  this->ui.txtConfigRaw->setPlainText(QString::fromUtf8(this->femdata.rawContent.c_str()));
+
   auto folder = getFolderMatched();
   if (folder.empty()) {
     return;
@@ -250,7 +256,7 @@ void FemApp::onLoadFile(void) {
   // Dose
   this->ui.cbDMode->setCurrentText(QString::fromUtf8(this->femdata.dose.mode.c_str()));
   this->ui.cbDUnit->setCurrentText(QString::fromUtf8(this->femdata.dose.unit.c_str()));
-  this->ui.spnDCenter->setValue(static_cast<int>(this->femdata.dose.center)); // TODO: 需要询问此处数据类型，改控件和代码
+  this->ui.dspnDCenter->setValue(static_cast<int>(this->femdata.dose.center)); // TODO: 需要询问此处数据类型，改控件和代码
   this->ui.dspnDStep->setValue(this->femdata.dose.step);
   // this->ui.lblDNoVal->setText(QString::number(this->femdata.dose.no));
   this->ui.spnDNo->setValue(this->femdata.dose.no);
@@ -259,7 +265,7 @@ void FemApp::onLoadFile(void) {
   // Focus
   this->ui.cbFMode->setCurrentText(QString::fromUtf8(this->femdata.focus.mode.c_str()));
   this->ui.cbFUnit->setCurrentText(QString::fromUtf8(this->femdata.focus.unit.c_str()));
-  this->ui.spnFCenter->setValue(static_cast<int>(this->femdata.focus.center)); // TODO: 需要询问此处数据类型，改控件和代码
+  this->ui.dspnFCenter->setValue(static_cast<int>(this->femdata.focus.center)); // TODO: 需要询问此处数据类型，改控件和代码
   this->ui.dspnFStep->setValue(this->femdata.focus.step);
   // this->ui.lblFNoVal->setText(QString::number(this->femdata.focus.no));
   this->ui.spnFNo->setValue(this->femdata.focus.no);
@@ -268,8 +274,8 @@ void FemApp::onLoadFile(void) {
   // FEM
   this->ui.cbFEMMode->setCurrentText(QString::fromUtf8(this->femdata.fem.mode.c_str()));
   this->ui.cbFEMUnit->setCurrentText(QString::fromUtf8(this->femdata.fem.unit.c_str()));
-  this->ui.spnFEMTarg->setValue(static_cast<int>(this->femdata.fem.target));
-  this->ui.spnFEMSpec->setValue(static_cast<int>(this->femdata.fem.spec));
+  this->ui.dspnFEMTarg->setValue(static_cast<int>(this->femdata.fem.target));
+  this->ui.dspnFEMSpec->setValue(static_cast<int>(this->femdata.fem.spec));
 }
 
 FemApp::~FemApp() = default;

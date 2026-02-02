@@ -140,7 +140,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>271</width>
+           <width>281</width>
            <height>451</height>
           </rect>
          </property>
@@ -195,7 +195,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spnDCenter"/>
+             <widget class="QDoubleSpinBox" name="dspnDCenter"/>
             </item>
            </layout>
           </item>
@@ -260,7 +260,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>271</width>
+           <width>281</width>
            <height>451</height>
           </rect>
          </property>
@@ -315,7 +315,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spnFCenter"/>
+             <widget class="QDoubleSpinBox" name="dspnFCenter"/>
             </item>
            </layout>
           </item>
@@ -380,7 +380,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>271</width>
+           <width>281</width>
            <height>451</height>
           </rect>
          </property>
@@ -435,7 +435,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spnFEMTarg"/>
+             <widget class="QDoubleSpinBox" name="dspnFEMTarg"/>
             </item>
            </layout>
           </item>
@@ -449,12 +449,50 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spnFEMSpec"/>
+             <widget class="QDoubleSpinBox" name="dspnFEMSpec"/>
             </item>
            </layout>
           </item>
           <item>
            <layout class="QHBoxLayout" name="hbzFEM"/>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="Text">
+        <attribute name="title">
+         <string>Text</string>
+        </attribute>
+        <widget class="QWidget" name="verticalLayoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>271</width>
+           <height>481</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="vboxText">
+          <item>
+           <layout class="QHBoxLayout" name="hbText">
+            <item>
+             <widget class="QPushButton" name="btnTxtReset">
+              <property name="text">
+               <string>Reset</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnTxtApply">
+              <property name="text">
+               <string>Apply</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QPlainTextEdit" name="txtConfigRaw"/>
           </item>
          </layout>
         </widget>

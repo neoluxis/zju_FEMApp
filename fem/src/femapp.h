@@ -58,22 +58,26 @@ private slots:
 
   void onDModeChanged(const QString &text);
   void onDUnitChanged(const QString &text);
-  void onDCenterChanged(int value);
+  void onDCenterChanged(double value);
   void onDStepChanged(double value);
   void onDNoChanged(int value);
   void onDColsEdited();
 
   void onFModeChanged(const QString &text);
   void onFUnitChanged(const QString &text);
-  void onFCenterChanged(int value);
+  void onFCenterChanged(double value);
   void onFStepChanged(double value);
   void onFNoChanged(int value);
   void onFRowsEdited();
 
   void onFEMModeChanged(const QString &text);
   void onFEMUnitChanged(const QString &text);
-  void onFEMTargChanged(int value);
-  void onFEMSpecChanged(int value);
+  void onFEMTargChanged(double value);
+  void onFEMSpecChanged(double value);
+
+  void onRawFileEdited();
+  void onTxtResetClicked();
+  void onTxtApplyClicked();
 
 
 private:

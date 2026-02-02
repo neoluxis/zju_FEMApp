@@ -147,12 +147,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="101"/>
+        <location filename="../fem/src/mainwindow.ui" line="464"/>
+        <source>Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fem/src/mainwindow.ui" line="481"/>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fem/src/mainwindow.ui" line="488"/>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fem/src/femapp.cpp" line="104"/>
         <source>No folders matched the folder pattern. </source>
         <translation type="unfinished">没有文件夹匹配到</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="105"/>
+        <location filename="../fem/src/femapp.cpp" line="108"/>
         <source>Multiple folders matched the folder pattern. Please ensure only one folder matches.</source>
         <translation type="unfinished">匹配到多个文件夹，请确保只有一个文件夹匹配</translation>
     </message>
@@ -161,27 +176,27 @@
         <translation type="vanished">没有匹配到任何文件</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="130"/>
+        <location filename="../fem/src/femapp.cpp" line="133"/>
         <source>No filenames matched the filename pattern.</source>
         <translation type="unfinished">没有文件名匹配</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="136"/>
+        <location filename="../fem/src/femapp.cpp" line="139"/>
         <source>Multiple filenames matched the filename pattern. Please ensure only one filename matches.</source>
         <translation type="unfinished">多个文件匹配到，请确保只有一个文件匹配</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="193"/>
+        <location filename="../fem/src/femapp.cpp" line="196"/>
         <source>No sheets matched the sheet pattern. </source>
         <translation type="unfinished">没有表名匹配</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="197"/>
+        <location filename="../fem/src/femapp.cpp" line="200"/>
         <source>Multiple sheets matched the sheet pattern. Please ensure only one sheet matches.</source>
         <translation type="unfinished">匹配到多个表，请检查文件以匹配单个表</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="224"/>
+        <location filename="../fem/src/femapp.cpp" line="227"/>
         <source>Failed to read Excel file: </source>
         <translation type="unfinished">读取 Excel 文件失败</translation>
     </message>
@@ -211,6 +226,12 @@
         <location filename="../fem/src/femapp_slots.cpp" line="51"/>
         <source>Select Folder</source>
         <translation type="unfinished">选择文件夹</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/femapp_slots.cpp" line="179"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="197"/>
+        <source>Failed to parse raw FEM config content.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

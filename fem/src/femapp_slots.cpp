@@ -100,8 +100,8 @@ void FemApp::onDUnitChanged(const QString &text) {
   qInfo() << "Dose unit changed to " << text;
 }
 
-void FemApp::onDCenterChanged(int value) {
-  femdata.dose.center = static_cast<double>(value);
+void FemApp::onDCenterChanged(double value) {
+  femdata.dose.center = value;
   qInfo() << "Dose center changed to " << value;
 }
 
@@ -131,8 +131,8 @@ void FemApp::onFUnitChanged(const QString &text) {
   qInfo() << "Focus unit changed to " << text;
 }
 
-void FemApp::onFCenterChanged(int value) {
-  femdata.focus.center = static_cast<double>(value);
+void FemApp::onFCenterChanged(double value) {
+  femdata.focus.center = value;
   qInfo() << "Focus center changed to " << value;
 }
 
@@ -162,12 +162,43 @@ void FemApp::onFEMUnitChanged(const QString &text) {
   qInfo() << "FEM unit changed to " << text;
 }
 
-void FemApp::onFEMTargChanged(int value) {
-  femdata.fem.target = static_cast<double>(value);
+void FemApp::onFEMTargChanged(double value) {
+  femdata.fem.target = value;
   qInfo() << "FEM target changed to " << value;
 }
 
-void FemApp::onFEMSpecChanged(int value) {
-  femdata.fem.spec = static_cast<double>(value);
+void FemApp::onFEMSpecChanged(double value) {
+  femdata.fem.spec = value;
   qInfo() << "FEM spec changed to " << value;
+}
+
+void FemApp::onRawFileEdited() {
+  std::string text = ui.txtConfigRaw->toPlainText().toUtf8().toStdString();
+  auto *newdata = new cc::neolux::femconfig::FEMData();
+  if (!cc::neolux::femconfig::FEMConfig::ParseContent(text, *newdata)) {
+    showError(this, tr("Failed to parse raw FEM config content."));
+    delete newdata;
+    return;
+  }
+  this->femdata = *newdata;
+  delete newdata;
+  this->onLoadFile();
+}
+
+
+void FemApp::onTxtResetClicked() {
+  ui.txtConfigRaw->setPlainText(QString::fromUtf8(this->femdata.rawContent.c_str()));
+}
+
+void FemApp::onTxtApplyClicked() {
+  std::string text = ui.txtConfigRaw->toPlainText().toUtf8().toStdString();
+  auto *newdata = new cc::neolux::femconfig::FEMData();
+  if (!cc::neolux::femconfig::FEMConfig::ParseContent(text, *newdata)) {
+    showError(this, tr("Failed to parse raw FEM config content."));
+    delete newdata;
+    return;
+  }
+  this->femdata = *newdata;
+  delete newdata;
+  this->onLoadFile();
 }

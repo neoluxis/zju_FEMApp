@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Toolchain must be included BEFORE project()
- include(${CMAKE_SOURCE_DIR}/cmake/WindowsOfficialQt.cmake)
-#include(${CMAKE_SOURCE_DIR}/cmake/LinuxCross.cmake)
-#include(${CMAKE_SOURCE_DIR}/cmake/mingw64.cmake)
+# include(${CMAKE_SOURCE_DIR}/cmake/WindowsOfficialQt.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/LinuxCross.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/mingw64.cmake)
 
 include(${CMAKE_SOURCE_DIR}/cmake/BuildType.cmake)
 

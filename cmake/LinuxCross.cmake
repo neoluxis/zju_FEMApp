@@ -27,8 +27,14 @@ set(QT_PLUGINS_DIR "${CROSS_PREFIX}/lib/qt6/plugins")
 set(MINGW_BIN_DIR "${CROSS_PREFIX}/bin")
 
 # Static linking for MinGW runtime
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static-libgcc")
+## Do not inject -static-libgcc/-static-libstdc++ into global C/CXX flags
+## for cross-compilation; this prevents shared libraries from getting
+## the static libgcc embedded which can cause duplicate symbol errors
+## like multiple definition of _Unwind_Resume. Apply these only to
+## executable linker flags.
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++")
+#set(CMAKE_EXE_LINKER_FLAGS_C "${CMAKE_EXE_LINKER_FLAGS_C} -static-libgcc")
+#set(CMAKE_EXE_LINKER_FLAGS_CXX "${CMAKE_EXE_LINKER_FLAGS_CXX} -static-libgcc -static-libstdc++")
 
 message(STATUS "Cross-compilation prefix: ${CROSS_PREFIX}")
 message(STATUS "Qt root: ${QT_ROOT_DIR}")
@@ -36,7 +42,7 @@ message(STATUS "Qt bin: ${QT_BIN_DIR}")
 message(STATUS "Qt plugins: ${QT_PLUGINS_DIR}")
 message(STATUS "MinGW bin: ${MINGW_BIN_DIR}")
 
-# ============================================================================
+# =========================================================================
 # Deployment Configuration (integrated)
 # ============================================================================
 

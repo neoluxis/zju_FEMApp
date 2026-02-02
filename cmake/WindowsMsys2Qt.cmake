@@ -46,11 +46,20 @@ if(DEFINED MINGW_ROOT)
 endif()
 
 # Static linking for MinGW runtime
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static-libgcc")
+## Do not inject -static-libgcc/-static-libstdc++ into global C/CXX flags
+## (that can force shared libraries to embed libgcc and cause duplicate
+## unwind symbols). Instead, append these options only to executable
+## linker flags so only final executables are linked statically against
+## libgcc/libstdc++ when desired.
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++")
+
+# Ensure C targets also use the same exe linker flags (CMake uses
+# different variables internally); this avoids setting them as compile
+# flags which affect shared libraries.
+set(CMAKE_EXE_LINKER_FLAGS_C "${CMAKE_EXE_LINKER_FLAGS_C} -static-libgcc")
+set(CMAKE_EXE_LINKER_FLAGS_CXX "${CMAKE_EXE_LINKER_FLAGS_CXX} -static-libgcc -static-libstdc++")
 
 message(STATUS "Using system GCC from PATH (scoop installed)")
-
 
 
 # This function will be called after target is created
@@ -79,4 +88,3 @@ function(deploy_qt_dependencies target)
     
     message(STATUS "Deployment configured for target: ${target}")
 endfunction()
-

@@ -7,13 +7,13 @@
 #include <vector>
 
 #if defined(_WIN32) || defined(__CYGWIN__)
-  #ifdef FEMCONFIG_EXPORTS
-    #define FEMCONFIG_API __declspec(dllexport)
-  #else
-    #define FEMCONFIG_API __declspec(dllimport)
-  #endif
+#ifdef FEMCONFIG_EXPORTS
+#define FEMCONFIG_API __declspec(dllexport)
 #else
-  #define FEMCONFIG_API
+#define FEMCONFIG_API __declspec(dllimport)
+#endif
+#else
+#define FEMCONFIG_API
 #endif
 
 namespace cc::neolux::femconfig {
@@ -78,6 +78,8 @@ namespace cc::neolux::femconfig {
     // Validate file format (wide char path version)
     static bool IsValidFEMFileW(const wchar_t *filePath);
 
+    // static bool isValidConfig(const std::string &text);
+    // static bool isValidConfigW(const wchar_t *text);
     /**
      * 展开文件夹通配符
      *
@@ -114,9 +116,10 @@ namespace cc::neolux::femconfig {
 
     static bool dumpFEMData(const FEMData &data, const std::string &path);
 
+    static bool ParseContent(const std::string &content, FEMData &data);
+
   private:
     // Parse content to FEMData
-    static bool ParseContent(const std::string &content, FEMData &data);
 
     // Parse JSON-style config string
     static std::map<std::string, std::string> ParseJsonConfig(const std::string &jsonStr);

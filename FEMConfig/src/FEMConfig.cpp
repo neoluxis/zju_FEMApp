@@ -33,6 +33,22 @@ namespace cc::neolux::femconfig {
     return str.substr(start, end - start);
   }
 
+  // Remove surrounding single or double quotes if present and trim
+  static std::string Unquote(const std::string &s) {
+    // Manually trim instead of calling FEMConfig::Trim (which is private)
+    size_t start = 0, end = s.length();
+    while (start < end && std::isspace(static_cast<unsigned char>(s[start]))) start++;
+    while (end > start && std::isspace(static_cast<unsigned char>(s[end - 1]))) end--;
+    std::string t = s.substr(start, end - start);
+
+    if (t.size() >= 2) {
+      if ((t.front() == '"' && t.back() == '"') || (t.front() == '\'' && t.back() == '\'')) {
+        return t.substr(1, t.size() - 2);
+      }
+    }
+    return t;
+  }
+
   std::map<std::string, std::string> FEMConfig::ParseJsonConfig(const std::string &jsonStr) {
     std::map<std::string, std::string> result;
 
@@ -146,11 +162,11 @@ namespace cc::neolux::femconfig {
       }
 
       if (key == "folder") {
-        data.folderPattern = value;
+        data.folderPattern = Unquote(value);
       } else if (key == "filename") {
-        data.filenamePattern = value;
+        data.filenamePattern = Unquote(value);
       } else if (key == "sheet") {
-        data.sheetPattern = value;
+        data.sheetPattern = Unquote(value);
       } else if (key == "dose") {
         auto config = ParseJsonConfig(value);
         data.dose.mode = config["mode"];
@@ -257,13 +273,9 @@ namespace cc::neolux::femconfig {
     return content;
   }
 
-  // 简单通配符匹配，* 匹配 0 个或多个字符
+  // Simple wildcard matching, * matches 0 or more characters
   inline bool WildcardMatch(const std::string &str, const std::string &pattern) {
-    std::cout << "str=[" << str << "] len=" << str.size() << "\n";
-    std::cout << "pat=[" << pattern << "] len=" << pattern.size() << "\n";
-
     size_t s = 0, p = 0, star = std::string::npos, ss = 0;
-    // std::cout << "Matching string: " << str << " with pattern: " << pattern << std::endl;
     while (s < str.size()) {
       if (p < pattern.size() && (pattern[p] == '?' || pattern[p] == str[s])) {
         s++;
@@ -341,10 +353,31 @@ namespace cc::neolux::femconfig {
   std::vector<std::string> FEMConfig::ExpandFolderPattern(FEMData &data) {
     std::vector<std::string> result;
 
+    const bool hasWildcard =
+        data.folderPattern.find('*') != std::string::npos ||
+        data.folderPattern.find('?') != std::string::npos;
+
+    // 情况 1: 不含通配符 → 精确查找
+    if (!hasWildcard) {
+      fs::path p = fs::u8path(data.folderPattern);
+
+      // 相对路径 → 相对于当前工作目录
+      if (p.is_relative())
+        p = fs::current_path() / p;
+
+      // 检查路径是否存在且是目录
+      if (fs::exists(p) && fs::is_directory(p)) {
+        result.push_back(fs::canonical(p).u8string());
+      }
+      return result;
+    }
+
+    // 情况 2: 含通配符 → 使用通配符匹配
     fs::path folder = fs::current_path();
 
     if (!fs::exists(folder) || !fs::is_directory(folder))
       return result;
+
     for (const auto &entry: fs::directory_iterator(folder)) {
       if (!fs::is_directory(entry.status()))
         continue;
@@ -366,6 +399,22 @@ namespace cc::neolux::femconfig {
     if (!fs::exists(folderPath) || !fs::is_directory(folderPath))
       return result;
 
+    const bool hasWildcard =
+        data.filenamePattern.find('*') != std::string::npos ||
+        data.filenamePattern.find('?') != std::string::npos;
+
+    // 情况 1: 不含通配符 → 精确查找
+    if (!hasWildcard) {
+      fs::path filePath = folderPath / fs::u8path(data.filenamePattern);
+
+      // 检查文件是否存在
+      if (fs::exists(filePath) && fs::is_regular_file(filePath)) {
+        result.push_back(filePath.u8string());
+      }
+      return result;
+    }
+
+    // 情况 2: 含通配符 → 使用通配符匹配
     for (const auto &entry: fs::directory_iterator(folderPath)) {
       if (!fs::is_regular_file(entry.status()))
         continue;
@@ -401,6 +450,24 @@ namespace cc::neolux::femconfig {
     }
     auto sheetNames = doc.workbook().sheetNames();
     std::vector<std::string> result;
+
+    const bool hasWildcard =
+        data.sheetPattern.find('*') != std::string::npos ||
+        data.sheetPattern.find('?') != std::string::npos;
+
+    // 情况 1: 不含通配符 → 精确查找
+    if (!hasWildcard) {
+      // 查找完全匹配的Sheet名称
+      for (const auto &sheetName: sheetNames) {
+        if (sheetName == data.sheetPattern) {
+          result.push_back(sheetName);
+          break;
+        }
+      }
+      return result;
+    }
+
+    // 情况 2: 含通配符 → 使用通配符匹配
     for (const auto &sheetName: sheetNames) {
       if (WildcardMatch(sheetName, data.sheetPattern)) {
         result.push_back(sheetName);
@@ -462,16 +529,16 @@ namespace cc::neolux::femconfig {
   bool FEMConfig::dumpFEMData(const FEMData &data, std::ostream &os) {
     if (!os) return false;
 
-    // 注释和基本信息
-    os << "// 在当前文件夹检索文件夹名，有重复的或者检索不到则报错\n";
-    os << "folder = " << data.folderPattern << "\n";
-    os << "// 在指定的文件夹检索文件名，有重复的或者检索不到则报错\n";
-    os << "filename = " << data.filenamePattern << "\n";
-    os << "// 在excel中检索sheet，有重复的或者检索不到则报错\n";
-    os << "sheet = " << data.sheetPattern << "\n";
+    // Basic information - search folder name in current directory
+    os << "// Search for folder name in current directory\n";
+    os << "folder = \"" << data.folderPattern << "\"\n";
+    os << "// Search for filename in specified folder\n";
+    os << "filename = \"" << data.filenamePattern << "\"\n";
+    os << "// Search for sheet name in Excel file\n";
+    os << "sheet = \"" << data.sheetPattern << "\"\n";
 
     // Dose
-    os << "// dose的range和Excel对应的列\n";
+    os << "// Dose range and Excel corresponding columns\n";
     os << "dose={";
     os << "\"mode\":\"" << data.dose.mode << "\", \"unit\":\"" << data.dose.unit << "\",\n";
     os << "\"center\":" << std::setprecision(8) << data.dose.center
@@ -481,7 +548,7 @@ namespace cc::neolux::femconfig {
     os << "}\n\n";
 
     // Focus
-    os << "// focus的range和Excel对应的行\n";
+    os << "// Focus range and Excel corresponding rows\n";
     os << "focus={";
     os << "\"mode\":\"" << data.focus.mode << "\", \"unit\":\"" << data.focus.unit << "\",\n";
     os << "\"center\":" << std::setprecision(8) << data.focus.center
@@ -491,7 +558,7 @@ namespace cc::neolux::femconfig {
     os << "}\n\n";
 
     // FEM
-    os << "// fem的要求\n";
+    os << "// FEM requirements\n";
     os << "fem={";
     os << "\"mode\":\"" << data.fem.mode << "\", \"unit\":\"" << data.fem.unit << "\",\n";
     os << "\"target\":" << std::setprecision(8) << data.fem.target
