@@ -44,6 +44,10 @@ set(HEADERS
 set(UI_HEADERS
         fem/include/ui_mainwindow.h
 )
+set(UI_FILES
+        fem/src/mainwindow.ui
+)
+
 
 FILE(GLOB TRANSLATION_TS translations/*.ts)
 
@@ -69,7 +73,7 @@ target_link_libraries(FemApp PRIVATE
 # 生成 / 更新 .ts 文件
 add_custom_target(update_translations
         COMMAND lupdate
-        ${SOURCES} ${HEADERS}
+        ${SOURCES} ${HEADERS} ${UI_FILES}
         -ts ${TRANSLATION_TS}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         COMMENT "Update Qt translation files (.ts)"

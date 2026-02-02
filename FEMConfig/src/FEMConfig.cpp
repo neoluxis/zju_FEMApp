@@ -259,6 +259,9 @@ namespace cc::neolux::femconfig {
 
   // 简单通配符匹配，* 匹配 0 个或多个字符
   inline bool WildcardMatch(const std::string &str, const std::string &pattern) {
+    std::cout << "str=[" << str << "] len=" << str.size() << "\n";
+    std::cout << "pat=[" << pattern << "] len=" << pattern.size() << "\n";
+
     size_t s = 0, p = 0, star = std::string::npos, ss = 0;
     // std::cout << "Matching string: " << str << " with pattern: " << pattern << std::endl;
     while (s < str.size()) {
@@ -279,6 +282,61 @@ namespace cc::neolux::femconfig {
     while (p < pattern.size() && pattern[p] == '*') p++;
     return p == pattern.size();
   }
+
+
+  std::vector<fs::path>
+  ResolveFolderPattern(const std::string &folderPattern) {
+    std::vector<fs::path> result;
+
+    const bool hasWildcard =
+        folderPattern.find('*') != std::string::npos ||
+        folderPattern.find('?') != std::string::npos;
+
+    // =============================
+    // 情况 1：不含通配符 → 直接路径
+    // =============================
+    if (!hasWildcard) {
+      fs::path p = fs::u8path(folderPattern);
+
+      // 相对路径 → 相对于当前工作目录
+      if (p.is_relative())
+        p = fs::current_path() / p;
+
+      if (!fs::exists(p))
+        throw std::runtime_error("Folder not found: " + p.u8string());
+
+      if (!fs::is_directory(p))
+        throw std::runtime_error("Not a directory: " + p.u8string());
+
+      result.push_back(fs::canonical(p));
+      return result;
+    }
+
+    // =============================
+    // 情况 2：含通配符 → 当前目录匹配
+    // =============================
+    fs::path cwd = fs::current_path();
+
+    for (const auto &entry: fs::directory_iterator(cwd)) {
+      if (!entry.is_directory())
+        continue;
+
+      std::string name = entry.path().filename().u8string();
+
+      if (WildcardMatch(name, folderPattern)) {
+        result.push_back(entry.path());
+      }
+    }
+
+    if (result.empty())
+      throw std::runtime_error("No folder matches pattern: " + folderPattern);
+
+    if (result.size() > 1)
+      throw std::runtime_error("Multiple folders match pattern: " + folderPattern);
+
+    return result;
+  }
+
 
   std::vector<std::string> FEMConfig::ExpandFolderPattern(FEMData &data) {
     std::vector<std::string> result;
@@ -400,8 +458,7 @@ namespace cc::neolux::femconfig {
   }
 
 
-  bool FEMConfig::dumpFEMData(const FEMData &data, std::ostream &os)
-  {
+  bool FEMConfig::dumpFEMData(const FEMData &data, std::ostream &os) {
     if (!os) return false;
 
     // 注释和基本信息
@@ -417,9 +474,9 @@ namespace cc::neolux::femconfig {
     os << "dose={";
     os << "\"mode\":\"" << data.dose.mode << "\", \"unit\":\"" << data.dose.unit << "\",\n";
     os << "\"center\":" << std::setprecision(8) << data.dose.center
-       << ", \"step\":" << data.dose.step
-       << ", \"no\": " << data.dose.no
-       << ",\n\"cols\":\"" << data.dose.cols << "\"\n";
+        << ", \"step\":" << data.dose.step
+        << ", \"no\": " << data.dose.no
+        << ",\n\"cols\":\"" << data.dose.cols << "\"\n";
     os << "}\n\n";
 
     // Focus
@@ -427,9 +484,9 @@ namespace cc::neolux::femconfig {
     os << "focus={";
     os << "\"mode\":\"" << data.focus.mode << "\", \"unit\":\"" << data.focus.unit << "\",\n";
     os << "\"center\":" << std::setprecision(8) << data.focus.center
-       << ", \"step\":" << data.focus.step
-       << ", \"no\": " << data.focus.no
-       << ",\n\"rows\":\"" << data.focus.rows << "\"\n";
+        << ", \"step\":" << data.focus.step
+        << ", \"no\": " << data.focus.no
+        << ",\n\"rows\":\"" << data.focus.rows << "\"\n";
     os << "}\n\n";
 
     // FEM
@@ -437,7 +494,7 @@ namespace cc::neolux::femconfig {
     os << "fem={";
     os << "\"mode\":\"" << data.fem.mode << "\", \"unit\":\"" << data.fem.unit << "\",\n";
     os << "\"target\":" << std::setprecision(8) << data.fem.target
-       << ", \"spec\":" << data.fem.spec << "\n";
+        << ", \"spec\":" << data.fem.spec << "\n";
     os << "}\n";
 
     return true;

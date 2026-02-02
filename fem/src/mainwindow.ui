@@ -227,11 +227,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="lblDNoVal">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
+             <widget class="QSpinBox" name="spnDNo"/>
             </item>
            </layout>
           </item>
@@ -351,11 +347,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="lblFNoVal">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
+             <widget class="QSpinBox" name="spnFNo"/>
             </item>
            </layout>
           </item>

@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <vector>
 
 namespace cc::neolux::femconfig {
   // Dose configuration
