@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
 
+option(FEMAPP_LINUX_BUILD_DEMO "Build demo on Linux, to skip some windows api that have tested such as REGEDITs or so" OFF)
+
 # Toolchain must be included BEFORE project()
 if(NOT FEMAPP_LINUX_BUILD_DEMO)
     include(${CMAKE_SOURCE_DIR}/cmake/LinuxCross.cmake)
 endif()
 
-option(FEMAPP_LINUX_BUILD_DEMO "Build demo on Linux, to skip some windows api that have tested such as REGEDITs or so" OFF)
 
 if(FEMAPP_LINUX_BUILD_DEMO)
     message("Building a quick demo skipping Windows APIs processings")
@@ -48,6 +49,7 @@ set(SOURCES
         fem/src/xlsx_proc.cpp
         fem/src/femapp.cpp
         fem/src/femapp_slots.cpp
+    fem/src/xlsx_editor_module.cpp
 )
 
 set(HEADERS
@@ -76,6 +78,7 @@ target_include_directories(FemApp PRIVATE
         ${HEADERS}
         ${CMAKE_SOURCE_DIR}/FEMConfig/include
         ${CMAKE_SOURCE_DIR}/FileAssocLib/include
+    ${CMAKE_SOURCE_DIR}/XLSXEditor/include
 )
 
 # Link libraries
@@ -85,6 +88,7 @@ target_link_libraries(FemApp PRIVATE
         FEMConfig
         # OpenXLSX
         MiniXLSX
+    XLSXEditor
 )
 
 if(NOT FEMAPP_LINUX_BUILD_DEMO)

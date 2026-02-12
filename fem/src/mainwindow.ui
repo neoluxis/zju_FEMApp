@@ -138,6 +138,17 @@
       </layout>
      </item>
      <item>
+      <layout class="QHBoxLayout" name="hboxRefEdit">
+       <item>
+        <widget class="QPushButton" name="btnRefreshEditor">
+         <property name="text">
+          <string>Refresh Editor</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
         <number>0</number>

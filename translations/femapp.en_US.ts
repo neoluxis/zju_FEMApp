@@ -4,47 +4,47 @@
 <context>
     <name>FemApp</name>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="95"/>
+        <location filename="../fem/src/femapp.cpp" line="98"/>
         <source>Unsaved Changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="96"/>
+        <location filename="../fem/src/femapp.cpp" line="99"/>
         <source>You have unsaved changes. Do you want to save before closing?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="155"/>
+        <location filename="../fem/src/femapp.cpp" line="158"/>
         <source>No folders matched the folder pattern. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="159"/>
+        <location filename="../fem/src/femapp.cpp" line="162"/>
         <source>Multiple folders matched the folder pattern. Please ensure only one folder matches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="184"/>
+        <location filename="../fem/src/femapp.cpp" line="187"/>
         <source>No filenames matched the filename pattern.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="190"/>
+        <location filename="../fem/src/femapp.cpp" line="193"/>
         <source>Multiple filenames matched the filename pattern. Please ensure only one filename matches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="247"/>
+        <location filename="../fem/src/femapp.cpp" line="250"/>
         <source>No sheets matched the sheet pattern. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="251"/>
+        <location filename="../fem/src/femapp.cpp" line="254"/>
         <source>Multiple sheets matched the sheet pattern. Please ensure only one sheet matches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="284"/>
+        <location filename="../fem/src/femapp.cpp" line="287"/>
         <source>Failed to read Excel file: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -88,8 +88,8 @@
     </message>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="14"/>
-        <location filename="../fem/src/femapp.cpp" line="347"/>
-        <location filename="../fem/src/femapp.cpp" line="354"/>
+        <location filename="../fem/src/femapp.cpp" line="350"/>
+        <location filename="../fem/src/femapp.cpp" line="357"/>
         <source>FemApp</source>
         <translation type="unfinished"></translation>
     </message>
@@ -139,110 +139,115 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="147"/>
+        <location filename="../fem/src/mainwindow.ui" line="145"/>
+        <source>Refresh Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fem/src/mainwindow.ui" line="158"/>
         <source>Dose</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="164"/>
-        <location filename="../fem/src/mainwindow.ui" line="284"/>
-        <location filename="../fem/src/mainwindow.ui" line="404"/>
+        <location filename="../fem/src/mainwindow.ui" line="175"/>
+        <location filename="../fem/src/mainwindow.ui" line="295"/>
+        <location filename="../fem/src/mainwindow.ui" line="415"/>
         <source>Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="172"/>
+        <location filename="../fem/src/mainwindow.ui" line="183"/>
         <source>LowHigh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="184"/>
-        <location filename="../fem/src/mainwindow.ui" line="304"/>
-        <location filename="../fem/src/mainwindow.ui" line="424"/>
+        <location filename="../fem/src/mainwindow.ui" line="195"/>
+        <location filename="../fem/src/mainwindow.ui" line="315"/>
+        <location filename="../fem/src/mainwindow.ui" line="435"/>
         <source>Unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="192"/>
-        <location filename="../fem/src/mainwindow.ui" line="432"/>
+        <location filename="../fem/src/mainwindow.ui" line="203"/>
+        <location filename="../fem/src/mainwindow.ui" line="443"/>
         <source>mJ/cm2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="204"/>
-        <location filename="../fem/src/mainwindow.ui" line="324"/>
+        <location filename="../fem/src/mainwindow.ui" line="215"/>
+        <location filename="../fem/src/mainwindow.ui" line="335"/>
         <source>Center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="218"/>
-        <location filename="../fem/src/mainwindow.ui" line="338"/>
+        <location filename="../fem/src/mainwindow.ui" line="229"/>
+        <location filename="../fem/src/mainwindow.ui" line="349"/>
         <source>Step</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="236"/>
-        <location filename="../fem/src/mainwindow.ui" line="356"/>
+        <location filename="../fem/src/mainwindow.ui" line="247"/>
+        <location filename="../fem/src/mainwindow.ui" line="367"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="250"/>
+        <location filename="../fem/src/mainwindow.ui" line="261"/>
         <source>Cols</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="267"/>
+        <location filename="../fem/src/mainwindow.ui" line="278"/>
         <source>Focus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="292"/>
+        <location filename="../fem/src/mainwindow.ui" line="303"/>
         <source>Focus2DoseLinear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="312"/>
+        <location filename="../fem/src/mainwindow.ui" line="323"/>
         <source>um</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="370"/>
+        <location filename="../fem/src/mainwindow.ui" line="381"/>
         <source>Rows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="387"/>
+        <location filename="../fem/src/mainwindow.ui" line="398"/>
         <source>FEM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="412"/>
+        <location filename="../fem/src/mainwindow.ui" line="423"/>
         <source>NegPos2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="444"/>
+        <location filename="../fem/src/mainwindow.ui" line="455"/>
         <source>Target</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="458"/>
+        <location filename="../fem/src/mainwindow.ui" line="469"/>
         <source>Spec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="475"/>
+        <location filename="../fem/src/mainwindow.ui" line="486"/>
         <source>Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="492"/>
+        <location filename="../fem/src/mainwindow.ui" line="503"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/mainwindow.ui" line="499"/>
+        <location filename="../fem/src/mainwindow.ui" line="510"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>

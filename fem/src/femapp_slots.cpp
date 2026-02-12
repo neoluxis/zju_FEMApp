@@ -169,7 +169,7 @@ void FemApp::onDColsEdited() {
   auto text = ui.lnDCols->text();
   femdata.dose.cols = text.toUtf8().toStdString();
   markAsModified();
-  qInfo() << "Dose cols changed to " << text;
+  qInfo() << "Dose cols changed to" << text;
 }
 
 void FemApp::onFModeChanged(const QString &text) {
@@ -206,7 +206,7 @@ void FemApp::onFRowsEdited() {
   auto text = ui.lnFRows->text();
   femdata.focus.rows = text.toUtf8().toStdString();
   markAsModified();
-  qInfo() << "Focus rows changed to " << text;
+  qInfo() << "Focus rows changed to" << text;
 }
 
 void FemApp::onFEMModeChanged(const QString &text) {

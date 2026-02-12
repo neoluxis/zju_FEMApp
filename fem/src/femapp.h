@@ -1,7 +1,9 @@
 #pragma once
 
 #include <QFileInfo>
+#include <memory>
 #include "ui_mainwindow.h"
+#include "cc/neolux/fem/xlsx_editor_module.h"
 #include "cc/neolux/FEMConfig/FEMConfig.h"
 
 
@@ -79,6 +81,7 @@ private slots:
   void onRawFileEdited();
   void onTxtResetClicked();
   void onTxtApplyClicked();
+  void onRefreshEditorClicked();
 
 
 private:
@@ -87,8 +90,10 @@ private:
   QString currentFilePath;  // Track current opened file path
   bool isModified = false;  // Track if file has been modified
   bool isLoading = false;   // Flag to prevent marking as modified during file load
+  std::unique_ptr<cc::neolux::fem::XlsxEditorModule> xlsxEditorModule;
 
   void updateFileLabel();  // Update labelFEMFile with current filename and modification status
   void markAsModified();   // Mark file as modified and update label
   void clearModifiedFlag(); // Clear modified flag and update label
+  void refreshXlsxEditor(); // Refresh XLSX editor content
 };

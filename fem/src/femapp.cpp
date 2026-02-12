@@ -31,6 +31,8 @@ FemApp::FemApp(QWidget *parent)
   : QWidget(parent), currentFilePath(""), isModified(false) {
   ui.setupUi(this);
 
+  xlsxEditorModule = std::make_unique<cc::neolux::fem::XlsxEditorModule>(ui.vboxSheetEdit);
+
   connect(ui.btnLoad, &QPushButton::clicked, this, &FemApp::onLoadClicked);
   connect(ui.btnSave, &QPushButton::clicked, this, &FemApp::onSaveClicked);
   connect(ui.btnSaveas, &QPushButton::clicked, this, &FemApp::onSaveAsClicked);
@@ -62,6 +64,7 @@ FemApp::FemApp(QWidget *parent)
   connect(ui.btnTxtReset, &QPushButton::clicked, this, &FemApp::onTxtResetClicked);
   connect(ui.btnTxtApply, &QPushButton::clicked, this, &FemApp::onTxtApplyClicked);
   connect(ui.txtConfigRaw, &QPlainTextEdit::textChanged, this, &FemApp::onRawFileEdited);
+  connect(ui.btnRefreshEditor, &QPushButton::clicked, this, &FemApp::onRefreshEditorClicked);
 
   // Setup keyboard shortcuts
   // Ctrl+Q to exit
@@ -363,6 +366,21 @@ void FemApp::updateFileLabel() {
   this->setWindowTitle(windowTitle);
 }
 
+void FemApp::refreshXlsxEditor() {
+  if (!xlsxEditorModule) {
+    return;
+  }
+  QString filePath = getCurrentSelectedFile();
+  QString sheetName = ui.cbSheet->currentText();
+  QString cols = QString::fromUtf8(femdata.dose.cols.c_str());
+  QString rows = QString::fromUtf8(femdata.focus.rows.c_str());
+  QString range;
+  if (!cols.isEmpty() && !rows.isEmpty()) {
+    range = QString("%1,%2").arg(cols, rows);
+  }
+  xlsxEditorModule->load(filePath, sheetName, range);
+}
+
 void FemApp::markAsModified() {
   if (!isLoading) {
     isModified = true;
@@ -373,6 +391,10 @@ void FemApp::markAsModified() {
 void FemApp::clearModifiedFlag() {
   isModified = false;
   updateFileLabel();
+}
+
+void FemApp::onRefreshEditorClicked() {
+  refreshXlsxEditor();
 }
 
 FemApp::~FemApp() = default;
