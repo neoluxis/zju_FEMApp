@@ -24,8 +24,8 @@
     <name>FemApp</name>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="14"/>
-        <location filename="../fem/src/femapp.cpp" line="350"/>
-        <location filename="../fem/src/femapp.cpp" line="357"/>
+        <location filename="../fem/src/femapp.cpp" line="352"/>
+        <location filename="../fem/src/femapp.cpp" line="359"/>
         <source>FemApp</source>
         <translation type="unfinished">FemApp</translation>
     </message>

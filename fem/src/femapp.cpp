@@ -343,6 +343,8 @@ void FemApp::onLoadFile() {
 
   // Clear loading flag after all controls are updated
   isLoading = false;
+  // 在所有配置加载并初始化完成后，自动刷新一次编辑器（仅在未发生错误时到达此处）
+  refreshXlsxEditor();
 }
 
 void FemApp::updateFileLabel() {
