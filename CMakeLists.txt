@@ -28,8 +28,10 @@ set(CMAKE_AUTOUIC ON)
 
 # 添加 FEMConfig 库子项目
 add_subdirectory(FEMConfig)
-add_subdirectory(OpenXLSX)
+# add_subdirectory(OpenXLSX)
 add_subdirectory(FileAssocLib)
+add_subdirectory(MiniXLSX)
+add_subdirectory(XLSXEditor)
 
 # Add source files
 set(SOURCES
@@ -43,9 +45,9 @@ set(HEADERS
         fem/include/
 )
 
-set(UI_HEADERS
-        fem/include/ui_mainwindow.h
-)
+#set(UI_HEADERS
+#        fem/include/ui_mainwindow.h
+#)
 set(UI_FILES
         fem/src/mainwindow.ui
 )
@@ -72,7 +74,8 @@ target_link_libraries(FemApp PRIVATE
         Qt6::Core
         Qt6::Widgets
         FEMConfig
-        OpenXLSX
+        # OpenXLSX
+        MiniXLSX
         FileAssocLib
         shlwapi
         shell32

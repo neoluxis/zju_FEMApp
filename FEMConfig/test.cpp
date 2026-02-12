@@ -227,6 +227,64 @@ fem={"mode":"Focus2DoseLinear", "unit":"mJ/cm2",
 }
 
 int main(int argc, char *argv[]) {
+  if (argc != 2) {
+    std::cerr << "Usage: " << argv[0] << " <FEM file path>" << std::endl;
+    return 1;
+  }
+  FEMData data;
+
+  auto filePath = string(argv[1]);
+  if (!FEMConfig::ReadFile(filePath, data)) {
+    std::cerr << "Failed to read FEM file: " << filePath << std::endl;
+    return 2;
+  }
+
+  // test_print_fem_data(data);
+  fs::path path = filePath;
+  fs::path abspath = fs::absolute(path).parent_path(); // file -> folder
+  cout << "Current FEM file absolute folder: " << abspath.string() << std::endl;
+  fs::current_path(abspath);
+  cout << "Changed working directory to: " << fs::current_path().string() << endl;
+
+  auto folders = FEMConfig::ExpandFolderPattern(data);
+  if (folders.empty()) return 3;
+  auto folder = folders[0];
+  cout << "Using folder: " << folder << endl;
+
+  auto filenames = FEMConfig::ExpandFilenamePattern(folder, data);
+  if (filenames.empty()) return 4;
+  auto filename = filenames[0];
+  cout << "Using filename: " << filename << endl;
+
+  auto sheets = FEMConfig::ExpandSheetPattern(filename, data);
+  if (sheets.empty()) return 5;
+  auto sheet = sheets[0];
+  cout << "Using sheet: " << sheet << endl;
+
+  auto doc = oxl::XLDocument();
+  try {
+    auto normalizedPath = fs::u8path(filename).u8string();
+    doc.open(normalizedPath);
+  }catch (const std::exception &e) {
+    std::cerr << "[ERROR] Failed to open Excel file: " << e.what() << std::endl;
+    return 6;
+  }
+  cout << "Opened Excel file successfully." << endl;
+
+  auto wbs = doc.workbook();
+  auto ws = wbs.worksheet(sheet);
+  cout << "Accessed worksheet successfully." << endl;
+
+  auto colcnt = ws.columnCount();
+  auto rowcnt = ws.rowCount();
+  cout << "Worksheet has " << rowcnt << " rows and " << colcnt << " columns." << endl;
+
+  auto pic = ws.cell("J8");
+  cout << "Cell J7 value: " << pic.value().get<std::string>() << endl;
+
+  doc.close();
+  return 0;
+
   // Run embedded tests
   test_quoted_values();
   test_single_quoted_values();
@@ -249,7 +307,7 @@ int main(int argc, char *argv[]) {
 
     //  切换工作目录到 FEM 文件所在目录
     fs::path path = filePath;
-    fs::path abspath = fs::absolute(path).parent_path();  // file -> folder
+    fs::path abspath = fs::absolute(path).parent_path(); // file -> folder
     cout << "Current FEM file absolute folder: " << abspath.string() << std::endl;
     fs::current_path(abspath);
     cout << "Changed working directory to: " << fs::current_path().string() << std::endl;
