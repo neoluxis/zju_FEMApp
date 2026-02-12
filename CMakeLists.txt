@@ -1,11 +1,18 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Toolchain must be included BEFORE project()
-# include(${CMAKE_SOURCE_DIR}/cmake/WindowsOfficialQt.cmake)
-include(${CMAKE_SOURCE_DIR}/cmake/LinuxCross.cmake)
-include(${CMAKE_SOURCE_DIR}/cmake/mingw64.cmake)
+if(NOT FEMAPP_LINUX_BUILD_DEMO)
+    include(${CMAKE_SOURCE_DIR}/cmake/LinuxCross.cmake)
+endif()
 
-include(${CMAKE_SOURCE_DIR}/cmake/BuildType.cmake)
+option(FEMAPP_LINUX_BUILD_DEMO "Build demo on Linux, to skip some windows api that have tested such as REGEDITs or so" OFF)
+
+if(FEMAPP_LINUX_BUILD_DEMO)
+    message("Building a quick demo skipping Windows APIs processings")
+    add_definitions(-DFEMAPP_SKIP_WINDOWS_API)
+endif(FEMAPP_LINUX_BUILD_DEMO)
+
+
 
 
 # Ensure CMAKE_PREFIX_PATH is set correctly for find_package
@@ -28,9 +35,11 @@ set(CMAKE_AUTOUIC ON)
 
 # 添加 FEMConfig 库子项目
 add_subdirectory(FEMConfig)
-# add_subdirectory(OpenXLSX)
-add_subdirectory(FileAssocLib)
+if(FEMAPP_LINUX_BUILD_DEMO)
+    set(MiniXLSX_BUILD_TEST OFF CACHE BOOL "" FORCE)
+endif()
 add_subdirectory(MiniXLSX)
+add_subdirectory(FileAssocLib)
 add_subdirectory(XLSXEditor)
 
 # Add source files
@@ -76,10 +85,15 @@ target_link_libraries(FemApp PRIVATE
         FEMConfig
         # OpenXLSX
         MiniXLSX
+)
+
+if(NOT FEMAPP_LINUX_BUILD_DEMO)
+    target_link_libraries(FemApp PRIVATE
         FileAssocLib
         shlwapi
         shell32
-)
+    )
+endif()
 
 # 生成 / 更新 .ts 文件 (use Qt-provided lupdate)
 add_custom_target(update_translations
@@ -105,7 +119,9 @@ add_dependencies(FemApp
 
 
 # Deploy Qt dependencies (integrated in toolchain configuration)
-deploy_qt_dependencies(FemApp)
+if(NOT FEMAPP_LINUX_BUILD_DEMO)
+    deploy_qt_dependencies(FemApp)
+endif()
 
 if(WIN32)
     if(TARGET OpenXLSX)

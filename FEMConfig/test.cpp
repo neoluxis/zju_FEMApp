@@ -9,7 +9,7 @@
 #include "cc/neolux/FEMConfig/FEMConfig.h"
 #include "filesystem"
 
-#include "OpenXLSX.hpp"
+#include "cc/neolux/utils/MiniXLSX/OpenXLSXWrapper.hpp"
 
 
 using std::string;
@@ -17,7 +17,7 @@ using std::cout;
 using std::endl;
 using namespace cc::neolux::femconfig;
 namespace fs = std::filesystem;
-namespace oxl = OpenXLSX;
+namespace minixlsx = cc::neolux::utils::MiniXLSX;
 
 void test_print_fem_data(const FEMData &data);
 
@@ -261,28 +261,29 @@ int main(int argc, char *argv[]) {
   auto sheet = sheets[0];
   cout << "Using sheet: " << sheet << endl;
 
-  auto doc = oxl::XLDocument();
-  try {
-    auto normalizedPath = fs::u8path(filename).u8string();
-    doc.open(normalizedPath);
-  }catch (const std::exception &e) {
-    std::cerr << "[ERROR] Failed to open Excel file: " << e.what() << std::endl;
+  minixlsx::OpenXLSXWrapper wrapper;
+  if (!wrapper.open(filename)) {
+    std::cerr << "[ERROR] Failed to open Excel file: " << filename << std::endl;
     return 6;
   }
   cout << "Opened Excel file successfully." << endl;
 
-  auto wbs = doc.workbook();
-  auto ws = wbs.worksheet(sheet);
+  auto indexOpt = wrapper.sheetIndex(sheet);
+  if (!indexOpt.has_value()) {
+    std::cerr << "[ERROR] Sheet not found: " << sheet << std::endl;
+    wrapper.close();
+    return 7;
+  }
   cout << "Accessed worksheet successfully." << endl;
 
-  auto colcnt = ws.columnCount();
-  auto rowcnt = ws.rowCount();
-  cout << "Worksheet has " << rowcnt << " rows and " << colcnt << " columns." << endl;
+  auto cellValue = wrapper.getCellValue(indexOpt.value(), "J8");
+  if (cellValue.has_value()) {
+    cout << "Cell J8 value: " << cellValue.value() << endl;
+  } else {
+    cout << "Cell J8 value: <empty>" << endl;
+  }
 
-  auto pic = ws.cell("J8");
-  cout << "Cell J7 value: " << pic.value().get<std::string>() << endl;
-
-  doc.close();
+  wrapper.close();
   return 0;
 
   // Run embedded tests

@@ -3,6 +3,9 @@
 //
 
 #include "cc/neolux/fem/FileAssociation.h"
+
+#ifndef FEMAPP_SKIP_WINDOWS_API
+// Windows implementation
 #include <windows.h>
 #include <shlobj.h>
 #include <string>
@@ -84,3 +87,5 @@ bool FileAssociation::UnregisterAssociation(const std::string& extension) {
 }
 
 } // namespace cc::neolux::fem
+
+#endif

@@ -1,7 +1,6 @@
 #include "cc/neolux/FEMConfig/FEMConfig.h"
 #include <fstream>
 #include <sstream>
-#include <windows.h>
 #include <algorithm>
 #include <cctype>
 #include <iomanip> // for std::setprecision
@@ -12,12 +11,15 @@
 #include <regex>
 #include "iostream"
 
-#include "OpenXLSX.hpp"
+#include "cc/neolux/utils/MiniXLSX/OpenXLSXWrapper.hpp"
 
 namespace fs = std::filesystem;
 
 
 namespace cc::neolux::femconfig {
+  /**
+   * @brief 去除字符串首尾空白
+   */
   std::string FEMConfig::Trim(const std::string &str) {
     size_t start = 0;
     size_t end = str.length();
@@ -33,7 +35,9 @@ namespace cc::neolux::femconfig {
     return str.substr(start, end - start);
   }
 
-  // Remove surrounding single or double quotes if present and trim
+  /**
+   * @brief 去除首尾引号并去空白
+   */
   static std::string Unquote(const std::string &s) {
     // Manually trim instead of calling FEMConfig::Trim (which is private)
     size_t start = 0, end = s.length();
@@ -49,6 +53,9 @@ namespace cc::neolux::femconfig {
     return t;
   }
 
+  /**
+   * @brief 解析 JSON 风格配置字符串
+   */
   std::map<std::string, std::string> FEMConfig::ParseJsonConfig(const std::string &jsonStr) {
     std::map<std::string, std::string> result;
 
@@ -127,6 +134,9 @@ namespace cc::neolux::femconfig {
     return result;
   }
 
+  /**
+   * @brief 解析 FEM 配置内容
+   */
   bool FEMConfig::ParseContent(const std::string &content, FEMData &data) {
     data.rawContent = content;
 
@@ -195,6 +205,9 @@ namespace cc::neolux::femconfig {
     return true;
   }
 
+  /**
+   * @brief 读取并解析 .fem 文件
+   */
   bool FEMConfig::ReadFile(const std::string &filePath, FEMData &data) {
     std::string content = GetFileContent(filePath);
     if (content.empty()) {
@@ -204,6 +217,9 @@ namespace cc::neolux::femconfig {
     return ParseContent(content, data);
   }
 
+  /**
+   * @brief 读取并解析 .fem 文件（宽字符路径）
+   */
   bool FEMConfig::ReadFileW(const wchar_t *filePath, FEMData &data) {
     std::string content = GetFileContentW(filePath);
     if (content.empty()) {
@@ -213,6 +229,9 @@ namespace cc::neolux::femconfig {
     return ParseContent(content, data);
   }
 
+  /**
+   * @brief 读取文件内容
+   */
   std::string FEMConfig::GetFileContent(const std::string &filePath) {
     std::ifstream file(fs::u8path(filePath), std::ios::binary);
     if (!file.is_open()) {
@@ -224,6 +243,9 @@ namespace cc::neolux::femconfig {
     return buffer.str();
   }
 
+  /**
+   * @brief 校验文件扩展名是否合法
+   */
   bool FEMConfig::IsValidFEMFile(const std::string &filePath) {
     if (filePath.length() < 4) {
       return false;
@@ -233,47 +255,40 @@ namespace cc::neolux::femconfig {
     return ext == ".fem";
   }
 
+  /**
+   * @brief 校验文件扩展名是否合法（宽字符路径）
+   */
   bool FEMConfig::IsValidFEMFileW(const wchar_t *filePath) {
     if (!filePath)
       return false;
-
-    int len = wcslen(filePath);
-    if (len < 4)
+    try {
+      std::filesystem::path p(filePath);
+      return p.extension() == L".fem";
+    } catch (...) {
       return false;
-
-    return wcscmp(filePath + len - 4, L".fem") == 0;
+    }
   }
 
+  /**
+   * @brief 读取文件内容（宽字符路径）
+   */
   std::string FEMConfig::GetFileContentW(const wchar_t *filePath) {
     if (!filePath)
       return "";
 
-    HANDLE hFile = CreateFileW(filePath, GENERIC_READ, FILE_SHARE_READ,
-                               NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-
-    if (hFile == INVALID_HANDLE_VALUE) {
+    std::ifstream file(std::filesystem::path(filePath), std::ios::binary);
+    if (!file.is_open()) {
       return "";
     }
 
-    DWORD fileSize = GetFileSize(hFile, NULL);
-    if (fileSize == INVALID_FILE_SIZE) {
-      CloseHandle(hFile);
-      return "";
-    }
-
-    std::string content(fileSize, '\0');
-    DWORD bytesRead = 0;
-
-    if (!::ReadFile(hFile, &content[0], fileSize, &bytesRead, NULL)) {
-      CloseHandle(hFile);
-      return "";
-    }
-
-    CloseHandle(hFile);
-    return content;
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    return buffer.str();
   }
 
-  // Simple wildcard matching, * matches 0 or more characters
+  /**
+   * @brief 通配符匹配，* 表示任意长度
+   */
   inline bool WildcardMatch(const std::string &str, const std::string &pattern) {
     size_t s = 0, p = 0, star = std::string::npos, ss = 0;
     while (s < str.size()) {
@@ -295,7 +310,9 @@ namespace cc::neolux::femconfig {
     return p == pattern.size();
   }
 
-
+  /**
+   * @brief 展开文件夹通配符
+   */
   std::vector<fs::path>
   ResolveFolderPattern(const std::string &folderPattern) {
     std::vector<fs::path> result;
@@ -350,6 +367,9 @@ namespace cc::neolux::femconfig {
   }
 
 
+  /**
+   * @brief 展开文件夹通配符
+   */
   std::vector<std::string> FEMConfig::ExpandFolderPattern(FEMData &data) {
     std::vector<std::string> result;
 
@@ -391,6 +411,9 @@ namespace cc::neolux::femconfig {
   }
 
 
+  /**
+   * @brief 展开文件名通配符（指定目录）
+   */
   std::vector<std::string> FEMConfig::ExpandFilenamePattern(const std::string &folder, const FEMData &data) {
     std::vector<std::string> result;
 
@@ -428,6 +451,9 @@ namespace cc::neolux::femconfig {
     return result;
   }
 
+  /**
+   * @brief 展开文件名通配符
+   */
   std::vector<std::string> FEMConfig::ExpandFilenamePattern(FEMData &data) {
     auto folders = ExpandFolderPattern(data);
     std::vector<std::string> result;
@@ -438,17 +464,20 @@ namespace cc::neolux::femconfig {
     return result;
   }
 
-  // 展开工作表通配符
+  /**
+   * @brief 展开工作表通配符
+   */
   std::vector<std::string> FEMConfig::ExpandSheetPattern(const std::string &filepath, const FEMData &data) {
-    OpenXLSX::XLDocument doc;
-    try {
-      const auto normalizedPath = fs::u8path(filepath).u8string();
-      doc.open(normalizedPath);
-    } catch (const std::exception &e) {
-      std::cerr << "[ERROR] Failed to open Excel file: " << e.what() << std::endl;
+    cc::neolux::utils::MiniXLSX::OpenXLSXWrapper wrapper;
+    if (!wrapper.open(filepath)) {
+      std::cerr << "[ERROR] Failed to open Excel file: " << filepath << std::endl;
       return {};
     }
-    auto sheetNames = doc.workbook().sheetNames();
+    std::vector<std::string> sheetNames;
+    unsigned int count = wrapper.sheetCount();
+    for (unsigned int i = 0; i < count; ++i) {
+      sheetNames.push_back(wrapper.sheetName(i));
+    }
     std::vector<std::string> result;
 
     const bool hasWildcard =
@@ -476,7 +505,9 @@ namespace cc::neolux::femconfig {
     return result;
   }
 
-
+  /**
+   * @brief 将 Excel 列字母转为数字
+   */
   int FEMConfig::columnLetterToNumber(const std::string &col) {
     // 将 Excel 列字母转为数字，例如 A -> 1, B -> 2, Z -> 26, AA -> 27
     int result = 0;
@@ -489,16 +520,24 @@ namespace cc::neolux::femconfig {
   }
 
   int FEMConfig::calculateNo(const std::string &str) {
-    // 支持两种格式：
+  /**
+   * @brief 从范围表达式计算数量
+   */
     // 1. 列范围 "B:K"
     // 2. 行范围 "2:60"
 
     auto pos = str.find(':');
+  /**
+   * @brief 将 FEM 数据写入流
+   */
     if (pos == std::string::npos) {
       throw std::invalid_argument("Invalid range format, missing ':'");
     }
 
     std::string left = str.substr(0, pos);
+  /**
+   * @brief 将 FEM 数据写入文件
+   */
     std::string right = str.substr(pos + 1);
 
     // 去掉空格

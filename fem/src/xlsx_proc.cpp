@@ -8,14 +8,19 @@
 
 namespace cc::neolux::fem {
   std::vector<std::string> XlsxProc::GetSheetNames(const std::string &filePath) {
-    oxl::XLDocument doc;
-    const auto normalizedPath = std::filesystem::u8path(filePath).u8string();
-    doc.open(normalizedPath);
+    cc::neolux::utils::MiniXLSX::OpenXLSXWrapper wrapper;
+    if (!wrapper.open(filePath)) {
+      std::cerr << "Failed to open Excel file: " << filePath << std::endl;
+      return {};
+    }
     std::cout << "Opened Excel file successfully." << std::endl;
 
-    auto wbs = doc.workbook();
-    std::vector<std::string> sheetNames = wbs.sheetNames();
-    doc.close();
+    std::vector<std::string> sheetNames;
+    unsigned int count = wrapper.sheetCount();
+    for (unsigned int i = 0; i < count; ++i) {
+      sheetNames.push_back(wrapper.sheetName(i));
+    }
+    wrapper.close();
     return sheetNames;
   }
 } // namespace cc::neolux::fem

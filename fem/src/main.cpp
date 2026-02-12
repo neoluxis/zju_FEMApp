@@ -9,17 +9,22 @@
 #include <iostream>
 #include <string>
 
+#ifndef FEMAPP_SKIP_WINDOWS_API
 #include "cc/neolux/fem/FileAssociation.h"
+#endif
 #include "cc/neolux/FEMConfig/FEMConfig.h"
 #include "femapp.h"
 
+#ifndef FEMAPP_SKIP_WINDOWS_API
 using cc::neolux::fem::FileAssociation;
+#endif
 using namespace cc::neolux::femconfig;
 using std::cout;
 using std::endl;
 using std::string;
 
 void fileAssociat() {
+#ifndef FEMAPP_SKIP_WINDOWS_API
   // 自动注册打开方式，如果没有注册
 
   if (!FileAssociation::IsAssociated(".fem")) {
@@ -35,6 +40,7 @@ void fileAssociat() {
   //     FileAssociation::UnregisterAssociation(".fem");
   //     qDebug() << ".fem association unregistered";
   // }
+#endif
 }
 
 int main(int argc, char *argv[]) {

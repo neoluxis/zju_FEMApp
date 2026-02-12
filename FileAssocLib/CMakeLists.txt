@@ -6,9 +6,15 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Add source files
-set(SOURCES
-  src/FileAssociation.cpp
-)
+if(FEMAPP_LINUX_BUILD_DEMO)
+  set(SOURCES
+    src/FileAssociation_stub.cpp
+  )
+else()
+  set(SOURCES
+    src/FileAssociation.cpp
+  )
+endif()
 
 set(HEADERS
   include/

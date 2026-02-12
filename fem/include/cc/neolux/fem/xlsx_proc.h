@@ -7,9 +7,7 @@
 
 #include <string>
 #include <vector>
-#include "OpenXLSX.hpp"
-
-namespace oxl = OpenXLSX;
+#include "cc/neolux/utils/MiniXLSX/OpenXLSXWrapper.hpp"
 
 namespace cc::neolux::fem {
   class XlsxProc {
