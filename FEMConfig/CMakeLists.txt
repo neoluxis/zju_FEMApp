@@ -5,7 +5,7 @@ project(FEMConfig)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-option(FEMCONFIG_BUILD_TEST "Build test app of FEMConfig" ON)
+option(FEMCONFIG_BUILD_TEST "Build test app of FEMConfig" OFF)
 
 # Add source files
 set(SOURCES
