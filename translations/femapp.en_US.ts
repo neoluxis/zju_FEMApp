@@ -2,6 +2,25 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
+    <name>DataItem</name>
+    <message>
+        <location filename="../XLSXEditor/src/DataItem.ui" line="14"/>
+        <source>DataItem</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/DataItem.ui" line="48"/>
+        <location filename="../XLSXEditor/src/DataItem.cpp" line="56"/>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/DataItem.cpp" line="52"/>
+        <source>Restore</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FemApp</name>
     <message>
         <location filename="../fem/src/femapp.cpp" line="98"/>
@@ -264,6 +283,73 @@
     <message>
         <location filename="../fem/src/femapp.cpp" line="26"/>
         <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>XLSXEditor</name>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.ui" line="14"/>
+        <source>XLSXEditor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.ui" line="22"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="326"/>
+        <source>Restore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.ui" line="29"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="317"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="72"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="78"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="93"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="72"/>
+        <source>Failed to open XLSX file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="78"/>
+        <source>Failed to prepare picture reader.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="93"/>
+        <source>Sheet not found: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="317"/>
+        <source>Data saved to XLSX.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="319"/>
+        <source>Save Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="319"/>
+        <source>Failed to save data to XLSX.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="326"/>
+        <source>Data restored.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="377"/>
+        <source>Image Preview</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

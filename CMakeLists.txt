@@ -100,12 +100,17 @@ if(NOT FEMAPP_LINUX_BUILD_DEMO)
 endif()
 
 # 生成 / 更新 .ts 文件 (use Qt-provided lupdate)
+# 扫描主项目和 XLSXEditor 的所有源文件
 add_custom_target(update_translations
         COMMAND $<TARGET_FILE:Qt6::lupdate>
-        ${SOURCES} ${HEADERS} ${UI_FILES}
+        -recursive
+        fem/include
+        fem/src
+        XLSXEditor/include
+        XLSXEditor/src
         -ts ${TRANSLATION_TS}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        COMMENT "Update Qt translation files (.ts)"
+        COMMENT "Update Qt translation files (.ts) for all modules"
 )
 
 # 编译 .ts -> .qm (use Qt-provided lrelease)

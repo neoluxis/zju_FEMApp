@@ -2,6 +2,25 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
+    <name>DataItem</name>
+    <message>
+        <location filename="../XLSXEditor/src/DataItem.ui" line="14"/>
+        <source>DataItem</source>
+        <translation type="unfinished">数据项</translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/DataItem.ui" line="48"/>
+        <location filename="../XLSXEditor/src/DataItem.cpp" line="56"/>
+        <source>Delete</source>
+        <translation type="unfinished">删除</translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/DataItem.cpp" line="52"/>
+        <source>Restore</source>
+        <translation type="unfinished">恢复</translation>
+    </message>
+</context>
+<context>
     <name>FemApp</name>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="14"/>
@@ -58,7 +77,7 @@
     <message>
         <location filename="../fem/src/mainwindow.ui" line="145"/>
         <source>Refresh Editor</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">刷新编辑器</translation>
     </message>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="158"/>
@@ -156,7 +175,7 @@
     <message>
         <location filename="../fem/src/mainwindow.ui" line="486"/>
         <source>Text</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">文本编辑</translation>
     </message>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="503"/>
@@ -232,7 +251,7 @@
         <location filename="../fem/src/femapp_slots.cpp" line="30"/>
         <location filename="../fem/src/femapp_slots.cpp" line="59"/>
         <source>Failed to generate FEM config content.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">生成 FEM 配置内容失败</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp_slots.cpp" line="39"/>
@@ -269,6 +288,73 @@
         <location filename="../fem/src/femapp.cpp" line="26"/>
         <source>Info</source>
         <translation>提示</translation>
+    </message>
+</context>
+<context>
+    <name>XLSXEditor</name>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.ui" line="14"/>
+        <source>XLSXEditor</source>
+        <translation type="unfinished">XLSX编辑器</translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.ui" line="22"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="326"/>
+        <source>Restore</source>
+        <translation type="unfinished">恢复全部</translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.ui" line="29"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="317"/>
+        <source>Save</source>
+        <translation type="unfinished">保存</translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="72"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="78"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="93"/>
+        <source>Error</source>
+        <translation type="unfinished">错误</translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="72"/>
+        <source>Failed to open XLSX file.</source>
+        <translation type="unfinished">打开 XLSX 文件失败</translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="78"/>
+        <source>Failed to prepare picture reader.</source>
+        <translation type="unfinished">准备图片读取器失败</translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="93"/>
+        <source>Sheet not found: %1</source>
+        <translation type="unfinished">表未找到: %1</translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="317"/>
+        <source>Data saved to XLSX.</source>
+        <translation type="unfinished">数据已保存到 XLSX。</translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="319"/>
+        <source>Save Error</source>
+        <translation type="unfinished">保存错误</translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="319"/>
+        <source>Failed to save data to XLSX.</source>
+        <translation type="unfinished">保存数据到 XLSX 失败。</translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="326"/>
+        <source>Data restored.</source>
+        <translation type="unfinished">数据已恢复。</translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="377"/>
+        <source>Image Preview</source>
+        <translation type="unfinished">图片预览</translation>
     </message>
 </context>
 </TS>
