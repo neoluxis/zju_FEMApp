@@ -10,6 +10,9 @@ public:
   static bool RegisterAssociation(const std::string& extension,
                                   const std::string& progId,
                                   const std::string& description);
+  static bool CleanRegister(const std::string& extension,
+                            const std::string& progId,
+                            const std::string& description);
   static bool UnregisterAssociation(const std::string& extension);
 };
 

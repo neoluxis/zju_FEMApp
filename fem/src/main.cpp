@@ -27,19 +27,20 @@ void fileAssociat() {
 #ifndef FEMAPP_SKIP_WINDOWS_API
   // 自动注册打开方式，如果没有注册
 
-  if (!FileAssociation::IsAssociated(".fem")) {
+  if (!FileAssociation::IsAssociated("fem")) {
     qDebug() << "Registering .fem file association...";
-    FileAssociation::RegisterAssociation(
-      ".fem",
+    FileAssociation::CleanRegister(
+      "fem",
       "FemApp.Document",
       "FEM Analysis File");
     qDebug() << ".fem association registered";
   }
-  // else
-  // {
-  //     FileAssociation::UnregisterAssociation(".fem");
-  //     qDebug() << ".fem association unregistered";
-  // }
+  else
+  {
+    qDebug() << "Unregistering .fem file association...";
+    FileAssociation::UnregisterAssociation("fem");
+    qDebug() << ".fem association unregistered";
+  }
 #endif
 }
 

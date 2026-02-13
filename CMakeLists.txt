@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 option(FEMAPP_LINUX_BUILD_DEMO "Build demo on Linux, to skip some windows api that have tested such as REGEDITs or so" OFF)
-
+option(FEMAPP_ADD_WIN32 "Add WIN32 to prevent console on Windows, but also hide logs" OFF)
 # Toolchain must be included BEFORE project()
 if(NOT FEMAPP_LINUX_BUILD_DEMO)
     include(${CMAKE_SOURCE_DIR}/cmake/LinuxCross.cmake)
@@ -66,8 +66,13 @@ set(UI_FILES
 
 FILE(GLOB TRANSLATION_TS translations/*.ts)
 
-# Create executable (removed WIN32 to show console for debugging cout)
-add_executable(FemApp ${SOURCES})
+# Create executable with WIN32 flag to prevent console window on Windows
+if(FEMAPP_ADD_WIN32)
+    add_executable(FemApp WIN32 ${SOURCES})
+else(FEMAPP_ADD_WIN32)
+    add_executable(FemApp ${SOURCES})
+endif(FEMAPP_ADD_WIN32)
+
 
 # For Windows cross-compilation, allow multiple symbol definitions
 # This is needed because multiple DLLs statically link libstdc++

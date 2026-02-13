@@ -5,4 +5,8 @@ build_*/
 
 assets/
 
-
+package/
+package-*/
+package_*/
+package*.zip
+package*.tar.gz
