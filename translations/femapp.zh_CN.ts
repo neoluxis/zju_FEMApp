@@ -84,7 +84,7 @@
     <message>
         <location filename="../fem/src/mainwindow.ui" line="152"/>
         <source>Dry Run</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">模拟运行</translation>
     </message>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="168"/>
