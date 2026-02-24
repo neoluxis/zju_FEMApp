@@ -9,7 +9,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/DataItem.cpp" line="38"/>
+        <location filename="../XLSXEditor/src/DataItem.cpp" line="41"/>
         <source>Double-click to keep/remove</source>
         <translation type="unfinished"></translation>
     </message>
@@ -294,7 +294,7 @@
     </message>
     <message>
         <location filename="../XLSXEditor/src/XLSXEditor.ui" line="22"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="741"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="743"/>
         <source>Preview</source>
         <translation type="unfinished"></translation>
     </message>
@@ -305,60 +305,60 @@
     </message>
     <message>
         <location filename="../XLSXEditor/src/XLSXEditor.ui" line="39"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="356"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="358"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="93"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="99"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="114"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="95"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="101"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="116"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="93"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="95"/>
         <source>Failed to open XLSX file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="99"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="101"/>
         <source>Failed to prepare picture reader.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="114"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="116"/>
         <source>Sheet not found: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="356"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="358"/>
         <source>Data saved to XLSX.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="358"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="360"/>
         <source>Save Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="358"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="360"/>
         <source>Failed to save data to XLSX.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="437"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="439"/>
         <source>Saving... %p%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="741"/>
-        <source>Show All</source>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="711"/>
+        <source>Image Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="709"/>
-        <source>Image Preview</source>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="743"/>
+        <source>Show All</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

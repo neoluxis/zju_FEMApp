@@ -10,6 +10,7 @@ package-*/
 package_*/
 package*.zip
 package*.tar.gz
+femapp_package*
 
 # Qt Linguist files
 *.qm

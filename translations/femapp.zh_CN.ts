@@ -6,7 +6,7 @@
     <message>
         <location filename="../XLSXEditor/src/DataItem.ui" line="14"/>
         <source>DataItem</source>
-        <translation type="unfinished">数据项</translation>
+        <translation>数据项</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -17,9 +17,9 @@
         <translation type="obsolete">恢复</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/DataItem.cpp" line="38"/>
+        <location filename="../XLSXEditor/src/DataItem.cpp" line="41"/>
         <source>Double-click to keep/remove</source>
-        <translation type="unfinished">双击以保留/删除</translation>
+        <translation>双击以保留/删除</translation>
     </message>
 </context>
 <context>
@@ -29,7 +29,7 @@
         <location filename="../fem/src/femapp.cpp" line="368"/>
         <location filename="../fem/src/femapp.cpp" line="375"/>
         <source>FemApp</source>
-        <translation type="unfinished">FemApp</translation>
+        <translation>FemApp</translation>
     </message>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="27"/>
@@ -79,12 +79,12 @@
     <message>
         <location filename="../fem/src/mainwindow.ui" line="145"/>
         <source>Refresh Editor</source>
-        <translation type="unfinished">刷新编辑器</translation>
+        <translation>刷新编辑器</translation>
     </message>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="152"/>
         <source>Dry Run</source>
-        <translation type="unfinished">模拟运行</translation>
+        <translation>模拟运行</translation>
     </message>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="168"/>
@@ -182,27 +182,27 @@
     <message>
         <location filename="../fem/src/mainwindow.ui" line="496"/>
         <source>Text</source>
-        <translation type="unfinished">文本编辑</translation>
+        <translation>文本编辑</translation>
     </message>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="513"/>
         <source>Reset</source>
-        <translation type="unfinished">重置</translation>
+        <translation>重置</translation>
     </message>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="520"/>
         <source>Apply</source>
-        <translation type="unfinished">应用</translation>
+        <translation>应用</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="173"/>
         <source>No folders matched the folder pattern. </source>
-        <translation type="unfinished">没有文件夹匹配到</translation>
+        <translation>没有文件夹匹配到</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="177"/>
         <source>Multiple folders matched the folder pattern. Please ensure only one folder matches.</source>
-        <translation type="unfinished">匹配到多个文件夹，请确保只有一个文件夹匹配</translation>
+        <translation>匹配到多个文件夹，请确保只有一个文件夹匹配</translation>
     </message>
     <message>
         <source>No filenames matched the filename pattern. </source>
@@ -211,75 +211,75 @@
     <message>
         <location filename="../fem/src/femapp.cpp" line="116"/>
         <source>Unsaved Changes</source>
-        <translation type="unfinished">未保存的修改</translation>
+        <translation>未保存的修改</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="117"/>
         <source>You have unsaved changes. Do you want to save before closing?</source>
-        <translation type="unfinished">你有没有保存的修改，是否保存？</translation>
+        <translation>你有没有保存的修改，是否保存？</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="203"/>
         <source>No filenames matched the filename pattern.</source>
-        <translation type="unfinished">没有文件名匹配</translation>
+        <translation>没有文件名匹配</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="209"/>
         <source>Multiple filenames matched the filename pattern. Please ensure only one filename matches.</source>
-        <translation type="unfinished">多个文件匹配到，请确保只有一个文件匹配</translation>
+        <translation>多个文件匹配到，请确保只有一个文件匹配</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="264"/>
         <source>No sheets matched the sheet pattern. </source>
-        <translation type="unfinished">没有表名匹配</translation>
+        <translation>没有表名匹配</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="270"/>
         <source>Multiple sheets matched the sheet pattern. Please ensure only one sheet matches.</source>
-        <translation type="unfinished">匹配到多个表，请检查文件以匹配单个表</translation>
+        <translation>匹配到多个表，请检查文件以匹配单个表</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="303"/>
         <source>Failed to read Excel file: </source>
-        <translation type="unfinished">读取 Excel 文件失败</translation>
+        <translation>读取 Excel 文件失败</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp_slots.cpp" line="14"/>
         <source>Open FEM Config File</source>
-        <translation type="unfinished">打开 FEM 配置文件</translation>
+        <translation>打开 FEM 配置文件</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp_slots.cpp" line="15"/>
         <location filename="../fem/src/femapp_slots.cpp" line="46"/>
         <source>FEM Config Files (*.fem);;All Files (*)</source>
-        <translation type="unfinished">FEM项目文件 (*.fem);;全部文件 (*)</translation>
+        <translation>FEM项目文件 (*.fem);;全部文件 (*)</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp_slots.cpp" line="27"/>
         <location filename="../fem/src/femapp_slots.cpp" line="54"/>
         <source>Failed to generate FEM config content.</source>
-        <translation type="unfinished">生成 FEM 配置内容失败</translation>
+        <translation>生成 FEM 配置内容失败</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp_slots.cpp" line="36"/>
         <location filename="../fem/src/femapp_slots.cpp" line="63"/>
         <source>Failed to save FEM config file.</source>
-        <translation type="unfinished">保存 FEM 文件失败</translation>
+        <translation>保存 FEM 文件失败</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp_slots.cpp" line="45"/>
         <source>Save FEM Config File As</source>
-        <translation type="unfinished">保存 FEM 配置文件到</translation>
+        <translation>保存 FEM 配置文件到</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp_slots.cpp" line="73"/>
         <source>Select Folder</source>
-        <translation type="unfinished">选择文件夹</translation>
+        <translation>选择文件夹</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp_slots.cpp" line="240"/>
         <source>Failed to parse raw FEM config content.</source>
-        <translation type="unfinished">解析配置文件失败，请检查文件格式</translation>
+        <translation>解析配置文件失败，请检查文件格式</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="17"/>
@@ -302,18 +302,18 @@
     <message>
         <location filename="../XLSXEditor/src/XLSXEditor.ui" line="14"/>
         <source>XLSXEditor</source>
-        <translation type="unfinished">XLSX编辑器</translation>
+        <translation>XLSX编辑器</translation>
     </message>
     <message>
         <location filename="../XLSXEditor/src/XLSXEditor.ui" line="22"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="741"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="743"/>
         <source>Preview</source>
-        <translation type="unfinished">预览</translation>
+        <translation>预览</translation>
     </message>
     <message>
         <location filename="../XLSXEditor/src/XLSXEditor.ui" line="29"/>
         <source>Select All</source>
-        <translation type="unfinished">全选</translation>
+        <translation>全选</translation>
     </message>
     <message>
         <source>Restore</source>
@@ -321,65 +321,65 @@
     </message>
     <message>
         <location filename="../XLSXEditor/src/XLSXEditor.ui" line="39"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="356"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="358"/>
         <source>Save</source>
-        <translation type="unfinished">保存</translation>
+        <translation>保存</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="93"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="99"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="114"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="95"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="101"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="116"/>
         <source>Error</source>
-        <translation type="unfinished">错误</translation>
+        <translation>错误</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="93"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="95"/>
         <source>Failed to open XLSX file.</source>
-        <translation type="unfinished">打开 XLSX 文件失败</translation>
+        <translation>打开 XLSX 文件失败</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="99"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="101"/>
         <source>Failed to prepare picture reader.</source>
-        <translation type="unfinished">准备图片读取器失败</translation>
+        <translation>准备图片读取器失败</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="114"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="116"/>
         <source>Sheet not found: %1</source>
-        <translation type="unfinished">表未找到: %1</translation>
+        <translation>表未找到: %1</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="356"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="358"/>
         <source>Data saved to XLSX.</source>
-        <translation type="unfinished">数据已保存到 XLSX。</translation>
+        <translation>数据已保存到 XLSX。</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="358"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="360"/>
         <source>Save Error</source>
-        <translation type="unfinished">保存错误</translation>
+        <translation>保存错误</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="358"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="360"/>
         <source>Failed to save data to XLSX.</source>
-        <translation type="unfinished">保存数据到 XLSX 失败。</translation>
+        <translation>保存数据到 XLSX 失败。</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="437"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="439"/>
         <source>Saving... %p%</source>
-        <translation type="unfinished">保存中... %p%</translation>
+        <translation>保存中... %p%</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="741"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="743"/>
         <source>Show All</source>
-        <translation type="unfinished">显示全部</translation>
+        <translation>显示全部</translation>
     </message>
     <message>
         <source>Data restored.</source>
         <translation type="obsolete">数据已恢复。</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="709"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="711"/>
         <source>Image Preview</source>
-        <translation type="unfinished">图片预览</translation>
+        <translation>图片预览</translation>
     </message>
 </context>
 </TS>

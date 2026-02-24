@@ -26,5 +26,6 @@ libFileAssocLib.dll
 libpugixml.dll
 libKFZippa.dll
 libOpenXLSXd.dll
+libOpenXLSX.dll
 libMiniXLSX.dll
 libXLSXEditor.dll
