@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QShortcut>
+#include <QSizePolicy>
 
 #include "QDebug"
 #include "cc/neolux/fem/xlsx_proc.h"
@@ -27,6 +28,14 @@ void FemApp::showInfo(QWidget* parent, const QString& text) {
 // TODO: 1. 回写 .fem 文件时，规范化。给folder, filename, sheet 添加上双引号。并为此双引号修复解析器
 FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModified(false) {
     ui.setupUi(this);
+
+    ui.gridLayout_2->setAlignment(ui.vboxSettings, Qt::AlignTop | Qt::AlignLeft);
+    ui.cbFile->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
+    ui.cbFile->setMinimumContentsLength(12);
+    ui.cbFile->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    ui.cbSheet->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
+    ui.cbSheet->setMinimumContentsLength(12);
+    ui.cbSheet->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
     xlsxEditorModule = std::make_unique<cc::neolux::fem::XlsxEditorModule>(ui.vboxSheetEdit);
 
