@@ -46,14 +46,15 @@ YM      M9  MM    MM MM       MM    MM   d'  `MM.    MM            MM   d'  `MM.
 #ifndef OPENXLSX_XLCONTENTTYPES_HPP
 #define OPENXLSX_XLCONTENTTYPES_HPP
 
-#ifdef _MSC_VER    // conditionally enable MSVC specific pragmas to avoid other compilers warning about unknown pragmas
-#   pragma warning(push)
-#   pragma warning(disable : 4251)
-#   pragma warning(disable : 4275)
-#endif // _MSC_VER
+#ifdef _MSC_VER  // conditionally enable MSVC specific pragmas to avoid other compilers warning
+                 // about unknown pragmas
+#pragma warning(push)
+#pragma warning(disable : 4251)
+#pragma warning(disable : 4275)
+#endif  // _MSC_VER
 
 // ===== External Includes ===== //
-#include <cstdint> // uint8_t
+#include <cstdint>  // uint8_t
 #include <memory>
 #include <string>
 #include <vector>
@@ -63,202 +64,201 @@ YM      M9  MM    MM MM       MM    MM   d'  `MM.    MM            MM   d'  `MM.
 #include "XLXmlFile.hpp"
 #include "XLXmlParser.hpp"
 
-namespace OpenXLSX
-{
+namespace OpenXLSX {
+/**
+ * @brief
+ */
+enum class XLContentType : uint8_t {
+    Workbook,
+    Relationships,
+    WorkbookMacroEnabled,
+    Worksheet,
+    Chartsheet,
+    ExternalLink,
+    Theme,
+    Styles,
+    SharedStrings,
+    Drawing,
+    Chart,
+    ChartStyle,
+    ChartColorStyle,
+    ControlProperties,
+    CalculationChain,
+    VBAProject,
+    CoreProperties,
+    ExtendedProperties,
+    CustomProperties,
+    Comments,
+    Table,
+    VMLDrawing,
+    Unknown
+};
+
+/**
+ * @brief utility function: determine the name of an XLContentType value
+ * @param type the XLContentType to get a name for
+ * @return a string with the name of type
+ */
+std::string XLContentTypeToString(XLContentType type);
+
+/**
+ * @brief
+ */
+class OPENXLSX_EXPORT XLContentItem {
+    friend class XLContentTypes;
+
+public:  // ---------- Public Member Functions ---------- //
     /**
      * @brief
      */
-    enum class XLContentType : uint8_t {
-        Workbook,
-        Relationships,
-        WorkbookMacroEnabled,
-        Worksheet,
-        Chartsheet,
-        ExternalLink,
-        Theme,
-        Styles,
-        SharedStrings,
-        Drawing,
-        Chart,
-        ChartStyle,
-        ChartColorStyle,
-        ControlProperties,
-        CalculationChain,
-        VBAProject,
-        CoreProperties,
-        ExtendedProperties,
-        CustomProperties,
-        Comments,
-        Table,
-        VMLDrawing,
-        Unknown
-    };
+    XLContentItem();
 
     /**
-     * @brief utility function: determine the name of an XLContentType value
-     * @param type the XLContentType to get a name for
-     * @return a string with the name of type
+     * @brief
+     * @param node
      */
-    std::string XLContentTypeToString( XLContentType type );
+    explicit XLContentItem(const XMLNode& node);
 
     /**
      * @brief
      */
-    class OPENXLSX_EXPORT XLContentItem
-    {
-        friend class XLContentTypes;
-
-    public:    // ---------- Public Member Functions ---------- //
-        /**
-         * @brief
-         */
-        XLContentItem();
-
-        /**
-         * @brief
-         * @param node
-         */
-        explicit XLContentItem(const XMLNode& node);
-
-        /**
-         * @brief
-         */
-        ~XLContentItem();
-
-        /**
-         * @brief
-         * @param other
-         * @return
-         */
-        XLContentItem(const XLContentItem& other);
-
-        /**
-         * @brief
-         * @param other
-         * @return
-         */
-        XLContentItem(XLContentItem&& other) noexcept;
-
-        /**
-         * @brief
-         * @param other
-         * @return
-         */
-        XLContentItem& operator=(const XLContentItem& other);
-
-        /**
-         * @brief
-         * @param other
-         * @return
-         */
-        XLContentItem& operator=(XLContentItem&& other) noexcept;
-
-        /**
-         * @brief
-         * @return
-         */
-        XLContentType type() const;
-
-        /**
-         * @brief
-         * @return
-         */
-        std::string path() const;
-
-    private:
-        std::unique_ptr<XMLNode> m_contentNode; /**< */
-    };
-
-    // ================================================================================
-    // XLContentTypes Class
-    // ================================================================================
+    ~XLContentItem();
 
     /**
-     * @brief The purpose of this class is to load, store add and save item in the [Content_Types].xml file.
+     * @brief
+     * @param other
+     * @return
      */
-    class OPENXLSX_EXPORT XLContentTypes : public XLXmlFile
-    {
-    public:    // ---------- Public Member Functions ---------- //
-        /**
-         * @brief
-         */
-        XLContentTypes();
+    XLContentItem(const XLContentItem& other);
 
-        /**
-         * @brief
-         * @param xmlData
-         */
-        explicit XLContentTypes(XLXmlData* xmlData);
+    /**
+     * @brief
+     * @param other
+     * @return
+     */
+    XLContentItem(XLContentItem&& other) noexcept;
 
-        /**
-         * @brief Destructor
-         */
-        ~XLContentTypes();
+    /**
+     * @brief
+     * @param other
+     * @return
+     */
+    XLContentItem& operator=(const XLContentItem& other);
 
-        /**
-         * @brief
-         * @param other
-         */
-        XLContentTypes(const XLContentTypes& other);
+    /**
+     * @brief
+     * @param other
+     * @return
+     */
+    XLContentItem& operator=(XLContentItem&& other) noexcept;
 
-        /**
-         * @brief
-         * @param other
-         */
-        XLContentTypes(XLContentTypes&& other) noexcept;
+    /**
+     * @brief
+     * @return
+     */
+    XLContentType type() const;
 
-        /**
-         * @brief
-         * @param other
-         * @return
-         */
-        XLContentTypes& operator=(const XLContentTypes& other);
+    /**
+     * @brief
+     * @return
+     */
+    std::string path() const;
 
-        /**
-         * @brief
-         * @param other
-         * @return
-         */
-        XLContentTypes& operator=(XLContentTypes&& other) noexcept;
+private:
+    std::unique_ptr<XMLNode> m_contentNode; /**< */
+};
 
-        /**
-         * @brief Add a new override key/getValue pair to the data store.
-         * @param path The key
-         * @param type The getValue
-         */
-        void addOverride(const std::string& path, XLContentType type);
+// ================================================================================
+// XLContentTypes Class
+// ================================================================================
 
-        /**
-         * @brief
-         * @param path
-         */
-        void deleteOverride(const std::string& path);
+/**
+ * @brief The purpose of this class is to load, store add and save item in the [Content_Types].xml
+ * file.
+ */
+class OPENXLSX_EXPORT XLContentTypes : public XLXmlFile {
+public:  // ---------- Public Member Functions ---------- //
+    /**
+     * @brief
+     */
+    XLContentTypes();
 
-        /**
-         * @brief
-         * @param item
-         */
-        void deleteOverride(const XLContentItem& item);
+    /**
+     * @brief
+     * @param xmlData
+     */
+    explicit XLContentTypes(XLXmlData* xmlData);
 
-        /**
-         * @brief
-         * @param path
-         * @return
-         */
-        XLContentItem contentItem(const std::string& path);
+    /**
+     * @brief Destructor
+     */
+    ~XLContentTypes();
 
-        /**
-         * @brief
-         * @return
-         */
-        std::vector<XLContentItem> getContentItems();
+    /**
+     * @brief
+     * @param other
+     */
+    XLContentTypes(const XLContentTypes& other);
 
-    private:   // ---------- Private Member Variables ---------- //
-    };
-}    // namespace OpenXLSX
+    /**
+     * @brief
+     * @param other
+     */
+    XLContentTypes(XLContentTypes&& other) noexcept;
 
-#ifdef _MSC_VER    // conditionally enable MSVC specific pragmas to avoid other compilers warning about unknown pragmas
-#   pragma warning(pop)
-#endif // _MSC_VER
+    /**
+     * @brief
+     * @param other
+     * @return
+     */
+    XLContentTypes& operator=(const XLContentTypes& other);
 
-#endif    // OPENXLSX_XLCONTENTTYPES_HPP
+    /**
+     * @brief
+     * @param other
+     * @return
+     */
+    XLContentTypes& operator=(XLContentTypes&& other) noexcept;
+
+    /**
+     * @brief Add a new override key/getValue pair to the data store.
+     * @param path The key
+     * @param type The getValue
+     */
+    void addOverride(const std::string& path, XLContentType type);
+
+    /**
+     * @brief
+     * @param path
+     */
+    void deleteOverride(const std::string& path);
+
+    /**
+     * @brief
+     * @param item
+     */
+    void deleteOverride(const XLContentItem& item);
+
+    /**
+     * @brief
+     * @param path
+     * @return
+     */
+    XLContentItem contentItem(const std::string& path);
+
+    /**
+     * @brief
+     * @return
+     */
+    std::vector<XLContentItem> getContentItems();
+
+private:  // ---------- Private Member Variables ---------- //
+};
+}  // namespace OpenXLSX
+
+#ifdef _MSC_VER  // conditionally enable MSVC specific pragmas to avoid other compilers warning
+                 // about unknown pragmas
+#pragma warning(pop)
+#endif  // _MSC_VER
+
+#endif  // OPENXLSX_XLCONTENTTYPES_HPP

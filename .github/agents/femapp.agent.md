@@ -36,7 +36,7 @@ QT6 MINGW64: D:\Scoop Applications\apps\msys2\current\mingw64
 在当前文件夹检索文件夹名，有重复的或者检索不到则报错，* 表示通配符
 folder = *data*
 //在指定的文件夹检索文件名，有重复的或者检索不到则报错
-filename = *AT00580.27*  
+filename = *AT00580.27*
 //在excel中检索sheet，有重复的或者检索不到则报错
 sheet = *DNo.3*
 //dose的range和Excel对应的列

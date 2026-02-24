@@ -6,10 +6,10 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
 #ifndef NOWIDE_CSTDLIB_HPP_INCLUDED
-#    define NOWIDE_CSTDLIB_HPP_INCLUDED
+#define NOWIDE_CSTDLIB_HPP_INCLUDED
 
-#    include <nowide/cenv.hpp>
-#    include <nowide/system.hpp>
+#include <nowide/cenv.hpp>
+#include <nowide/system.hpp>
 
 #endif
 ///

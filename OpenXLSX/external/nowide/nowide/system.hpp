@@ -6,38 +6,36 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
 #ifndef NOWIDE_CSTDLIB_HPP
-#    define NOWIDE_CSTDLIB_HPP
+#define NOWIDE_CSTDLIB_HPP
 
-#    include <errno.h>
-#    include <nowide/stackstring.hpp>
-#    include <stdlib.h>
+#include <errno.h>
+#include <nowide/stackstring.hpp>
+#include <stdlib.h>
 
-namespace nowide
-{
-#    if !defined(NOWIDE_WINDOWS) && !defined(NOWIDE_DOXYGEN)
+namespace nowide {
+#if !defined(NOWIDE_WINDOWS) && !defined(NOWIDE_DOXYGEN)
 
-    using ::system;
+using ::system;
 
-#    else    // Windows
+#else  // Windows
 
-    ///
-    /// Same as std::system but cmd is UTF-8.
-    ///
-    /// If the input is not valid UTF-8, -1 returned and errno set to EINVAL
-    ///
-    inline int system(char const* cmd)
-    {
-        if (!cmd) return _wsystem(0);
-        wstackstring wcmd;
-        if (!wcmd.convert(cmd)) {
-            errno = EINVAL;
-            return -1;
-        }
-        return _wsystem(wcmd.c_str());
+///
+/// Same as std::system but cmd is UTF-8.
+///
+/// If the input is not valid UTF-8, -1 returned and errno set to EINVAL
+///
+inline int system(char const* cmd) {
+    if (!cmd) return _wsystem(0);
+    wstackstring wcmd;
+    if (!wcmd.convert(cmd)) {
+        errno = EINVAL;
+        return -1;
     }
+    return _wsystem(wcmd.c_str());
+}
 
-#    endif
-}    // namespace nowide
+#endif
+}  // namespace nowide
 
 #endif
 ///

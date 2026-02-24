@@ -16,10 +16,10 @@ Build
 
 ```bash
 # Generate for Windows Debug
-cmake -B build -G Ninja -DCMAKE_TOOLCHAIN_FILE=cmake/mingw64.cmake -DFEMAPP_ADD_WIN32=ON 
+cmake -B build -G Ninja -DCMAKE_TOOLCHAIN_FILE=cmake/mingw64.cmake -DFEMAPP_ADD_WIN32=ON
 
 # Generate for Linux while skipping RegEdit Debug
-cmake -B build -G Ninja -DFEMAPP_LINUX_BUILD_DEMO=ON 
+cmake -B build -G Ninja -DFEMAPP_LINUX_BUILD_DEMO=ON
 
 # Generate for Windows Release
 cmake -B build -G Ninja -DCMAKE_TOOLCHAIN_FILE=cmake/mingw64.cmake -DFEMAPP_ADD_WIN32=ON -DCMAKE_BUILD_TYPE=Release

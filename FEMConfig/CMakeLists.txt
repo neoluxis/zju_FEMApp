@@ -31,7 +31,7 @@ target_link_libraries(FEMConfig PRIVATE MiniXLSX)
 if(FEMCONFIG_BUILD_TEST)
 set(SOURCES_TEST
   test.cpp
-)  
+)
 
 add_executable(FEMConfig_test ${SOURCES_TEST})
 target_link_libraries(FEMConfig_test PRIVATE FEMConfig)

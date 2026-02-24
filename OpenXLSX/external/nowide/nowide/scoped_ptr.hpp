@@ -1,5 +1,5 @@
 #ifndef NOWIDE_SCOPED_PTR_HPP
-#    define NOWIDE_SCOPED_PTR_HPP
+#define NOWIDE_SCOPED_PTR_HPP
 
 //  (C) Copyright Greg Colvin and Beman Dawes 1998, 1999.
 //  Copyright (c) 2001, 2002 Peter Dimov,
@@ -12,77 +12,74 @@
 //  http://www.boost.org/libs/smart_ptr/scoped_ptr.htm
 //
 
-#    include <assert.h>
+#include <assert.h>
 
-namespace nowide
+namespace nowide {
+//  scoped_ptr mimics a built-in pointer except that it guarantees deletion
+//  of the object pointed to, either on destruction of the scoped_ptr or via
+//  an explicit reset(). scoped_ptr is a simple solution for simple needs;
+//  use shared_ptr or std::auto_ptr if your needs are more complex.
+
+template <class T>
+class scoped_ptr  // noncopyable
 {
-    //  scoped_ptr mimics a built-in pointer except that it guarantees deletion
-    //  of the object pointed to, either on destruction of the scoped_ptr or via
-    //  an explicit reset(). scoped_ptr is a simple solution for simple needs;
-    //  use shared_ptr or std::auto_ptr if your needs are more complex.
+private:
+    T* px;
 
-    template<class T>
-    class scoped_ptr    // noncopyable
+    scoped_ptr(scoped_ptr const&);
+    scoped_ptr& operator=(scoped_ptr const&);
+
+    typedef scoped_ptr<T> this_type;
+
+    void operator==(scoped_ptr const&) const;
+    void operator!=(scoped_ptr const&) const;
+
+public:
+    typedef T element_type;
+
+    explicit scoped_ptr(T* p = 0)
+        : px(p)  // never throws
+    {}
+
+    ~scoped_ptr()  // never throws
     {
-    private:
-        T* px;
+        delete px;
+    }
 
-        scoped_ptr(scoped_ptr const&);
-        scoped_ptr& operator=(scoped_ptr const&);
+    void reset(T* p = 0)  // never throws
+    {
+        assert(p == 0 || p != px);  // catch self-reset errors
+        this_type(p).swap(*this);
+    }
 
-        typedef scoped_ptr<T> this_type;
+    T& operator*() const  // never throws
+    {
+        assert(px != 0);
+        return *px;
+    }
 
-        void operator==(scoped_ptr const&) const;
-        void operator!=(scoped_ptr const&) const;
+    T* operator->() const  // never throws
+    {
+        assert(px != 0);
+        return px;
+    }
 
-    public:
-        typedef T element_type;
+    T* get() const  // never throws
+    {
+        return px;
+    }
 
-        explicit scoped_ptr(T* p = 0) : px(p)    // never throws
-        {}
+    operator bool() const { return px != 0; }
 
-        ~scoped_ptr()    // never throws
-        {
-            delete px;
-        }
+    void swap(scoped_ptr& b)  // never throws
+    {
+        T* tmp = b.px;
+        b.px = px;
+        px = tmp;
+    }
+};
 
-        void reset(T* p = 0)    // never throws
-        {
-            assert(p == 0 || p != px);    // catch self-reset errors
-            this_type(p).swap(*this);
-        }
-
-        T& operator*() const    // never throws
-        {
-            assert(px != 0);
-            return *px;
-        }
-
-        T* operator->() const    // never throws
-        {
-            assert(px != 0);
-            return px;
-        }
-
-        T* get() const    // never throws
-        {
-            return px;
-        }
-
-        operator bool() const
-        {
-            return px != 0;
-        }
-
-        void swap(scoped_ptr& b)    // never throws
-        {
-            T* tmp = b.px;
-            b.px   = px;
-            px     = tmp;
-        }
-    };
-
-}    // namespace nowide
+}  // namespace nowide
 
 #endif
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4

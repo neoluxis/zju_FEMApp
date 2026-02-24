@@ -53,23 +53,25 @@ YM      M9  MM    MM MM       MM    MM   d'  `MM.    MM            MM   d'  `MM.
 using namespace OpenXLSX;
 
 /**
- * @details The constructor creates a new object with the parent XLDocument and the file path as input, with
- * an optional input being a std::string with the XML data. If the XML data is provided by a string, any file with
- * the same path in the .zip file will be overwritten upon saving of the document. If no xmlData is provided,
- * the data will be read from the .zip file, using the given path.
+ * @details The constructor creates a new object with the parent XLDocument and the file path as
+ * input, with an optional input being a std::string with the XML data. If the XML data is provided
+ * by a string, any file with the same path in the .zip file will be overwritten upon saving of the
+ * document. If no xmlData is provided, the data will be read from the .zip file, using the given
+ * path.
  */
 XLXmlFile::XLXmlFile(XLXmlData* xmlData) : m_xmlData(xmlData) {}
 
 XLXmlFile::~XLXmlFile() = default;
 
 /**
- * @details This method sets the XML data with a std::string as input. The underlying XMLDocument reads the data.
- * When envoking the load_string method in PugiXML, the flag 'parse_ws_pcdata' is passed along with the default flags.
- * This will enable parsing of whitespace characters. If not set, Excel cells with only spaces will be returned as
- * empty strings, which is not what we want. The downside is that whitespace characters such as \\n and \\t in the
- * input xml file may mess up the parsing.
+ * @details This method sets the XML data with a std::string as input. The underlying XMLDocument
+ * reads the data. When envoking the load_string method in PugiXML, the flag 'parse_ws_pcdata' is
+ * passed along with the default flags. This will enable parsing of whitespace characters. If not
+ * set, Excel cells with only spaces will be returned as empty strings, which is not what we want.
+ * The downside is that whitespace characters such as \\n and \\t in the input xml file may mess up
+ * the parsing.
  */
-void XLXmlFile::setXmlData(const std::string& xmlData) // NOLINT
+void XLXmlFile::setXmlData(const std::string& xmlData)  // NOLINT
 {
     m_xmlData->setRawData(xmlData);
 }
@@ -77,56 +79,49 @@ void XLXmlFile::setXmlData(const std::string& xmlData) // NOLINT
 /**
  * @details This method retrieves the underlying XML data as a std::string.
  */
-std::string XLXmlFile::xmlData() const
-{
+std::string XLXmlFile::xmlData() const {
     return m_xmlData->getRawData();
 }
 
 /**
  * @details
  */
-const XLDocument& XLXmlFile::parentDoc() const
-{
+const XLDocument& XLXmlFile::parentDoc() const {
     return *m_xmlData->getParentDoc();
 }
 
 /**
  * @details
  */
-XLDocument& XLXmlFile::parentDoc()
-{
+XLDocument& XLXmlFile::parentDoc() {
     return *m_xmlData->getParentDoc();
 }
 
 /**
  * @details
  */
-std::string XLXmlFile::relationshipID() const
-{
+std::string XLXmlFile::relationshipID() const {
     return m_xmlData->getXmlID();
 }
 
 /**
  * @details This method returns a pointer to the underlying XMLDocument resource.
  */
-XMLDocument& XLXmlFile::xmlDocument()
-{
-    return const_cast<XMLDocument&>(static_cast<const XLXmlFile*>(this)->xmlDocument());    // NOLINT
+XMLDocument& XLXmlFile::xmlDocument() {
+    return const_cast<XMLDocument&>(static_cast<const XLXmlFile*>(this)->xmlDocument());  // NOLINT
     // return *m_xmlData->getXmlDocument();    // <- why not this easy version?
 }
 
 /**
  * @details This method returns a pointer to the underlying XMLDocument resource as const.
  */
-const XMLDocument& XLXmlFile::xmlDocument() const
-{
+const XMLDocument& XLXmlFile::xmlDocument() const {
     return *m_xmlData->getXmlDocument();
 }
 
 /**
  * @details provide access to the underlying XLXmlData::getXmlPath() function
  */
-std::string XLXmlFile::getXmlPath() const
-{
+std::string XLXmlFile::getXmlPath() const {
     return m_xmlData == nullptr ? "" : m_xmlData->getXmlPath();
 }

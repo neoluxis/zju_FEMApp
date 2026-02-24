@@ -7,15 +7,17 @@
 
 #include <string>
 #include <vector>
+
 #include "cc/neolux/utils/MiniXLSX/OpenXLSXWrapper.hpp"
 
 namespace cc::neolux::fem {
-  class XlsxProc {
-  public:
-    static std::vector<std::string> GetSheetNames(const std::string &filePath);
-  private:
-  };
+class XlsxProc {
+public:
+    static std::vector<std::string> GetSheetNames(const std::string& filePath);
 
-}
+private:
+};
 
-#endif //FEMAPP_XLSX_PROC_H
+}  // namespace cc::neolux::fem
+
+#endif  // FEMAPP_XLSX_PROC_H

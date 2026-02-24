@@ -5,11 +5,10 @@
 #ifndef OPENXLSX_XLITERATOR_HPP
 #define OPENXLSX_XLITERATOR_HPP
 
-namespace OpenXLSX
-{
-    enum class XLIteratorDirection { Forward, Reverse };
-    enum class XLIteratorLocation { Begin, End };
+namespace OpenXLSX {
+enum class XLIteratorDirection { Forward, Reverse };
+enum class XLIteratorLocation { Begin, End };
 
-}    // namespace OpenXLSX
+}  // namespace OpenXLSX
 
-#endif    // OPENXLSX_XLITERATOR_HPP
+#endif  // OPENXLSX_XLITERATOR_HPP

@@ -64,41 +64,38 @@ XLZipArchive::~XLZipArchive() = default;
 /**
  * @details
  */
-XLZipArchive::operator bool() const
-{
+XLZipArchive::operator bool() const {
     return isValid();
 }
 
-bool XLZipArchive::isValid() const { return m_archive != nullptr; }
+bool XLZipArchive::isValid() const {
+    return m_archive != nullptr;
+}
 
 /**
  * @details
  */
-bool XLZipArchive::isOpen() const
-{
+bool XLZipArchive::isOpen() const {
     return m_archive && m_archive->IsOpen();
 }
 
 /**
  * @details
  */
-void XLZipArchive::open(const std::string& fileName)
-{
+void XLZipArchive::open(const std::string& fileName) {
     m_archive = std::make_shared<Zippy::ZipArchive>();
     try {
         m_archive->Open(fileName);
-    }
-    catch( ... ) {    // catch all exceptions
-        m_archive.reset();    // make m_archive invalid again
-        throw;                // re-throw
+    } catch (...) {         // catch all exceptions
+        m_archive.reset();  // make m_archive invalid again
+        throw;              // re-throw
     }
 }
 
 /**
  * @details
  */
-void XLZipArchive::close()
-{
+void XLZipArchive::close() {
     m_archive->Close();
     m_archive.reset();
 }
@@ -106,7 +103,7 @@ void XLZipArchive::close()
 /**
  * @details
  */
-void XLZipArchive::save(const std::string& path) // NOLINT
+void XLZipArchive::save(const std::string& path)  // NOLINT
 {
     m_archive->Save(path);
 }
@@ -114,7 +111,7 @@ void XLZipArchive::save(const std::string& path) // NOLINT
 /**
  * @details
  */
-void XLZipArchive::addEntry(const std::string& name, const std::string& data) // NOLINT
+void XLZipArchive::addEntry(const std::string& name, const std::string& data)  // NOLINT
 {
     m_archive->AddEntry(name, data);
 }
@@ -122,7 +119,7 @@ void XLZipArchive::addEntry(const std::string& name, const std::string& data) //
 /**
  * @details
  */
-void XLZipArchive::deleteEntry(const std::string& entryName) // NOLINT
+void XLZipArchive::deleteEntry(const std::string& entryName)  // NOLINT
 {
     m_archive->DeleteEntry(entryName);
 }

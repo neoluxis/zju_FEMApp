@@ -1,6 +1,6 @@
 # Windows Qt6 from MSYS2 D:/Scoop/apps/msys2 installation + MinGW64 toolchain
 # Complete self-contained configuration - no other includes needed
-# 
+#
 # Usage:
 #   In CMakeLists.txt: include(${CMAKE_SOURCE_DIR}/cmake/WindowsMsys2Qt.cmake)
 #   Command line: cmake .. -G Ninja -DQT_ROOT_DIR="D:/Scoop/apps/msys2/current/mingw64" -DMINGW_ROOT="D:/Scoop/apps/msys2/current/mingw64"
@@ -65,15 +65,15 @@ message(STATUS "Using system GCC from PATH (scoop installed)")
 # This function will be called after target is created
 function(deploy_qt_dependencies target)
     set(DEPLOY_DIR $<TARGET_FILE_DIR:${target}>)
-    
+
     # Find windeployqt executable
     find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${QT_BIN_DIR}")
-    
+
     if(NOT WINDEPLOYQT_EXECUTABLE)
         message(WARNING "windeployqt not found. Qt dependencies may not be deployed correctly.")
     else()
         message(STATUS "Found windeployqt: ${WINDEPLOYQT_EXECUTABLE}")
-        
+
         # Run windeployqt to automatically copy all Qt dependencies
         add_custom_command(TARGET ${target} POST_BUILD
             COMMAND "${WINDEPLOYQT_EXECUTABLE}"
@@ -85,6 +85,6 @@ function(deploy_qt_dependencies target)
             VERBATIM
         )
     endif()
-    
+
     message(STATUS "Deployment configured for target: ${target}")
 endfunction()

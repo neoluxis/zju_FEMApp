@@ -9,15 +9,17 @@
         <translation type="unfinished">数据项</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/DataItem.ui" line="48"/>
-        <location filename="../XLSXEditor/src/DataItem.cpp" line="56"/>
         <source>Delete</source>
-        <translation type="unfinished">删除</translation>
+        <translation type="obsolete">删除</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/DataItem.cpp" line="52"/>
         <source>Restore</source>
-        <translation type="unfinished">恢复</translation>
+        <translation type="obsolete">恢复</translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/DataItem.cpp" line="38"/>
+        <source>Double-click to keep/remove</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -299,60 +301,68 @@
     </message>
     <message>
         <location filename="../XLSXEditor/src/XLSXEditor.ui" line="22"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="326"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="455"/>
+        <source>Preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Restore</source>
-        <translation type="unfinished">恢复全部</translation>
+        <translation type="obsolete">恢复全部</translation>
     </message>
     <message>
         <location filename="../XLSXEditor/src/XLSXEditor.ui" line="29"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="317"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="337"/>
         <source>Save</source>
         <translation type="unfinished">保存</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="72"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="78"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="93"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="83"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="89"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="104"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="72"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="83"/>
         <source>Failed to open XLSX file.</source>
         <translation type="unfinished">打开 XLSX 文件失败</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="78"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="89"/>
         <source>Failed to prepare picture reader.</source>
         <translation type="unfinished">准备图片读取器失败</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="93"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="104"/>
         <source>Sheet not found: %1</source>
         <translation type="unfinished">表未找到: %1</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="317"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="337"/>
         <source>Data saved to XLSX.</source>
         <translation type="unfinished">数据已保存到 XLSX。</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="319"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="339"/>
         <source>Save Error</source>
         <translation type="unfinished">保存错误</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="319"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="339"/>
         <source>Failed to save data to XLSX.</source>
         <translation type="unfinished">保存数据到 XLSX 失败。</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="326"/>
-        <source>Data restored.</source>
-        <translation type="unfinished">数据已恢复。</translation>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="455"/>
+        <source>Show All</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="377"/>
+        <source>Data restored.</source>
+        <translation type="obsolete">数据已恢复。</translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="423"/>
         <source>Image Preview</source>
         <translation type="unfinished">图片预览</translation>
     </message>

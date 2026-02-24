@@ -62,10 +62,10 @@ message(STATUS "MinGW bin: ${MINGW_BIN_DIR}")
 # This function will be called after target is created
 function(deploy_qt_dependencies target)
     set(DEPLOY_DIR $<TARGET_FILE_DIR:${target}>)
-    
+
     # For cross-compilation, manually copy required DLLs
     # (windeployqt doesn't work in cross-compilation environment)
-    
+
 
     # Copy Qt DLLs
     add_custom_command(TARGET ${target} POST_BUILD
@@ -76,7 +76,7 @@ function(deploy_qt_dependencies target)
             ${DEPLOY_DIR}
         COMMENT "Copying Qt DLLs"
     )
-    
+
     # Copy Qt platform plugin
     add_custom_command(TARGET ${target} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory ${DEPLOY_DIR}/platforms
@@ -85,21 +85,21 @@ function(deploy_qt_dependencies target)
             ${DEPLOY_DIR}/platforms/
         COMMENT "Copying Qt platform plugin"
     )
-    
+
     # Copy MinGW runtime DLLs
-    file(GLOB MINGW_DLLS 
+    file(GLOB MINGW_DLLS
         "${MINGW_BIN_DIR}/libgcc_*.dll"
         "${MINGW_BIN_DIR}/libstdc++*.dll"
         "${MINGW_BIN_DIR}/libwinpthread*.dll"
     )
-    
+
     if(MINGW_DLLS)
         add_custom_command(TARGET ${target} POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different ${MINGW_DLLS} ${DEPLOY_DIR}
             COMMENT "Copying MinGW runtime DLLs"
         )
     endif()
-    
+
     # Create qt.conf
     file(WRITE "${CMAKE_BINARY_DIR}/qt.conf" "[Paths]\nPlugins = .\n")
     add_custom_command(TARGET ${target} POST_BUILD
@@ -108,7 +108,7 @@ function(deploy_qt_dependencies target)
             ${DEPLOY_DIR}/qt.conf
         COMMENT "Creating qt.conf"
     )
-    
+
     message(STATUS "Deployment configured for target: ${target}")
 endfunction()
 
