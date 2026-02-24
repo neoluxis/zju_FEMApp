@@ -17,92 +17,92 @@
 <context>
     <name>FemApp</name>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="98"/>
+        <location filename="../fem/src/femapp.cpp" line="110"/>
         <source>Unsaved Changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="99"/>
+        <location filename="../fem/src/femapp.cpp" line="111"/>
         <source>You have unsaved changes. Do you want to save before closing?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="158"/>
+        <location filename="../fem/src/femapp.cpp" line="167"/>
         <source>No folders matched the folder pattern. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="162"/>
+        <location filename="../fem/src/femapp.cpp" line="171"/>
         <source>Multiple folders matched the folder pattern. Please ensure only one folder matches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="187"/>
+        <location filename="../fem/src/femapp.cpp" line="197"/>
         <source>No filenames matched the filename pattern.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="193"/>
+        <location filename="../fem/src/femapp.cpp" line="203"/>
         <source>Multiple filenames matched the filename pattern. Please ensure only one filename matches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="250"/>
+        <location filename="../fem/src/femapp.cpp" line="258"/>
         <source>No sheets matched the sheet pattern. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="254"/>
+        <location filename="../fem/src/femapp.cpp" line="264"/>
         <source>Multiple sheets matched the sheet pattern. Please ensure only one sheet matches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="287"/>
+        <location filename="../fem/src/femapp.cpp" line="297"/>
         <source>Failed to read Excel file: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp_slots.cpp" line="16"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="14"/>
         <source>Open FEM Config File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp_slots.cpp" line="18"/>
-        <location filename="../fem/src/femapp_slots.cpp" line="51"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="15"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="46"/>
         <source>FEM Config Files (*.fem);;All Files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp_slots.cpp" line="30"/>
-        <location filename="../fem/src/femapp_slots.cpp" line="59"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="27"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="54"/>
         <source>Failed to generate FEM config content.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp_slots.cpp" line="39"/>
-        <location filename="../fem/src/femapp_slots.cpp" line="68"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="36"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="63"/>
         <source>Failed to save FEM config file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp_slots.cpp" line="49"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="45"/>
         <source>Save FEM Config File As</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp_slots.cpp" line="79"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="73"/>
         <source>Select Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp_slots.cpp" line="249"/>
+        <location filename="../fem/src/femapp_slots.cpp" line="240"/>
         <source>Failed to parse raw FEM config content.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="14"/>
-        <location filename="../fem/src/femapp.cpp" line="352"/>
-        <location filename="../fem/src/femapp.cpp" line="359"/>
+        <location filename="../fem/src/femapp.cpp" line="362"/>
+        <location filename="../fem/src/femapp.cpp" line="369"/>
         <source>FemApp</source>
         <translation type="unfinished"></translation>
     </message>
@@ -265,17 +265,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="18"/>
+        <location filename="../fem/src/femapp.cpp" line="17"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="22"/>
+        <location filename="../fem/src/femapp.cpp" line="21"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="26"/>
+        <location filename="../fem/src/femapp.cpp" line="25"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
@@ -289,60 +289,70 @@
     </message>
     <message>
         <location filename="../XLSXEditor/src/XLSXEditor.ui" line="22"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="455"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="741"/>
         <source>Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../XLSXEditor/src/XLSXEditor.ui" line="29"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="337"/>
+        <source>Select All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.ui" line="39"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="356"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="83"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="89"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="104"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="93"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="99"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="114"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="83"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="93"/>
         <source>Failed to open XLSX file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="89"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="99"/>
         <source>Failed to prepare picture reader.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="104"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="114"/>
         <source>Sheet not found: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="337"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="356"/>
         <source>Data saved to XLSX.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="339"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="358"/>
         <source>Save Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="339"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="358"/>
         <source>Failed to save data to XLSX.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="455"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="437"/>
+        <source>Saving... %p%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="741"/>
         <source>Show All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="423"/>
+        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="709"/>
         <source>Image Preview</source>
         <translation type="unfinished"></translation>
     </message>

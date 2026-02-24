@@ -10,3 +10,6 @@ package-*/
 package_*/
 package*.zip
 package*.tar.gz
+
+# Qt Linguist files
+*.qm

@@ -50,7 +50,10 @@ Package
 
 ```bash
 mkdir -pv package
-cp -rv ./build/{FemApp.exe,*.dll,platforms,translations} package
+cp -rv ./build/{FemApp.exe,*.dll,platforms,transla┌─[neolux@neoluxeische] - [~/workspace/FEM/FemApp/XLSXEditor] - [2026-02-24 10:44:37]
+└─[0] <git:(main 952a97d) > ./build/XLSXEditor_test assets/test.xlsx
+Running in REAL-DELETE mode (will delete pictures and definitions)
+OpenXLSXWrapper::open error: Path xl/sharedStrings.xml does not exist in zip archive.tions} package
 windeployqt6 package/FemApp.exe # Installed in system or in Wine or Copy from Windows
 zip package.zip package -r
 ```
