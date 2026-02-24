@@ -38,6 +38,7 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
     ui.cbSheet->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
     xlsxEditorModule = std::make_unique<cc::neolux::fem::XlsxEditorModule>(ui.vboxSheetEdit);
+    xlsxEditorModule->setDryRun(ui.chkDryRun->isChecked());
 
     connect(ui.btnLoad, &QPushButton::clicked, this, &FemApp::onLoadClicked);
     connect(ui.btnSave, &QPushButton::clicked, this, &FemApp::onSaveClicked);
@@ -77,6 +78,11 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
     connect(ui.btnTxtApply, &QPushButton::clicked, this, &FemApp::onTxtApplyClicked);
     connect(ui.txtConfigRaw, &QPlainTextEdit::textChanged, this, &FemApp::onRawFileEdited);
     connect(ui.btnRefreshEditor, &QPushButton::clicked, this, &FemApp::onRefreshEditorClicked);
+    connect(ui.chkDryRun, &QCheckBox::toggled, this, [this](bool checked) {
+        if (xlsxEditorModule) {
+            xlsxEditorModule->setDryRun(checked);
+        }
+    });
 
     // Setup keyboard shortcuts
     // Ctrl+Q to exit
@@ -382,6 +388,7 @@ void FemApp::refreshXlsxEditor() {
     if (!xlsxEditorModule) {
         return;
     }
+    xlsxEditorModule->setDryRun(ui.chkDryRun->isChecked());
     QString filePath = getCurrentSelectedFile();
     QString sheetName = ui.cbSheet->currentText();
     QString cols = QString::fromUtf8(femdata.dose.cols.c_str());

@@ -37,6 +37,20 @@ void XlsxEditorModule::load(const QString& filePath, const QString& sheetName,
     editor_->loadXLSX(filePath, sheetName, range);
 }
 
+void XlsxEditorModule::setDryRun(bool dryRun) {
+    if (!editor_) {
+        return;
+    }
+    editor_->setDryRun(dryRun);
+}
+
+bool XlsxEditorModule::isDryRun() const {
+    if (!editor_) {
+        return true;
+    }
+    return editor_->isDryRun();
+}
+
 void XlsxEditorModule::clear() {
     if (!editor_) {
         return;

@@ -28,6 +28,17 @@ public:
     void load(const QString& filePath, const QString& sheetName, const QString& range);
 
     /**
+     * @brief 设置保存模式
+     * @param dryRun true 为假删除（仅标记），false 为真删除（真实写回删除）
+     */
+    void setDryRun(bool dryRun);
+
+    /**
+     * @brief 查询当前是否为假删除模式
+     */
+    bool isDryRun() const;
+
+    /**
      * @brief 清空当前显示
      */
     void clear();
