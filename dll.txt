@@ -33,3 +33,5 @@ libXLSXEditor.dll
 libFileAssocLib.dll
 libProjectControlWidget.dll
 libRecent.dll
+libMultiPrjWs.dll
+libProjectControlWidget.dll
