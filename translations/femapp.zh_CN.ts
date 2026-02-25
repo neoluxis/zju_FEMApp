@@ -19,62 +19,14 @@
         <translation>FemApp</translation>
     </message>
     <message>
-        <source>Project Setting</source>
-        <translation type="vanished">项目设置</translation>
-    </message>
-    <message>
-        <source>Load</source>
-        <translation type="vanished">加载</translation>
-    </message>
-    <message>
         <location filename="../fem/src/femapp.cpp" line="175"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <source>Save As</source>
-        <translation type="vanished">另存为</translation>
-    </message>
-    <message>
-        <source>Folder</source>
-        <translation type="vanished">文件夹</translation>
-    </message>
-    <message>
-        <source>Browse</source>
-        <translation type="vanished">浏览</translation>
-    </message>
-    <message>
-        <source>Match</source>
-        <translation type="vanished">匹配</translation>
-    </message>
-    <message>
         <location filename="../fem/src/femapp.cpp" line="172"/>
         <source>File</source>
         <translation>文件</translation>
-    </message>
-    <message>
-        <source>Sheet</source>
-        <translation type="vanished">表</translation>
-    </message>
-    <message>
-        <source>Refresh Editor</source>
-        <translation type="vanished">刷新编辑器</translation>
-    </message>
-    <message>
-        <source>Dry Run</source>
-        <translation type="vanished">模拟运行</translation>
-    </message>
-    <message>
-        <source>Text</source>
-        <translation type="vanished">文本编辑</translation>
-    </message>
-    <message>
-        <source>Reset</source>
-        <translation type="vanished">重置</translation>
-    </message>
-    <message>
-        <source>Apply</source>
-        <translation type="vanished">应用</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="287"/>
@@ -85,10 +37,6 @@
         <location filename="../fem/src/femapp.cpp" line="291"/>
         <source>Multiple folders matched the folder pattern. Please ensure only one folder matches.</source>
         <translation>匹配到多个文件夹，请确保只有一个文件夹匹配</translation>
-    </message>
-    <message>
-        <source>No filenames matched the filename pattern. </source>
-        <translation type="vanished">没有匹配到任何文件</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="173"/>
@@ -123,17 +71,17 @@
     <message>
         <location filename="../fem/src/femapp.cpp" line="248"/>
         <source>Config file path is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>配置文件路径为空。</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="255"/>
         <source>Config file does not exist: </source>
-        <translation type="unfinished"></translation>
+        <translation>配置文件不存在：</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="265"/>
         <source>Failed to read FEM config file.</source>
-        <translation type="unfinished"></translation>
+        <translation>读取 FEM 配置文件失败。</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="317"/>
@@ -220,18 +168,6 @@
         <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="31"/>
         <source>Project Setting</source>
         <translation type="unfinished">项目设置</translation>
-    </message>
-    <message>
-        <source>Load</source>
-        <translation type="obsolete">加载</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation type="obsolete">保存</translation>
-    </message>
-    <message>
-        <source>Save As</source>
-        <translation type="obsolete">另存为</translation>
     </message>
     <message>
         <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="49"/>
