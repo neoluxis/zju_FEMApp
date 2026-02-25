@@ -65,6 +65,8 @@ private:
     QAction* workspaceConfigAction = nullptr;
     bool workspaceMode = false;
     QString currentWorkspaceFilePath;
+    bool relaxPatternMatchValidation = false;
+    bool skipAutoRefreshEditorOnce = false;
 
     void updateFileLabel();  // Update labelFEMFile with current filename and modification status
     void setWorkspaceMode(bool enabled);
@@ -75,6 +77,8 @@ private:
     void clearModifiedFlag();  // Clear modified flag and update label
     void refreshXlsxEditor();  // Refresh XLSX editor content
     void applyRawConfigText();
+    void createNewProject();
+    void createNewWorkspace();
     void loadConfigFromDialog();
     void saveCurrentConfig();
     void saveCurrentConfigAs();

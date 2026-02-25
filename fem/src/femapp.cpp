@@ -19,6 +19,35 @@
 using cc::neolux::femconfig::FEMConfig;
 namespace app = cc::neolux::fem;
 
+namespace {
+cc::neolux::femconfig::FEMData BuildDefaultFemData() {
+    cc::neolux::femconfig::FEMData data;
+    data.folderPattern = ".";
+    data.filenamePattern = "*.xlsx";
+    data.sheetPattern = "*";
+
+    data.dose.mode = "LowHigh";
+    data.dose.unit = "mJ/cm2";
+    data.dose.center = 0;
+    data.dose.step = 0.05;
+    data.dose.no = 23;
+    data.dose.cols = "B:K";
+
+    data.focus.mode = "NegPos2";
+    data.focus.unit = "um";
+    data.focus.center = 0;
+    data.focus.step = 0.03;
+    data.focus.no = 29;
+    data.focus.rows = "3:60";
+
+    data.fem.mode = "Focus2DoseLinear";
+    data.fem.unit = "mJ/cm2";
+    data.fem.target = 80;
+    data.fem.spec = 5;
+    return data;
+}
+}  // namespace
+
 void FemApp::showError(QWidget* parent, const QString& text) {
     QMessageBox::critical(parent, tr("Error"), text, QMessageBox::Ok);
 }
@@ -169,7 +198,12 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
             this, [this]() { markAsModified(); });
     connect(projectControlWidget,
             &cc::neolux::projectcontrol::ProjectControlWidget::refreshEditorClicked, this,
-            [this]() { refreshXlsxEditor(); });
+            [this]() {
+                if (relaxPatternMatchValidation) {
+                    relaxPatternMatchValidation = false;
+                }
+                refreshXlsxEditor();
+            });
     connect(projectControlWidget, &cc::neolux::projectcontrol::ProjectControlWidget::dryRunToggled,
             this, [this](bool checked) {
                 if (xlsxEditorModule) {
@@ -180,6 +214,11 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
             [this](const QString& projectFilePath) { loadFEMConfig(projectFilePath); });
 
     auto* fileMenu = ui.menuBar->addMenu(tr("File"));
+    auto* newMenu = fileMenu->addMenu(tr("New"));
+    auto* actionNewProject = newMenu->addAction(tr("Project"));
+    auto* actionNewWorkspace = newMenu->addAction(tr("Workspace"));
+    fileMenu->addSeparator();
+
     auto* actionOpenProject = fileMenu->addAction(tr("Open Project..."));
     workspaceConfigAction = fileMenu->addAction(tr("Workspace Config..."));
     recentMenu = fileMenu->addMenu(tr("Recent"));
@@ -188,6 +227,8 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
     fileMenu->addSeparator();
     auto* actionExit = fileMenu->addAction(tr("Exit"));
 
+    connect(actionNewProject, &QAction::triggered, this, [this]() { createNewProject(); });
+    connect(actionNewWorkspace, &QAction::triggered, this, [this]() { createNewWorkspace(); });
     connect(actionOpenProject, &QAction::triggered, this, [this]() { loadConfigFromDialog(); });
     connect(workspaceConfigAction, &QAction::triggered, this,
             [this]() { openMultiProjectWorkspaceConfig(); });
@@ -391,13 +432,18 @@ std::string FemApp::getFolderMatched() {
         qDebug() << "  " << QString::fromUtf8(folder.c_str());
     }
     if (folders.empty()) {
-        showError(this, tr("No folders matched the folder pattern. "));
+        if (!relaxPatternMatchValidation) {
+            showError(this, tr("No folders matched the folder pattern. "));
+        }
         return "";
     }
     if (folders.size() > 1) {
-        showError(this, tr("Multiple folders matched the folder pattern. Please ensure only one "
-                           "folder matches."));
-        return "";
+        if (!relaxPatternMatchValidation) {
+            showError(this,
+                      tr("Multiple folders matched the folder pattern. Please ensure only one "
+                         "folder matches."));
+            return "";
+        }
     }
     // 只处理第一个匹配到的文件夹
     auto folder = folders.front();
@@ -421,21 +467,27 @@ std::string FemApp::getFileMatched(std::string folder) {
 
     // 若没有匹配的文件
     if (filenames.empty()) {
-        showError(this, tr("No filenames matched the filename pattern."));
+        if (!relaxPatternMatchValidation) {
+            showError(this, tr("No filenames matched the filename pattern."));
+        }
         return "";
     }
 
+    // 更新文件列表（只显示文件名）
+    this->updateFileList(folder);
+
     // 如果有多个文件匹配
     if (filenames.size() > 1) {
-        showError(this, tr("Multiple filenames matched the filename pattern. Please ensure only "
-                           "one filename matches."));
-        return "";
+        if (!relaxPatternMatchValidation) {
+            showError(this,
+                      tr("Multiple filenames matched the filename pattern. Please ensure only "
+                         "one filename matches."));
+            return "";
+        }
     }
 
     // 获取匹配的文件路径
     auto file = filenames.front();
-    // 更新文件列表（只显示文件名）
-    this->updateFileList(folder);
 
     // 从路径获取文件名
     QFileInfo fileInfo(QString::fromUtf8(file.c_str()));
@@ -481,19 +533,25 @@ std::string FemApp::getSheetMatched(std::string filename) {
     for (const auto& sheet : sheets) {
         qDebug() << "  " << QString::fromUtf8(sheet.c_str());
     }
+
+    // 先填入工作表列表，避免在多匹配时中断 UI 选项初始化
+    this->updateSheetList(filename);
+
     if (sheets.empty()) {
-        showError(this, tr("No sheets matched the sheet pattern. "));
+        if (!relaxPatternMatchValidation) {
+            showError(this, tr("No sheets matched the sheet pattern. "));
+        }
         return "";
     }
     if (sheets.size() > 1) {
-        showError(
-            this,
-            tr("Multiple sheets matched the sheet pattern. Please ensure only one sheet matches."));
-        return "";
+        if (!relaxPatternMatchValidation) {
+            showError(this, tr("Multiple sheets matched the sheet pattern. Please ensure only one "
+                               "sheet matches."));
+            return "";
+        }
     }
 
-    // 填入工作表列表，并默认选中匹配到的项
-    this->updateSheetList(filename);
+    // 默认选中匹配到的第一项
     QString matchedSheet = QString::fromUtf8(sheets.front().c_str());
     int index = projectControlWidget->findSheetText(matchedSheet);
     if (index >= 0) {
@@ -581,7 +639,11 @@ void FemApp::onLoadFile() {
     // Clear loading flag after all controls are updated
     isLoading = false;
     // 在所有配置加载并初始化完成后，自动刷新一次编辑器（仅在未发生错误时到达此处）
-    refreshXlsxEditor();
+    if (skipAutoRefreshEditorOnce) {
+        skipAutoRefreshEditorOnce = false;
+    } else {
+        refreshXlsxEditor();
+    }
 }
 
 void FemApp::updateFileLabel() {
@@ -700,6 +762,87 @@ void FemApp::applyRawConfigText() {
     this->onLoadFile();
 }
 
+void FemApp::createNewProject() {
+    QString projectPath =
+        QFileDialog::getSaveFileName(this, tr("Create New FEM Project"), QDir::currentPath(),
+                                     tr("FEM Config Files (*.fem);;All Files (*)"));
+    if (projectPath.isEmpty()) {
+        return;
+    }
+
+    QFileInfo projectInfo(projectPath);
+    if (projectInfo.suffix().isEmpty()) {
+        projectPath += ".fem";
+    }
+    const QString absoluteProjectPath = QFileInfo(projectPath).absoluteFilePath();
+
+    cc::neolux::femconfig::FEMData newData = BuildDefaultFemData();
+    if (!cc::neolux::femconfig::FEMConfig::dumpFEMData(
+            newData, absoluteProjectPath.toUtf8().toStdString())) {
+        showError(this, tr("Failed to create FEM config file."));
+        return;
+    }
+
+    relaxPatternMatchValidation = true;
+    skipAutoRefreshEditorOnce = true;
+    openSingleProject(absoluteProjectPath);
+}
+
+void FemApp::createNewWorkspace() {
+    QString workspacePath =
+        QFileDialog::getSaveFileName(this, tr("Create New Workspace File"), QDir::currentPath(),
+                                     tr("Workspace Files (*.femmpw);;All Files (*)"));
+    if (workspacePath.isEmpty()) {
+        return;
+    }
+
+    QFileInfo workspaceInfo(workspacePath);
+    if (workspaceInfo.suffix().isEmpty()) {
+        workspacePath += ".femmpw";
+        workspaceInfo = QFileInfo(workspacePath);
+    }
+
+    const QString absoluteWorkspacePath = workspaceInfo.absoluteFilePath();
+    const QDir workspaceDir = workspaceInfo.absoluteDir();
+    const QString baseName = workspaceInfo.completeBaseName().isEmpty()
+                                 ? QStringLiteral("workspace")
+                                 : workspaceInfo.completeBaseName();
+
+    QString projectName = baseName + "_project.fem";
+    QString absoluteProjectPath = workspaceDir.filePath(projectName);
+    int index = 1;
+    while (QFileInfo::exists(absoluteProjectPath)) {
+        projectName = QString("%1_project_%2.fem").arg(baseName).arg(index++);
+        absoluteProjectPath = workspaceDir.filePath(projectName);
+    }
+
+    cc::neolux::femconfig::FEMData newProjectData = BuildDefaultFemData();
+    if (!cc::neolux::femconfig::FEMConfig::dumpFEMData(
+            newProjectData, absoluteProjectPath.toUtf8().toStdString())) {
+        showError(this, tr("Failed to create FEM config file."));
+        return;
+    }
+
+    cc::neolux::fem::mpw::MultiProjectWorkspaceData workspaceData;
+    workspaceData.workspaceName = baseName;
+
+    cc::neolux::fem::mpw::WorkspaceProjectItem item;
+    item.projectFilePath = workspaceDir.relativeFilePath(absoluteProjectPath);
+    item.displayName = QFileInfo(absoluteProjectPath).fileName();
+    item.note = QString();
+    item.enabled = true;
+    workspaceData.projects.append(item);
+
+    QString errorMessage;
+    if (!cc::neolux::fem::mpw::MultiProjectWorkspace::WriteFile(absoluteWorkspacePath,
+                                                                workspaceData, &errorMessage)) {
+        showError(this, errorMessage);
+        return;
+    }
+
+    loadMultiProjectWorkspace(absoluteWorkspacePath);
+}
+
 void FemApp::loadConfigFromDialog() {
     QString femconfig_path =
         QFileDialog::getOpenFileName(this, tr("Open FEM Config File"), QDir::currentPath(),
@@ -792,6 +935,25 @@ void FemApp::setFolderPattern(const QString& text) {
     femdata.folderPattern = text.toUtf8().toStdString();
     markAsModified();
     qInfo() << "Folder pattern changed to " << text;
+
+    if (isLoading || !relaxPatternMatchValidation) {
+        return;
+    }
+
+    const std::string matchedFolder = getFolderMatched();
+    if (matchedFolder.empty()) {
+        projectControlWidget->clearFiles();
+        projectControlWidget->clearSheets();
+        return;
+    }
+
+    updateFileList(matchedFolder);
+    const QString selectedFile = getCurrentSelectedFile();
+    if (!selectedFile.isEmpty()) {
+        updateSheetList(selectedFile.toUtf8().toStdString());
+    } else {
+        projectControlWidget->clearSheets();
+    }
 }
 
 void FemApp::setFilenamePattern(const QString& text) {
@@ -800,6 +962,16 @@ void FemApp::setFilenamePattern(const QString& text) {
     qInfo() << "File pattern changed to " << text;
 
     if (isLoading) {
+        return;
+    }
+
+    if (relaxPatternMatchValidation) {
+        QString selectedFile = getCurrentSelectedFile();
+        if (!selectedFile.isEmpty()) {
+            updateSheetList(selectedFile.toUtf8().toStdString());
+        } else {
+            projectControlWidget->clearSheets();
+        }
         return;
     }
 
