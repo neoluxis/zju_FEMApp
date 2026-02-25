@@ -6,6 +6,7 @@
 #include <QFileInfo>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QSettings>
 #include <QShortcut>
 #include <QVBoxLayout>
 #include <sstream>
@@ -208,6 +209,8 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
     new QShortcut(QKeySequence(Qt::ALT | Qt::Key_S), this,
                   [this]() { this->applyRawConfigText(); });
 
+    restoreWindowGeometryState();
+
     // Initialize label
     updateFileLabel();
 }
@@ -230,9 +233,11 @@ void FemApp::closeEvent(QCloseEvent* event) {
         if (result == QMessageBox::Save) {
             // Save the file
             saveCurrentConfig();
+            saveWindowGeometryState();
             event->accept();
         } else if (result == QMessageBox::Discard) {
             // Discard changes and close
+            saveWindowGeometryState();
             event->accept();
         } else {
             // Cancel closing
@@ -240,6 +245,7 @@ void FemApp::closeEvent(QCloseEvent* event) {
         }
     } else {
         // No unsaved changes, close normally
+        saveWindowGeometryState();
         event->accept();
     }
 }
@@ -319,6 +325,24 @@ void FemApp::setWorkspaceMode(bool enabled) {
     if (ui.multiPrjWsHost) {
         ui.multiPrjWsHost->setVisible(enabled);
     }
+}
+
+void FemApp::restoreWindowGeometryState() {
+    QSettings settings("neolux", "FemApp");
+    const QByteArray geometry = settings.value("ui/mainWindowGeometry").toByteArray();
+    if (!geometry.isEmpty()) {
+        restoreGeometry(geometry);
+    }
+
+    const int stateValue =
+        settings.value("ui/mainWindowState", static_cast<int>(Qt::WindowNoState)).toInt();
+    setWindowState(static_cast<Qt::WindowStates>(stateValue));
+}
+
+void FemApp::saveWindowGeometryState() {
+    QSettings settings("neolux", "FemApp");
+    settings.setValue("ui/mainWindowGeometry", saveGeometry());
+    settings.setValue("ui/mainWindowState", static_cast<int>(windowState()));
 }
 
 std::string FemApp::getFolderMatched() {

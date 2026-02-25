@@ -64,6 +64,8 @@ private:
 
     void updateFileLabel();  // Update labelFEMFile with current filename and modification status
     void setWorkspaceMode(bool enabled);
+    void restoreWindowGeometryState();
+    void saveWindowGeometryState();
     void refreshRecentMenu();
     void markAsModified();     // Mark file as modified and update label
     void clearModifiedFlag();  // Clear modified flag and update label
