@@ -258,21 +258,6 @@
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../MultiPrjWs/src/multi_prj_ws_config_dialog.cpp" line="112"/>
-        <source>Select FEM Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MultiPrjWs/src/multi_prj_ws_config_dialog.cpp" line="113"/>
-        <source>FEM Config Files (*.fem);;All Files (*)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MultiPrjWs/src/multi_prj_ws_config_dialog.cpp" line="163"/>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>MultiPrjWsWidget</name>

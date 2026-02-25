@@ -128,18 +128,18 @@
         <location filename="../fem/src/femapp.cpp" line="221"/>
         <location filename="../fem/src/femapp.cpp" line="761"/>
         <source>Workspace</source>
-        <translation type="unfinished"></translation>
+        <translation>工作区</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="220"/>
         <location filename="../fem/src/femapp.cpp" line="765"/>
         <source>Project</source>
-        <translation type="unfinished"></translation>
+        <translation>项目</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="768"/>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>清空</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="908"/>
@@ -155,28 +155,28 @@
     <message>
         <location filename="../fem/src/femapp.cpp" line="821"/>
         <source>Create New FEM Project</source>
-        <translation type="unfinished"></translation>
+        <translation>创建新 FEM 项目</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="836"/>
         <location filename="../fem/src/femapp.cpp" line="876"/>
         <source>Failed to create FEM config file.</source>
-        <translation type="unfinished"></translation>
+        <translation>创建 FEM 配置文件失败。</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="847"/>
         <source>Create New Workspace File</source>
-        <translation type="unfinished"></translation>
+        <translation>创建新工作区文件</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="848"/>
         <source>Workspace Files (*.femmpw);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>工作区文件 (*.femmpw);;全部文件 (*)</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="909"/>
         <source>FEM/Workspace Files (*.fem *.femmpw);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>FEM/工作区文件 (*.fem *.femmpw);;全部文件 (*)</translation>
     </message>
     <message>
         <location filename="../fem/src/femapp.cpp" line="931"/>
@@ -263,19 +263,16 @@
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../MultiPrjWs/src/multi_prj_ws_config_dialog.cpp" line="112"/>
         <source>Select FEM Project</source>
-        <translation>选择 FEM 项目</translation>
+        <translation type="vanished">选择 FEM 项目</translation>
     </message>
     <message>
-        <location filename="../MultiPrjWs/src/multi_prj_ws_config_dialog.cpp" line="113"/>
         <source>FEM Config Files (*.fem);;All Files (*)</source>
-        <translation>FEM项目文件 (*.fem);;全部文件 (*)</translation>
+        <translation type="vanished">FEM项目文件 (*.fem);;全部文件 (*)</translation>
     </message>
     <message>
-        <location filename="../MultiPrjWs/src/multi_prj_ws_config_dialog.cpp" line="163"/>
         <source>Error</source>
-        <translation>错误</translation>
+        <translation type="vanished">错误</translation>
     </message>
     <message>
         <source>Workspace saved.</source>
@@ -287,7 +284,7 @@
     <message>
         <location filename="../MultiPrjWs/src/multiprjws.ui" line="14"/>
         <source>MultiPrjWsWidget</source>
-        <translation type="unfinished"></translation>
+        <translation>多项目工作区</translation>
     </message>
     <message>
         <location filename="../MultiPrjWs/src/multiprjws.ui" line="20"/>
@@ -297,7 +294,7 @@
     <message>
         <location filename="../MultiPrjWs/src/multiprjws.ui" line="32"/>
         <source>Config</source>
-        <translation type="unfinished"></translation>
+        <translation>配置</translation>
     </message>
     <message>
         <source>Add</source>
@@ -321,42 +318,42 @@
     <message>
         <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="31"/>
         <source>Project Setting</source>
-        <translation type="unfinished">项目设置</translation>
+        <translation>项目设置</translation>
     </message>
     <message>
         <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="49"/>
         <source>Folder</source>
-        <translation type="unfinished">文件夹</translation>
+        <translation>文件夹</translation>
     </message>
     <message>
         <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="72"/>
         <source>Browse</source>
-        <translation type="unfinished">浏览</translation>
+        <translation>浏览</translation>
     </message>
     <message>
         <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="85"/>
         <source>Match</source>
-        <translation type="unfinished">匹配</translation>
+        <translation>匹配</translation>
     </message>
     <message>
         <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="96"/>
         <source>File</source>
-        <translation type="unfinished">文件</translation>
+        <translation>文件</translation>
     </message>
     <message>
         <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="110"/>
         <source>Sheet</source>
-        <translation type="unfinished">表</translation>
+        <translation>表</translation>
     </message>
     <message>
         <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="124"/>
         <source>Refresh Editor</source>
-        <translation type="unfinished">刷新编辑器</translation>
+        <translation>刷新编辑器</translation>
     </message>
     <message>
         <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="131"/>
         <source>Dry Run</source>
-        <translation type="unfinished">模拟运行</translation>
+        <translation>模拟运行</translation>
     </message>
     <message>
         <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="147"/>
@@ -454,17 +451,17 @@
     <message>
         <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="445"/>
         <source>Text</source>
-        <translation type="unfinished">文本编辑</translation>
+        <translation>文本编辑</translation>
     </message>
     <message>
         <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="453"/>
         <source>Reset</source>
-        <translation type="unfinished">重置</translation>
+        <translation>重置</translation>
     </message>
     <message>
         <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="460"/>
         <source>Apply</source>
-        <translation type="unfinished">应用</translation>
+        <translation>应用</translation>
     </message>
 </context>
 <context>
