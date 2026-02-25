@@ -333,7 +333,10 @@ bool FemApp::loadFEMConfig(const QString& filePath) {
         currentFilePath = absoluteFilePath;
         isModified = false;
         updateFileLabel();
-        recentProjectHistory.addProject(currentFilePath);
+        const QString recentTarget = (workspaceMode && !currentWorkspaceFilePath.isEmpty())
+                                         ? currentWorkspaceFilePath
+                                         : currentFilePath;
+        recentProjectHistory.addProject(recentTarget);
         refreshRecentMenu();
 
         relaxPatternMatchValidation = true;
@@ -356,7 +359,10 @@ bool FemApp::loadFEMConfig(const QString& filePath) {
     currentFilePath = absoluteFilePath;
     isModified = false;
     updateFileLabel();
-    recentProjectHistory.addProject(currentFilePath);
+    const QString recentTarget = (workspaceMode && !currentWorkspaceFilePath.isEmpty())
+                                     ? currentWorkspaceFilePath
+                                     : currentFilePath;
+    recentProjectHistory.addProject(recentTarget);
     refreshRecentMenu();
 
     this->onLoadFile();
