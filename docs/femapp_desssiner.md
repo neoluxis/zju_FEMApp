@@ -49,6 +49,12 @@ fem={"mode":"Focus2DoseLinear", "unit":"mJ/cm2","target":80, "spec":5}
 - 启动流程采用“目录匹配 → 文件匹配 → Sheet 匹配”的逐级收敛。
 - 每一级都要求结果合法且唯一；若匹配失败或多匹配，立即反馈并允许用户原位修正。
 
+补充：在“新建项目/新建工作区”或“打开空配置文件”场景，会进入**宽松配置期**：
+
+- 暂不因多匹配或未匹配中断流程；
+- 修改文件夹/文件时优先刷新候选列表，保证可继续配置；
+- 首次手动点击“刷新编辑器”后恢复严格校验与报错。
+
 #### 双通道编辑模型
 
 - 同时保留结构化模型（便于控件绑定）与原始文本（便于精确人工修订）。
@@ -69,6 +75,8 @@ fem={"mode":"Focus2DoseLinear", "unit":"mJ/cm2","target":80, "spec":5}
     | `MiniXLSX`     | 一个简单的 XLSX 处理库，用于读取文件、表格、图像数据，并编辑表格文件 |
     | `XLSXEditor`   | 独立的 XLSX 编辑器控件，独立开发后直接嵌入，便于维护。       |
     | `ProjectControlWidget` | 项目配置控件子包，承载项目操作与 Dose/Focus/FEM/Text 配置 UI，对外通过信号与接口交互。 |
+    | `MultiPrjWs`   | 多项目工作空间能力（`.femmpw` 读写、左侧工作区列表、配置弹窗） |
+    | `Recent`       | 最近打开记录（按时间排序、项目/工作区分组、清空） |
     | `FileAssocLib` | 结合平台，负责文件类型绑定。                                 |
 
 - 各模块通过清晰边界协作，便于单独升级或替换底层实现。
@@ -144,6 +152,8 @@ fem={"mode":"Focus2DoseLinear", "unit":"mJ/cm2","target":80, "spec":5}
 graph TD
     A[用户传入.fem] --> B[FemApp]
     B --> K[ProjectControlWidget]
+    B --> M[MultiPrjWs 工作区模块]
+    B --> N[Recent 历史模块]
     B --> C[FEMConfig 解析与模式展开]
     C --> D[定位目录/文件/Sheet]
 
@@ -157,6 +167,7 @@ graph TD
 ### 4.1 分层视角
 
 1. **表现层（UI）**：`fem/src/femapp.*`（主容器与流程编排）+ `ProjectControlWidget`（配置界面）
+    + `MultiPrjWs`（工作区列表与配置入口）
 2. **配置与规则层**：`FEMConfig`（解析、通配匹配、序列化）
 3. **Excel 访问层**：`MiniXLSX`
 4. **编辑执行层**：`XLSXEditor`（预览、删除标记、保存）
@@ -165,8 +176,10 @@ graph TD
 ### 4.2 核心依赖关系
 
 - `FemApp` 依赖 `FEMConfig`、`MiniXLSX`、`XLSXEditor`、`ProjectControlWidget`
+- `FemApp` 依赖 `MultiPrjWs`、`Recent`
 - `FEMConfig` 依赖 `MiniXLSX`
 - `XLSXEditor` 依赖 `MiniXLSX` + `KFZippa` + `pugixml`
+- `MultiPrjWs` 依赖 `Qt6::Core` + `Qt6::Widgets`
 - `ProjectControlWidget` 依赖 `Qt6::Core` + `Qt6::Widgets`
 - `FileAssocLib` 依赖 `Windows API`
 
@@ -186,18 +199,32 @@ graph TD
 
 - `currentFilePath + isModified` 维护窗口标题和文件状态
 - 通过 `ProjectControlWidget` 暴露的信号与接口驱动配置更新，`FemApp` 仅保留业务逻辑与状态管理
+- 通过全局 `File` 菜单统一入口（`New/Open/Recent/Save`），并在工作区模式下维护工作区与项目的联动状态
 
 ### 5.1.1 `ProjectControlWidget`（项目配置子包）
 
 职责：
 
-- 承载项目操作区（Load/Save/Folder/File/Sheet）与 `Dose/Focus/FEM/Text` 四个配置页 UI
+- 承载项目配置区（Folder/File/Sheet）与 `Dose/Focus/FEM/Text` 四个配置页 UI
 - 通过统一信号上报用户输入，通过读写接口承接外部回填
 
 关键设计点：
 
 - 与主包解耦：不依赖 `FEMData`，仅处理控件与事件分发
 - 主窗口 `mainwindow.ui` 已简化为容器布局，具体配置控件全部位于该子包
+- 项目 `Load/Save/SaveAs` 操作已迁移到全局菜单，不再由该控件直接承载
+
+### 5.1.2 `MultiPrjWs` + `Recent`（工作区与历史）
+
+职责：
+
+- `MultiPrjWs`：维护 `.femmpw` 工作区数据、左侧项目列表、工作区配置入口
+- `Recent`：维护最近打开记录，并支持按类型分组展示与清空
+
+关键设计点：
+
+- 打开工作区时，Recent 以工作区文件为主记录，不因内部项目切换打乱顺序
+- 工作区配置窗口采用自动保存策略，提升配置效率
 
 ### 5.2 `FEMConfig`（配置语义核心）
 

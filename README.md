@@ -4,10 +4,23 @@
 
 - `FemApp`: 主程序入口与流程控制（配置加载、匹配、编辑流程编排）
 - `ProjectControlWidget`: 项目配置 UI 子包（项目操作 + Dose/Focus/FEM/Text）
+- `MultiPrjWs`: `.femmpw` 多项目工作空间模型与左侧工作区控件
+- `Recent`: 最近打开历史记录（按访问时间排序）
 - `FEMConfig`: `.fem` 配置解析、匹配与序列化
 - `XLSXEditor`: 图片与描述编辑控件
 - `MiniXLSX`: xlsx 读写基础能力
 - `FileAssocLib`: Windows 文件关联支持
+
+## Current Features
+
+- 全局 `File` 菜单支持 `New -> Project/Workspace`、`Open`、`Recent`、`Save`、`Save As`。
+- `Recent` 按时间排序，并按 `Workspace` / `Project` 分组展示，支持 `Clear` 一键清空。
+- 新建项目/新建工作区（含默认项目）后进入“宽松配置期”：
+    - 允许 `folder/filename/sheet` 多匹配或暂未匹配；
+    - 修改文件夹/文件时优先刷新候选列表，不中断 UI；
+    - 首次点击“刷新编辑器”后恢复严格检查与报错。
+- 打开空 `.fem` / 空 `.femmpw` 文件时自动进入宽松配置期，便于从空文件开始定义。
+- 工作区侧边栏精简为 `Config` 按钮，打开工作区配置窗口；配置窗口改为自动保存（修改即落盘）。
 
 ## Build
 
