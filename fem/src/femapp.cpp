@@ -39,6 +39,7 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
     multiPrjWsLayout->setContentsMargins(0, 0, 0, 0);
     multiPrjWsWidget = new cc::neolux::fem::mpw::MultiPrjWsWidget(ui.multiPrjWsHost);
     multiPrjWsLayout->addWidget(multiPrjWsWidget);
+    setWorkspaceMode(false);
 
     auto* projectControlLayout = new QVBoxLayout(ui.projectControlHost);
     projectControlLayout->setContentsMargins(0, 0, 0, 0);
@@ -250,6 +251,11 @@ bool FemApp::loadFEMConfig() {
     return this->loadFEMConfig(currentFilePath);
 }
 
+bool FemApp::openSingleProject(const QString& filePath) {
+    setWorkspaceMode(false);
+    return loadFEMConfig(filePath);
+}
+
 bool FemApp::loadFEMConfig(const QString& filePath) {
     if (filePath.isEmpty()) {
         showError(this, tr("Config file path is empty."));
@@ -289,6 +295,8 @@ bool FemApp::loadMultiProjectWorkspace(const QString& filePath) {
         return false;
     }
 
+    setWorkspaceMode(true);
+
     QString errorMessage;
     if (!multiPrjWsWidget->loadWorkspaceFile(filePath, &errorMessage)) {
         showError(this, errorMessage);
@@ -297,9 +305,20 @@ bool FemApp::loadMultiProjectWorkspace(const QString& filePath) {
 
     const QString firstProjectPath = multiPrjWsWidget->firstEnabledProjectPath();
     if (!firstProjectPath.isEmpty()) {
-        return loadFEMConfig(firstProjectPath);
+        const bool loaded = loadFEMConfig(firstProjectPath);
+        if (loaded) {
+            multiPrjWsWidget->markProjectOpened(firstProjectPath);
+        }
+        return loaded;
     }
     return true;
+}
+
+void FemApp::setWorkspaceMode(bool enabled) {
+    workspaceMode = enabled;
+    if (ui.multiPrjWsHost) {
+        ui.multiPrjWsHost->setVisible(enabled);
+    }
 }
 
 std::string FemApp::getFolderMatched() {
@@ -533,7 +552,7 @@ void FemApp::refreshRecentMenu() {
     for (const QString& projectPath : projects) {
         QAction* action = recentMenu->addAction(projectPath);
         connect(action, &QAction::triggered, this,
-                [this, projectPath]() { loadFEMConfig(projectPath); });
+                [this, projectPath]() { openSingleProject(projectPath); });
     }
 
     recentMenu->setEnabled(!projects.isEmpty());
@@ -587,7 +606,7 @@ void FemApp::loadConfigFromDialog() {
     if (femconfig_path.isEmpty()) {
         return;
     }
-    this->loadFEMConfig(femconfig_path);
+    this->openSingleProject(femconfig_path);
     qInfo() << "Loaded FEM config file from " << femconfig_path;
 }
 

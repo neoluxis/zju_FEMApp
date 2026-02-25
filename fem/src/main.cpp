@@ -57,12 +57,16 @@ int main(int argc, char* argv[]) {
         if (cc::neolux::fem::mpw::MultiProjectWorkspace::IsValidWorkspaceFile(qFilePath)) {
             w.loadMultiProjectWorkspace(qFilePath);
         } else {
-            w.loadFEMConfig(qFilePath);
+            w.openSingleProject(qFilePath);
         }
     } else {
         const QString latestProject = recentHistory.latestProject();
         if (!latestProject.isEmpty()) {
-            w.loadFEMConfig(latestProject);
+            if (cc::neolux::fem::mpw::MultiProjectWorkspace::IsValidWorkspaceFile(latestProject)) {
+                w.loadMultiProjectWorkspace(latestProject);
+            } else {
+                w.openSingleProject(latestProject);
+            }
         }
     }
 

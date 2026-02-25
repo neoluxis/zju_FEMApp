@@ -1,0 +1,21 @@
+{
+  "format": "femmpw",
+  "version": 1,
+  "name": "Sample Multi Project Workspace",
+  "tags": [
+    "sample",
+    "mpw"
+  ],
+  "projects": [
+    {
+      "path": "./project.fem",
+      "displayName": "Main Project",
+      "enabled": true
+    },
+    {
+      "path": "./wrong_config.fem",
+      "displayName": "Backup Config",
+      "enabled": false
+    }
+  ]
+}

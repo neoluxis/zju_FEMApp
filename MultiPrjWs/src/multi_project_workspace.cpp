@@ -13,7 +13,6 @@ constexpr const char* kFormatKey = "format";
 constexpr const char* kFormatValue = "femmpw";
 constexpr const char* kVersionKey = "version";
 constexpr const char* kNameKey = "name";
-constexpr const char* kBaseDirKey = "baseDir";
 constexpr const char* kTagsKey = "tags";
 constexpr const char* kProjectsKey = "projects";
 constexpr const char* kPathKey = "path";
@@ -81,7 +80,6 @@ bool MultiProjectWorkspace::ParseContent(const QByteArray& content, MultiProject
     }
 
     data.workspaceName = root.value(kNameKey).toString();
-    data.baseDir = root.value(kBaseDirKey).toString();
 
     data.tags.clear();
     for (const QJsonValue& tag : root.value(kTagsKey).toArray()) {
@@ -115,7 +113,6 @@ QByteArray MultiProjectWorkspace::DumpContent(const MultiProjectWorkspaceData& d
     root.insert(kFormatKey, QString::fromUtf8(kFormatValue));
     root.insert(kVersionKey, kWorkspaceVersion);
     root.insert(kNameKey, data.workspaceName);
-    root.insert(kBaseDirKey, data.baseDir);
 
     QJsonArray tags;
     for (const QString& tag : data.tags) {

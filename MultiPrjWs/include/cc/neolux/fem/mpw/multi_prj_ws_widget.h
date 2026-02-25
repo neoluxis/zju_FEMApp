@@ -23,6 +23,7 @@ public:
 
     QString currentProjectPath() const;
     QString firstEnabledProjectPath() const;
+    void markProjectOpened(const QString& projectFilePath);
 
 signals:
     void projectActivated(const QString& projectFilePath);
@@ -32,6 +33,7 @@ private:
     MultiProjectWorkspaceData data_;
     QString workspaceFilePath_;
     QVector<QString> projectPaths_;
+    int openedProjectIndex_ = -1;
 
     void addProject();
     void removeSelectedProject();

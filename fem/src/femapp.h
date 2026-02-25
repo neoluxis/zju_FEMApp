@@ -26,6 +26,7 @@ public:
     bool loadFEMConfig();
 
     bool loadFEMConfig(const QString& filePath);
+    bool openSingleProject(const QString& filePath);
     bool loadMultiProjectWorkspace(const QString& filePath);
 
     std::string getFolderMatched();
@@ -59,8 +60,10 @@ private:
     cc::neolux::fem::mpw::MultiPrjWsWidget* multiPrjWsWidget = nullptr;
     cc::neolux::fem::recent::RecentProjectHistory recentProjectHistory;
     QMenu* recentMenu = nullptr;
+    bool workspaceMode = false;
 
     void updateFileLabel();  // Update labelFEMFile with current filename and modification status
+    void setWorkspaceMode(bool enabled);
     void refreshRecentMenu();
     void markAsModified();     // Mark file as modified and update label
     void clearModifiedFlag();  // Clear modified flag and update label

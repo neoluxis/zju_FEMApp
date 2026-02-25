@@ -14,7 +14,6 @@ struct WorkspaceProjectItem {
 
 struct MultiProjectWorkspaceData {
     QString workspaceName;
-    QString baseDir;
     QStringList tags;
     QVector<WorkspaceProjectItem> projects;
 };

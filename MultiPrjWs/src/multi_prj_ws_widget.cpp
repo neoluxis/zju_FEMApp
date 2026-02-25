@@ -1,8 +1,13 @@
 #include "cc/neolux/fem/mpw/multi_prj_ws_widget.h"
 
+#include <QAbstractItemView>
+#include <QBrush>
+#include <QColor>
+#include <QDir>
 #include <QFileDialog>
 #include <QFileInfo>
-#include <QStringListModel>
+#include <QStandardItem>
+#include <QStandardItemModel>
 
 #include "ui_multiprjws.h"
 
@@ -11,12 +16,22 @@ namespace cc::neolux::fem::mpw {
 MultiPrjWsWidget::MultiPrjWsWidget(QWidget* parent)
     : QWidget(parent), ui(new Ui::MultiPrjWsWidget) {
     ui->setupUi(this);
+    ui->lstProjects->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     connect(ui->lstProjects, &QListView::doubleClicked, this, [this](const QModelIndex& index) {
-        if (!index.isValid() || index.row() < 0 || index.row() >= projectPaths_.size()) {
+        if (!index.isValid() || index.row() < 0 || index.row() >= data_.projects.size()) {
             return;
         }
-        emit projectActivated(projectPaths_[index.row()]);
+
+        for (int i = 0; i < data_.projects.size(); ++i) {
+            data_.projects[i].enabled = (i == index.row());
+        }
+        openedProjectIndex_ = index.row();
+        refreshProjectList();
+
+        if (index.row() < projectPaths_.size()) {
+            emit projectActivated(projectPaths_[index.row()]);
+        }
     });
 
     connect(ui->btnAddProject, &QPushButton::clicked, this, [this]() { addProject(); });
@@ -41,7 +56,16 @@ bool MultiPrjWsWidget::loadWorkspaceFile(const QString& workspaceFilePath, QStri
 void MultiPrjWsWidget::setWorkspaceData(const MultiProjectWorkspaceData& data,
                                         const QString& workspaceFilePath) {
     data_ = data;
-    workspaceFilePath_ = workspaceFilePath;
+    workspaceFilePath_ = QFileInfo(workspaceFilePath).absoluteFilePath();
+
+    openedProjectIndex_ = -1;
+    for (int i = 0; i < data_.projects.size(); ++i) {
+        if (data_.projects[i].enabled) {
+            openedProjectIndex_ = i;
+            break;
+        }
+    }
+
     refreshProjectList();
 }
 
@@ -66,11 +90,33 @@ QString MultiPrjWsWidget::firstEnabledProjectPath() const {
     return QString();
 }
 
+void MultiPrjWsWidget::markProjectOpened(const QString& projectFilePath) {
+    const QString absolutePath = QFileInfo(projectFilePath).absoluteFilePath();
+    int matchedIndex = -1;
+    for (int i = 0; i < data_.projects.size(); ++i) {
+        if (resolveProjectPath(data_.projects[i].projectFilePath) == absolutePath) {
+            matchedIndex = i;
+            break;
+        }
+    }
+
+    if (matchedIndex < 0) {
+        return;
+    }
+
+    for (int i = 0; i < data_.projects.size(); ++i) {
+        data_.projects[i].enabled = (i == matchedIndex);
+    }
+    openedProjectIndex_ = matchedIndex;
+    refreshProjectList();
+}
+
 void MultiPrjWsWidget::addProject() {
     const QFileInfo workspaceInfo(workspaceFilePath_);
-    const QString basePath = data_.baseDir.isEmpty() ? workspaceInfo.absolutePath() : data_.baseDir;
-    const QString selectedPath = QFileDialog::getOpenFileName(
-        this, tr("Select FEM Project"), basePath, tr("FEM Config Files (*.fem);;All Files (*)"));
+    const QDir workspaceDir = workspaceInfo.absoluteDir();
+    const QString selectedPath =
+        QFileDialog::getOpenFileName(this, tr("Select FEM Project"), workspaceDir.absolutePath(),
+                                     tr("FEM Config Files (*.fem);;All Files (*)"));
     if (selectedPath.isEmpty()) {
         return;
     }
@@ -87,6 +133,7 @@ void MultiPrjWsWidget::addProject() {
     item.displayName = QFileInfo(absolutePath).completeBaseName();
     item.enabled = true;
     data_.projects.append(item);
+    openedProjectIndex_ = data_.projects.size() - 1;
     refreshProjectList();
 }
 
@@ -97,6 +144,11 @@ void MultiPrjWsWidget::removeSelectedProject() {
     }
 
     data_.projects.removeAt(index.row());
+    if (openedProjectIndex_ == index.row()) {
+        openedProjectIndex_ = -1;
+    } else if (openedProjectIndex_ > index.row()) {
+        --openedProjectIndex_;
+    }
     refreshProjectList();
 }
 
@@ -111,28 +163,31 @@ QString MultiPrjWsWidget::resolveProjectPath(const QString& projectPath) const {
     }
 
     const QFileInfo workspaceInfo(workspaceFilePath_);
-    const QString basePath = data_.baseDir.isEmpty() ? workspaceInfo.absolutePath() : data_.baseDir;
+    const QDir workspaceDir = workspaceInfo.absoluteDir();
 
-    QFileInfo resolvedInfo(QFileInfo(basePath).absoluteFilePath() + "/" + projectPath);
+    QFileInfo resolvedInfo(workspaceDir.filePath(projectPath));
     return resolvedInfo.absoluteFilePath();
 }
 
 void MultiPrjWsWidget::refreshProjectList() {
-    QStringList listTexts;
     projectPaths_.clear();
+    auto* model = new QStandardItemModel(ui->lstProjects);
 
-    for (const WorkspaceProjectItem& item : data_.projects) {
+    for (int i = 0; i < data_.projects.size(); ++i) {
+        const WorkspaceProjectItem& item = data_.projects[i];
         const QString resolvedPath = resolveProjectPath(item.projectFilePath);
         const QString displayName = item.displayName.isEmpty()
                                         ? QFileInfo(item.projectFilePath).fileName()
                                         : item.displayName;
-        const QString flag = item.enabled ? QStringLiteral("[On]") : QStringLiteral("[Off]");
-
-        listTexts.append(QString("%1 %2").arg(flag, displayName));
+        auto* listItem = new QStandardItem(displayName);
+        listItem->setEditable(false);
+        if (i == openedProjectIndex_) {
+            listItem->setBackground(QBrush(QColor(220, 220, 220)));
+        }
+        model->appendRow(listItem);
         projectPaths_.append(resolvedPath);
     }
 
-    auto* model = new QStringListModel(listTexts, ui->lstProjects);
     ui->lstProjects->setModel(model);
 }
 
