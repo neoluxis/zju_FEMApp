@@ -27,16 +27,9 @@
   <item row="2" column="0">
    <layout class="QHBoxLayout" name="hboxActions">
     <item>
-    <widget class="QPushButton" name="btnAddProject">
+    <widget class="QPushButton" name="btnConfig">
      <property name="text">
-      <string>Add</string>
-     </property>
-    </widget>
-    </item>
-    <item>
-    <widget class="QPushButton" name="btnRemoveProject">
-     <property name="text">
-      <string>Remove</string>
+      <string>Config</string>
      </property>
     </widget>
     </item>

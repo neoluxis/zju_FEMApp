@@ -27,6 +27,7 @@ public:
 
 signals:
     void projectActivated(const QString& projectFilePath);
+    void configRequested();
 
 private:
     Ui::MultiPrjWsWidget* ui;
@@ -35,8 +36,6 @@ private:
     QVector<QString> projectPaths_;
     int openedProjectIndex_ = -1;
 
-    void addProject();
-    void removeSelectedProject();
     QString resolveProjectPath(const QString& projectPath) const;
     void refreshProjectList();
 };

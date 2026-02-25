@@ -26,6 +26,7 @@ MultiPrjWsConfigDialog::MultiPrjWsConfigDialog(QWidget* parent)
         if (ui->lstProjects->currentItem()) {
             ui->lstProjects->currentItem()->setText(text);
         }
+        saveWorkspace();
     });
     connect(ui->txtNote, &QPlainTextEdit::textChanged, this, [this]() {
         const int index = currentIndex();
@@ -33,12 +34,12 @@ MultiPrjWsConfigDialog::MultiPrjWsConfigDialog(QWidget* parent)
             return;
         }
         data_.projects[index].note = ui->txtNote->toPlainText();
+        saveWorkspace();
     });
 
     connect(ui->btnAddProject, &QPushButton::clicked, this, [this]() { addProject(); });
     connect(ui->btnRemoveProject, &QPushButton::clicked, this,
             [this]() { removeSelectedProject(); });
-    connect(ui->btnSave, &QPushButton::clicked, this, [this]() { saveWorkspace(); });
     connect(ui->btnClose, &QPushButton::clicked, this, [this]() { close(); });
 }
 
@@ -130,6 +131,7 @@ void MultiPrjWsConfigDialog::addProject() {
     item.enabled = data_.projects.isEmpty();
     data_.projects.append(item);
 
+    saveWorkspace();
     refreshProjectList();
     ui->lstProjects->setCurrentRow(data_.projects.size() - 1);
 }
@@ -147,6 +149,7 @@ void MultiPrjWsConfigDialog::removeSelectedProject() {
         data_.projects[0].enabled = true;
     }
 
+    saveWorkspace();
     refreshProjectList();
     if (!data_.projects.isEmpty()) {
         const int lastIndex = static_cast<int>(data_.projects.size()) - 1;
@@ -154,15 +157,15 @@ void MultiPrjWsConfigDialog::removeSelectedProject() {
     }
 }
 
-void MultiPrjWsConfigDialog::saveWorkspace() {
+bool MultiPrjWsConfigDialog::saveWorkspace() {
     QString errorMessage;
     if (!MultiProjectWorkspace::WriteFile(workspaceFilePath_, data_, &errorMessage)) {
         QMessageBox::critical(this, tr("Error"), errorMessage);
-        return;
+        return false;
     }
 
     emit workspaceSaved(workspaceFilePath_);
-    QMessageBox::information(this, tr("Save"), tr("Workspace saved."));
+    return true;
 }
 
 int MultiPrjWsConfigDialog::currentIndex() const {

@@ -7,12 +7,6 @@
             "enabled": true,
             "note": "lklk",
             "path": "./project.fem"
-        },
-        {
-            "displayName": "Backup Config",
-            "enabled": false,
-            "note": "",
-            "path": "./wrong_config.fem"
         }
     ],
     "tags": [

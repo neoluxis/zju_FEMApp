@@ -4,7 +4,6 @@
 #include <QBrush>
 #include <QColor>
 #include <QDir>
-#include <QFileDialog>
 #include <QFileInfo>
 #include <QStandardItem>
 #include <QStandardItemModel>
@@ -34,9 +33,7 @@ MultiPrjWsWidget::MultiPrjWsWidget(QWidget* parent)
         }
     });
 
-    connect(ui->btnAddProject, &QPushButton::clicked, this, [this]() { addProject(); });
-    connect(ui->btnRemoveProject, &QPushButton::clicked, this,
-            [this]() { removeSelectedProject(); });
+    connect(ui->btnConfig, &QPushButton::clicked, this, [this]() { emit configRequested(); });
 }
 
 MultiPrjWsWidget::~MultiPrjWsWidget() {
@@ -108,47 +105,6 @@ void MultiPrjWsWidget::markProjectOpened(const QString& projectFilePath) {
         data_.projects[i].enabled = (i == matchedIndex);
     }
     openedProjectIndex_ = matchedIndex;
-    refreshProjectList();
-}
-
-void MultiPrjWsWidget::addProject() {
-    const QFileInfo workspaceInfo(workspaceFilePath_);
-    const QDir workspaceDir = workspaceInfo.absoluteDir();
-    const QString selectedPath =
-        QFileDialog::getOpenFileName(this, tr("Select FEM Project"), workspaceDir.absolutePath(),
-                                     tr("FEM Config Files (*.fem);;All Files (*)"));
-    if (selectedPath.isEmpty()) {
-        return;
-    }
-
-    const QString absolutePath = QFileInfo(selectedPath).absoluteFilePath();
-    for (const WorkspaceProjectItem& item : data_.projects) {
-        if (resolveProjectPath(item.projectFilePath) == absolutePath) {
-            return;
-        }
-    }
-
-    WorkspaceProjectItem item;
-    item.projectFilePath = absolutePath;
-    item.displayName = QFileInfo(absolutePath).fileName();
-    item.enabled = true;
-    data_.projects.append(item);
-    openedProjectIndex_ = data_.projects.size() - 1;
-    refreshProjectList();
-}
-
-void MultiPrjWsWidget::removeSelectedProject() {
-    const QModelIndex index = ui->lstProjects->currentIndex();
-    if (!index.isValid() || index.row() < 0 || index.row() >= data_.projects.size()) {
-        return;
-    }
-
-    data_.projects.removeAt(index.row());
-    if (openedProjectIndex_ == index.row()) {
-        openedProjectIndex_ = -1;
-    } else if (openedProjectIndex_ > index.row()) {
-        --openedProjectIndex_;
-    }
     refreshProjectList();
 }
 

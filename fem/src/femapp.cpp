@@ -212,6 +212,8 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
             });
     connect(multiPrjWsWidget, &cc::neolux::fem::mpw::MultiPrjWsWidget::projectActivated, this,
             [this](const QString& projectFilePath) { loadFEMConfig(projectFilePath); });
+    connect(multiPrjWsWidget, &cc::neolux::fem::mpw::MultiPrjWsWidget::configRequested, this,
+            [this]() { openMultiProjectWorkspaceConfig(); });
 
     auto* fileMenu = ui.menuBar->addMenu(tr("File"));
     auto* newMenu = fileMenu->addMenu(tr("New"));

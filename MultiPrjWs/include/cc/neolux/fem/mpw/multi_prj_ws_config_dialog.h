@@ -31,7 +31,7 @@ private:
     void refreshEditors();
     void addProject();
     void removeSelectedProject();
-    void saveWorkspace();
+    bool saveWorkspace();
     int currentIndex() const;
 };
 
