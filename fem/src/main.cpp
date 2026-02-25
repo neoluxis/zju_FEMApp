@@ -30,9 +30,9 @@ void fileAssociat() {
         FileAssociation::CleanRegister("fem", "FemApp.Document", "FEM Analysis File");
         qDebug() << ".fem association registered";
     } else {
-        qDebug() << "Unregistering .fem file association...";
-        FileAssociation::UnregisterAssociation("fem");
-        qDebug() << ".fem association unregistered";
+        // qDebug() << "Unregistering .fem file association...";
+        // FileAssociation::UnregisterAssociation("fem");
+        // qDebug() << ".fem association unregistered";
     }
 #endif
 }
@@ -63,57 +63,4 @@ int main(int argc, char* argv[]) {
     }
 
     return app.exec();
-
-    // // // If command line argument provided, open the file
-    // if (argc > 1)
-    // {
-    //     cout << "Opening file: " << argv[1] << endl;
-
-    //     try
-    //     {
-    //         QString qFilePath = QString::fromLocal8Bit(argv[1]);
-
-    //         // Convert to absolute path
-    //         QFileInfo fileInfo(qFilePath);
-    //         QString absolutePath = fileInfo.absoluteFilePath();
-
-    //         cout << "File path: " << absolutePath.toStdString() << endl;
-
-    //         MainWindow *window = new MainWindow();
-    //         window->setAttribute(Qt::WA_DeleteOnClose);
-    //         window->setAttribute(Qt::WA_QuitOnClose);
-
-    //         // Show window first, then load file
-    //         window->show();
-    //         window->raise();
-    //         window->activateWindow();
-
-    //         // Load file
-    //         cout << "Loading FEM file..." << endl;
-    //         window->loadFEMFile(absolutePath);
-
-    //         return app.exec();
-    //     }
-    //     catch (const std::exception &e)
-    //     {
-    //         std::cerr << "[ERROR] Exception: " << e.what() << std::endl;
-    //         return 1;
-    //     }
-    //     catch (...)
-    //     {
-    //         std::cerr << "[ERROR] Unknown exception" << std::endl;
-    //         return 1;
-    //     }
-    // }
-
-    // // No arguments - show empty window
-    // cout << "No file argument, showing empty window" << endl;
-    // MainWindow *window = new MainWindow();
-    // window->setAttribute(Qt::WA_DeleteOnClose);
-    // window->setAttribute(Qt::WA_QuitOnClose);
-    // window->show();
-    // window->raise();
-    // window->activateWindow();
-
-    // return app.exec();
 }
