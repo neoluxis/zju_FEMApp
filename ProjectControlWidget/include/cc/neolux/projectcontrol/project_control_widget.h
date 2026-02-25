@@ -2,13 +2,23 @@
 
 #include <QWidget>
 
+#if defined(_WIN32) || defined(__CYGWIN__)
+#ifdef PROJECTCONTROLWIDGET_EXPORTS
+#define PROJECTCONTROLWIDGET_API __declspec(dllexport)
+#else
+#define PROJECTCONTROLWIDGET_API __declspec(dllimport)
+#endif
+#else
+#define PROJECTCONTROLWIDGET_API
+#endif
+
 namespace Ui {
 class ProjectControlWidget;
 }
 
 namespace cc::neolux::projectcontrol {
 
-class ProjectControlWidget : public QWidget {
+class PROJECTCONTROLWIDGET_API ProjectControlWidget : public QWidget {
     Q_OBJECT
 
 public:

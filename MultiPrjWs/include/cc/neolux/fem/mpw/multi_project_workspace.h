@@ -4,6 +4,16 @@
 #include <QStringList>
 #include <QVector>
 
+#if defined(_WIN32) || defined(__CYGWIN__)
+#ifdef MULTIPRJWS_EXPORTS
+#define MULTIPRJWS_API __declspec(dllexport)
+#else
+#define MULTIPRJWS_API __declspec(dllimport)
+#endif
+#else
+#define MULTIPRJWS_API
+#endif
+
 namespace cc::neolux::fem::mpw {
 
 struct WorkspaceProjectItem {
@@ -19,7 +29,7 @@ struct MultiProjectWorkspaceData {
     QVector<WorkspaceProjectItem> projects;
 };
 
-class MultiProjectWorkspace {
+class MULTIPRJWS_API MultiProjectWorkspace {
 public:
     static bool ReadFile(const QString& filePath, MultiProjectWorkspaceData& data,
                          QString* errorMessage = nullptr);

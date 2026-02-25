@@ -3,6 +3,16 @@
 #include <QVector>
 #include <QWidget>
 
+#if defined(_WIN32) || defined(__CYGWIN__)
+#ifdef MULTIPRJWS_EXPORTS
+#define MULTIPRJWS_API __declspec(dllexport)
+#else
+#define MULTIPRJWS_API __declspec(dllimport)
+#endif
+#else
+#define MULTIPRJWS_API
+#endif
+
 #include "cc/neolux/fem/mpw/multi_project_workspace.h"
 
 namespace Ui {
@@ -11,7 +21,7 @@ class MultiPrjWsWidget;
 
 namespace cc::neolux::fem::mpw {
 
-class MultiPrjWsWidget : public QWidget {
+class MULTIPRJWS_API MultiPrjWsWidget : public QWidget {
     Q_OBJECT
 
 public:

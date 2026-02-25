@@ -20,6 +20,8 @@ set(HEADERS
 
 add_library(ProjectControlWidget SHARED ${SOURCES})
 
+target_compile_definitions(ProjectControlWidget PRIVATE PROJECTCONTROLWIDGET_EXPORTS)
+
 target_include_directories(ProjectControlWidget PUBLIC
     ${HEADERS}
     ${CMAKE_CURRENT_BINARY_DIR}

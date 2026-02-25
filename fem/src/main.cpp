@@ -16,14 +16,15 @@ using cc::neolux::fem::FileAssociation;
 #endif
 using namespace cc::neolux::femconfig;
 
-void fileAssociat() {
+void fileAssociat(std::string ext, std::string progId = "FemApp.Document",
+                  std::string description = "FEM Analysis File") {
 #ifndef FEMAPP_SKIP_WINDOWS_API
     // 自动注册打开方式，如果没有注册
 
-    if (!FileAssociation::IsAssociated("fem")) {
-        qDebug() << "Registering .fem file association...";
-        FileAssociation::CleanRegister("fem", "FemApp.Document", "FEM Analysis File");
-        qDebug() << ".fem association registered";
+    if (!FileAssociation::IsAssociated(ext.c_str())) {
+        qDebug() << "Registering ." << ext.c_str() << " file association...";
+        FileAssociation::CleanRegister(ext.c_str(), progId.c_str(), description.c_str());
+        qDebug() << "." << ext.c_str() << " association registered";
     } else {
         // qDebug() << "Unregistering .fem file association...";
         // FileAssociation::UnregisterAssociation("fem");
@@ -34,9 +35,11 @@ void fileAssociat() {
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
-    fileAssociat();
-    QLocale locale = QLocale::system();    // 自动检测系统语言
-    QString languageCode = locale.name();  // 例如 "zh_CN" 或 "en_US"
+    fileAssociat("fem", "FemApp.Document", "FEM Analysis File");  // project
+    fileAssociat("femmpw", "FemApp.MultiProjectWorkspace",
+                 "FEM Multi-Project Workspace");  // multi proj ws
+    QLocale locale = QLocale::system();           // 自动检测系统语言
+    QString languageCode = locale.name();         // 例如 "zh_CN" 或 "en_US"
     qDebug() << "System locale detected:" << languageCode;
 
     QTranslator translator;

@@ -21,6 +21,8 @@ set(SOURCES
 
 add_library(MultiPrjWs SHARED ${SOURCES})
 
+target_compile_definitions(MultiPrjWs PRIVATE MULTIPRJWS_EXPORTS)
+
 target_include_directories(MultiPrjWs PUBLIC
     include
 )
