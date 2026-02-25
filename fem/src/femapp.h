@@ -1,9 +1,10 @@
 #pragma once
 
-#include <QFileInfo>
+#include <QMenu>
 #include <memory>
 
 #include "cc/neolux/FEMConfig/FEMConfig.h"
+#include "cc/neolux/fem/recent/recent_project_history.h"
 #include "cc/neolux/fem/xlsx_editor_module.h"
 #include "cc/neolux/projectcontrol/project_control_widget.h"
 #include "ui_mainwindow.h"
@@ -18,14 +19,12 @@ public:
 
     explicit FemApp(QWidget* parent = nullptr);
 
-    QFileInfo* femc_info;
-
     /**
      * Load a FEMConfig file and switch working dir to the file
      */
-    void loadFEMConfig();
+    bool loadFEMConfig();
 
-    void loadFEMConfig(const QString& filePath);
+    bool loadFEMConfig(const QString& filePath);
 
     std::string getFolderMatched();
 
@@ -55,8 +54,11 @@ private:
     bool isLoading = false;                  // Flag to prevent marking as modified during file load
     std::unique_ptr<cc::neolux::fem::XlsxEditorModule> xlsxEditorModule;
     cc::neolux::projectcontrol::ProjectControlWidget* projectControlWidget = nullptr;
+    cc::neolux::fem::recent::RecentProjectHistory recentProjectHistory;
+    QMenu* recentMenu = nullptr;
 
-    void updateFileLabel();    // Update labelFEMFile with current filename and modification status
+    void updateFileLabel();  // Update labelFEMFile with current filename and modification status
+    void refreshRecentMenu();
     void markAsModified();     // Mark file as modified and update label
     void clearModifiedFlag();  // Clear modified flag and update label
     void refreshXlsxEditor();  // Refresh XLSX editor content

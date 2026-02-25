@@ -13,131 +13,151 @@
     <name>FemApp</name>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="14"/>
-        <location filename="../fem/src/femapp.cpp" line="468"/>
-        <location filename="../fem/src/femapp.cpp" line="475"/>
+        <location filename="../fem/src/femapp.cpp" line="482"/>
+        <location filename="../fem/src/femapp.cpp" line="489"/>
         <source>FemApp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="20"/>
+        <location filename="../fem/src/femapp.cpp" line="21"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="24"/>
+        <location filename="../fem/src/femapp.cpp" line="25"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="28"/>
+        <location filename="../fem/src/femapp.cpp" line="29"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="171"/>
+        <location filename="../fem/src/femapp.cpp" line="172"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="172"/>
+        <location filename="../fem/src/femapp.cpp" line="173"/>
         <source>Open Project...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="173"/>
+        <location filename="../fem/src/femapp.cpp" line="174"/>
+        <source>Recent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fem/src/femapp.cpp" line="175"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="174"/>
+        <location filename="../fem/src/femapp.cpp" line="176"/>
         <source>Save As...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="176"/>
+        <location filename="../fem/src/femapp.cpp" line="178"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="216"/>
+        <location filename="../fem/src/femapp.cpp" line="218"/>
         <source>Unsaved Changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="217"/>
+        <location filename="../fem/src/femapp.cpp" line="219"/>
         <source>You have unsaved changes. Do you want to save before closing?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="273"/>
+        <location filename="../fem/src/femapp.cpp" line="248"/>
+        <source>Config file path is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fem/src/femapp.cpp" line="255"/>
+        <source>Config file does not exist: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fem/src/femapp.cpp" line="265"/>
+        <source>Failed to read FEM config file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fem/src/femapp.cpp" line="287"/>
         <source>No folders matched the folder pattern. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="277"/>
+        <location filename="../fem/src/femapp.cpp" line="291"/>
         <source>Multiple folders matched the folder pattern. Please ensure only one folder matches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="303"/>
+        <location filename="../fem/src/femapp.cpp" line="317"/>
         <source>No filenames matched the filename pattern.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="309"/>
+        <location filename="../fem/src/femapp.cpp" line="323"/>
         <source>Multiple filenames matched the filename pattern. Please ensure only one filename matches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="364"/>
+        <location filename="../fem/src/femapp.cpp" line="378"/>
         <source>No sheets matched the sheet pattern. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="370"/>
+        <location filename="../fem/src/femapp.cpp" line="384"/>
         <source>Multiple sheets matched the sheet pattern. Please ensure only one sheet matches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="403"/>
+        <location filename="../fem/src/femapp.cpp" line="417"/>
         <source>Failed to read Excel file: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="530"/>
+        <location filename="../fem/src/femapp.cpp" line="560"/>
         <source>Open FEM Config File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="531"/>
-        <location filename="../fem/src/femapp.cpp" line="560"/>
+        <location filename="../fem/src/femapp.cpp" line="561"/>
+        <location filename="../fem/src/femapp.cpp" line="595"/>
         <source>FEM Config Files (*.fem);;All Files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="542"/>
-        <location filename="../fem/src/femapp.cpp" line="567"/>
+        <location filename="../fem/src/femapp.cpp" line="577"/>
+        <location filename="../fem/src/femapp.cpp" line="602"/>
         <source>Failed to generate FEM config content.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="550"/>
-        <location filename="../fem/src/femapp.cpp" line="575"/>
+        <location filename="../fem/src/femapp.cpp" line="585"/>
+        <location filename="../fem/src/femapp.cpp" line="610"/>
         <source>Failed to save FEM config file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="559"/>
+        <location filename="../fem/src/femapp.cpp" line="594"/>
         <source>Save FEM Config File As</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="585"/>
+        <location filename="../fem/src/femapp.cpp" line="622"/>
         <source>Select Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="519"/>
+        <location filename="../fem/src/femapp.cpp" line="549"/>
         <source>Failed to parse raw FEM config content.</source>
         <translation type="unfinished"></translation>
     </message>

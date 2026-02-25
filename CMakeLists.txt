@@ -43,6 +43,7 @@ add_subdirectory(MiniXLSX)
 add_subdirectory(FileAssocLib)
 add_subdirectory(XLSXEditor)
 add_subdirectory(ProjectControlWidget)
+add_subdirectory(Recent)
 
 # Add source files
 set(SOURCES
@@ -85,6 +86,7 @@ target_include_directories(FemApp PRIVATE
     ${CMAKE_SOURCE_DIR}/FileAssocLib/include
     ${CMAKE_SOURCE_DIR}/XLSXEditor/include
     ${CMAKE_SOURCE_DIR}/ProjectControlWidget/include
+    ${CMAKE_SOURCE_DIR}/Recent/include
 )
 
 # Link libraries
@@ -96,6 +98,7 @@ target_link_libraries(FemApp PRIVATE
     MiniXLSX
     XLSXEditor
     ProjectControlWidget
+    Recent
 )
 
 if(NOT FEMAPP_LINUX_BUILD_DEMO)

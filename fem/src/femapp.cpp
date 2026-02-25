@@ -3,6 +3,7 @@
 #include <QCloseEvent>
 #include <QDir>
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QShortcut>
@@ -170,6 +171,7 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
 
     auto* fileMenu = ui.menuBar->addMenu(tr("File"));
     auto* actionOpenProject = fileMenu->addAction(tr("Open Project..."));
+    recentMenu = fileMenu->addMenu(tr("Recent"));
     auto* actionSaveProject = fileMenu->addAction(tr("Save"));
     auto* actionSaveProjectAs = fileMenu->addAction(tr("Save As..."));
     fileMenu->addSeparator();
@@ -179,6 +181,8 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
     connect(actionSaveProject, &QAction::triggered, this, [this]() { saveCurrentConfig(); });
     connect(actionSaveProjectAs, &QAction::triggered, this, [this]() { saveCurrentConfigAs(); });
     connect(actionExit, &QAction::triggered, this, [this]() { close(); });
+
+    refreshRecentMenu();
 
     // Setup keyboard shortcuts
     // Ctrl+Q to exit
@@ -232,33 +236,45 @@ void FemApp::closeEvent(QCloseEvent* event) {
     }
 }
 
-void FemApp::loadFEMConfig() {
-    this->loadFEMConfig(this->femc_info->absoluteFilePath());
+bool FemApp::loadFEMConfig() {
+    if (currentFilePath.isEmpty()) {
+        return false;
+    }
+    return this->loadFEMConfig(currentFilePath);
 }
 
-void FemApp::loadFEMConfig(const QString& filePath) {
+bool FemApp::loadFEMConfig(const QString& filePath) {
     if (filePath.isEmpty()) {
-        // raise a error window here
-        qWarning() << "file path is Empty!\n";
-        return;
+        showError(this, tr("Config file path is empty."));
+        return false;
     }
-    qDebug() << "Loading config file from " << filePath << "\n";
+    QFileInfo fileInfo(filePath);
+    const QString absoluteFilePath = fileInfo.absoluteFilePath();
+
+    if (!fileInfo.exists() || !fileInfo.isFile()) {
+        showError(this, tr("Config file does not exist: ") + absoluteFilePath);
+        return false;
+    }
+
+    qDebug() << "Loading config file from " << absoluteFilePath << "\n";
 
     // 切换工作文件夹
-    QFileInfo fileInfo(filePath);
     QDir::setCurrent(fileInfo.absolutePath());
 
-    if (!FEMConfig::ReadFile(filePath.toUtf8().toStdString(), this->femdata)) {
-        qDebug() << "Failed to read file.";
-        return;
+    if (!FEMConfig::ReadFile(absoluteFilePath.toUtf8().toStdString(), this->femdata)) {
+        showError(this, tr("Failed to read FEM config file."));
+        return false;
     }
 
     // Track the current file path and clear modified flag
-    currentFilePath = filePath;
+    currentFilePath = absoluteFilePath;
     isModified = false;
     updateFileLabel();
+    recentProjectHistory.addProject(currentFilePath);
+    refreshRecentMenu();
 
     this->onLoadFile();
+    return true;
 }
 
 std::string FemApp::getFolderMatched() {
@@ -482,6 +498,22 @@ void FemApp::updateFileLabel() {
     this->setWindowTitle(windowTitle);
 }
 
+void FemApp::refreshRecentMenu() {
+    if (!recentMenu) {
+        return;
+    }
+
+    recentMenu->clear();
+    const QStringList projects = recentProjectHistory.recentProjects();
+    for (const QString& projectPath : projects) {
+        QAction* action = recentMenu->addAction(projectPath);
+        connect(action, &QAction::triggered, this,
+                [this, projectPath]() { loadFEMConfig(projectPath); });
+    }
+
+    recentMenu->setEnabled(!projects.isEmpty());
+}
+
 void FemApp::refreshXlsxEditor() {
     if (!xlsxEditorModule) {
         return;
@@ -535,6 +567,11 @@ void FemApp::loadConfigFromDialog() {
 }
 
 void FemApp::saveCurrentConfig() {
+    if (currentFilePath.isEmpty()) {
+        saveCurrentConfigAs();
+        return;
+    }
+
     std::ostringstream oss;
     if (!cc::neolux::femconfig::FEMConfig::dumpFEMData(femdata, oss)) {
         showError(this, tr("Failed to generate FEM config content."));
@@ -543,13 +580,13 @@ void FemApp::saveCurrentConfig() {
     femdata.rawContent = oss.str();
     projectControlWidget->setRawConfigText(QString::fromUtf8(femdata.rawContent.c_str()));
 
-    if (!cc::neolux::femconfig::FEMConfig::dumpFEMData(
-            femdata, this->femc_info->absoluteFilePath().toUtf8().toStdString())) {
+    if (!cc::neolux::femconfig::FEMConfig::dumpFEMData(femdata,
+                                                       currentFilePath.toUtf8().toStdString())) {
         showError(this, tr("Failed to save FEM config file."));
         return;
     }
     clearModifiedFlag();
-    qInfo() << "Saved FEM config file to " << this->femc_info->absoluteFilePath();
+    qInfo() << "Saved FEM config file to " << currentFilePath;
 }
 
 void FemApp::saveCurrentConfigAs() {
@@ -573,7 +610,9 @@ void FemApp::saveCurrentConfigAs() {
         showError(this, tr("Failed to save FEM config file."));
         return;
     }
-    currentFilePath = femconfig_path;
+    currentFilePath = QFileInfo(femconfig_path).absoluteFilePath();
+    recentProjectHistory.addProject(currentFilePath);
+    refreshRecentMenu();
     clearModifiedFlag();
     qInfo() << "Saved FEM config file to " << femconfig_path;
 }

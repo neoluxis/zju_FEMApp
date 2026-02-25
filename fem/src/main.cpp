@@ -1,25 +1,19 @@
 #include <QApplication>
 #include <QDebug>
-#include <QDir>
-#include <QFileInfo>
 #include <QLocale>
 #include <QTranslator>
-#include <iostream>
-#include <string>
 
 #ifndef FEMAPP_SKIP_WINDOWS_API
 #include "cc/neolux/fem/FileAssociation.h"
 #endif
 #include "cc/neolux/FEMConfig/FEMConfig.h"
+#include "cc/neolux/fem/recent/recent_project_history.h"
 #include "femapp.h"
 
 #ifndef FEMAPP_SKIP_WINDOWS_API
 using cc::neolux::fem::FileAssociation;
 #endif
 using namespace cc::neolux::femconfig;
-using std::cout;
-using std::endl;
-using std::string;
 
 void fileAssociat() {
 #ifndef FEMAPP_SKIP_WINDOWS_API
@@ -56,10 +50,15 @@ int main(int argc, char* argv[]) {
     FemApp w;
     w.show();
 
+    cc::neolux::fem::recent::RecentProjectHistory recentHistory;
     if (argc > 1) {
         QString qFilePath = QString::fromLocal8Bit(argv[1]);
-        w.femc_info = new QFileInfo(qFilePath);
-        w.loadFEMConfig();
+        w.loadFEMConfig(qFilePath);
+    } else {
+        const QString latestProject = recentHistory.latestProject();
+        if (!latestProject.isEmpty()) {
+            w.loadFEMConfig(latestProject);
+        }
     }
 
     return app.exec();
