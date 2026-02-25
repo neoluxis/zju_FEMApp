@@ -321,6 +321,25 @@ bool FemApp::loadFEMConfig(const QString& filePath) {
         return false;
     }
 
+    if (fileInfo.size() == 0) {
+        femdata = BuildDefaultFemData();
+        std::ostringstream oss;
+        if (cc::neolux::femconfig::FEMConfig::dumpFEMData(femdata, oss)) {
+            femdata.rawContent = oss.str();
+        }
+
+        currentFilePath = absoluteFilePath;
+        isModified = false;
+        updateFileLabel();
+        recentProjectHistory.addProject(currentFilePath);
+        refreshRecentMenu();
+
+        relaxPatternMatchValidation = true;
+        skipAutoRefreshEditorOnce = true;
+        this->onLoadFile();
+        return true;
+    }
+
     qDebug() << "Loading config file from " << absoluteFilePath << "\n";
 
     // 切换工作文件夹
@@ -351,6 +370,33 @@ bool FemApp::loadMultiProjectWorkspace(const QString& filePath) {
     currentWorkspaceFilePath = QFileInfo(filePath).absoluteFilePath();
     recentProjectHistory.addProject(currentWorkspaceFilePath);
     refreshRecentMenu();
+
+    QFileInfo workspaceInfo(currentWorkspaceFilePath);
+    if (!workspaceInfo.exists() || !workspaceInfo.isFile()) {
+        showError(this, tr("Config file does not exist: ") + currentWorkspaceFilePath);
+        return false;
+    }
+
+    if (workspaceInfo.size() == 0) {
+        cc::neolux::fem::mpw::MultiProjectWorkspaceData emptyWorkspaceData;
+        emptyWorkspaceData.workspaceName = workspaceInfo.completeBaseName();
+        multiPrjWsWidget->setWorkspaceData(emptyWorkspaceData, currentWorkspaceFilePath);
+
+        femdata = BuildDefaultFemData();
+        std::ostringstream oss;
+        if (cc::neolux::femconfig::FEMConfig::dumpFEMData(femdata, oss)) {
+            femdata.rawContent = oss.str();
+        }
+
+        currentFilePath.clear();
+        isModified = false;
+        updateFileLabel();
+
+        relaxPatternMatchValidation = true;
+        skipAutoRefreshEditorOnce = true;
+        this->onLoadFile();
+        return true;
+    }
 
     QString errorMessage;
     if (!multiPrjWsWidget->loadWorkspaceFile(currentWorkspaceFilePath, &errorMessage)) {
@@ -840,16 +886,28 @@ void FemApp::createNewWorkspace() {
         return;
     }
 
-    loadMultiProjectWorkspace(absoluteWorkspacePath);
+    relaxPatternMatchValidation = true;
+    skipAutoRefreshEditorOnce = true;
+    const bool loaded = loadMultiProjectWorkspace(absoluteWorkspacePath);
+    if (!loaded) {
+        relaxPatternMatchValidation = false;
+        skipAutoRefreshEditorOnce = false;
+    }
 }
 
 void FemApp::loadConfigFromDialog() {
     QString femconfig_path =
         QFileDialog::getOpenFileName(this, tr("Open FEM Config File"), QDir::currentPath(),
-                                     tr("FEM Config Files (*.fem);;All Files (*)"));
+                                     tr("FEM/Workspace Files (*.fem *.femmpw);;All Files (*)"));
     if (femconfig_path.isEmpty()) {
         return;
     }
+    if (cc::neolux::fem::mpw::MultiProjectWorkspace::IsValidWorkspaceFile(femconfig_path)) {
+        this->loadMultiProjectWorkspace(femconfig_path);
+        qInfo() << "Loaded workspace file from " << femconfig_path;
+        return;
+    }
+
     this->openSingleProject(femconfig_path);
     qInfo() << "Loaded FEM config file from " << femconfig_path;
 }
