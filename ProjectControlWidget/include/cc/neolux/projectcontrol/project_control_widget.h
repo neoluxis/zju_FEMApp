@@ -61,9 +61,6 @@ public:
     QString rawConfigText() const;
 
 signals:
-    void loadClicked();
-    void saveClicked();
-    void saveAsClicked();
     void folderBrowseClicked();
     void folderMatchClicked();
     void folderEdited(const QString& text);

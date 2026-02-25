@@ -3,6 +3,7 @@
 #include <QCloseEvent>
 #include <QDir>
 #include <QFileDialog>
+#include <QMenuBar>
 #include <QMessageBox>
 #include <QShortcut>
 #include <QVBoxLayout>
@@ -42,12 +43,6 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
     xlsxEditorModule = std::make_unique<cc::neolux::fem::XlsxEditorModule>(ui.vboxSheetEdit);
     xlsxEditorModule->setDryRun(projectControlWidget->isDryRunChecked());
 
-    connect(projectControlWidget, &cc::neolux::projectcontrol::ProjectControlWidget::loadClicked,
-            this, [this]() { loadConfigFromDialog(); });
-    connect(projectControlWidget, &cc::neolux::projectcontrol::ProjectControlWidget::saveClicked,
-            this, [this]() { saveCurrentConfig(); });
-    connect(projectControlWidget, &cc::neolux::projectcontrol::ProjectControlWidget::saveAsClicked,
-            this, [this]() { saveCurrentConfigAs(); });
     connect(projectControlWidget,
             &cc::neolux::projectcontrol::ProjectControlWidget::folderBrowseClicked, this,
             [this]() { browseFolder(); });
@@ -172,6 +167,18 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
                     xlsxEditorModule->setDryRun(checked);
                 }
             });
+
+    auto* fileMenu = ui.menuBar->addMenu(tr("File"));
+    auto* actionOpenProject = fileMenu->addAction(tr("Open Project..."));
+    auto* actionSaveProject = fileMenu->addAction(tr("Save"));
+    auto* actionSaveProjectAs = fileMenu->addAction(tr("Save As..."));
+    fileMenu->addSeparator();
+    auto* actionExit = fileMenu->addAction(tr("Exit"));
+
+    connect(actionOpenProject, &QAction::triggered, this, [this]() { loadConfigFromDialog(); });
+    connect(actionSaveProject, &QAction::triggered, this, [this]() { saveCurrentConfig(); });
+    connect(actionSaveProjectAs, &QAction::triggered, this, [this]() { saveCurrentConfigAs(); });
+    connect(actionExit, &QAction::triggered, this, [this]() { close(); });
 
     // Setup keyboard shortcuts
     // Ctrl+Q to exit

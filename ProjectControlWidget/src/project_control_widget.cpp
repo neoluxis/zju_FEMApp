@@ -18,9 +18,6 @@ ProjectControlWidget::ProjectControlWidget(QWidget* parent)
     ui->cbSheet->setMinimumContentsLength(12);
     ui->cbSheet->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
-    connect(ui->btnLoad, &QPushButton::clicked, this, &ProjectControlWidget::loadClicked);
-    connect(ui->btnSave, &QPushButton::clicked, this, &ProjectControlWidget::saveClicked);
-    connect(ui->btnSaveas, &QPushButton::clicked, this, &ProjectControlWidget::saveAsClicked);
     connect(ui->btnFolderBrowse, &QPushButton::clicked, this,
             &ProjectControlWidget::folderBrowseClicked);
     connect(ui->btnFolderMatch, &QPushButton::clicked, this,

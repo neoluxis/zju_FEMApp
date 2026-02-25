@@ -42,31 +42,6 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="hbPeoject">
-     <item>
-      <widget class="QPushButton" name="btnLoad">
-       <property name="text">
-        <string>Load</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnSave">
-       <property name="text">
-        <string>Save</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnSaveas">
-       <property name="text">
-        <string>Save As</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="hbFolder">
      <item>
       <widget class="QLabel" name="lblFolder">

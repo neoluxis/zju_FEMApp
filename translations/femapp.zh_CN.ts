@@ -8,25 +8,13 @@
         <source>DataItem</source>
         <translation>数据项</translation>
     </message>
-    <message>
-        <source>Delete</source>
-        <translation type="obsolete">删除</translation>
-    </message>
-    <message>
-        <source>Restore</source>
-        <translation type="obsolete">恢复</translation>
-    </message>
-    <message>
-        <source>Double-click to keep/remove</source>
-        <translation type="vanished">双击以保留/删除</translation>
-    </message>
 </context>
 <context>
     <name>FemApp</name>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="14"/>
-        <location filename="../fem/src/femapp.cpp" line="459"/>
-        <location filename="../fem/src/femapp.cpp" line="466"/>
+        <location filename="../fem/src/femapp.cpp" line="468"/>
+        <location filename="../fem/src/femapp.cpp" line="475"/>
         <source>FemApp</source>
         <translation>FemApp</translation>
     </message>
@@ -39,8 +27,9 @@
         <translation type="vanished">加载</translation>
     </message>
     <message>
+        <location filename="../fem/src/femapp.cpp" line="173"/>
         <source>Save</source>
-        <translation type="vanished">保存</translation>
+        <translation>保存</translation>
     </message>
     <message>
         <source>Save As</source>
@@ -59,8 +48,9 @@
         <translation type="vanished">匹配</translation>
     </message>
     <message>
+        <location filename="../fem/src/femapp.cpp" line="171"/>
         <source>File</source>
-        <translation type="vanished">文件</translation>
+        <translation>文件</translation>
     </message>
     <message>
         <source>Sheet</source>
@@ -87,12 +77,12 @@
         <translation type="vanished">应用</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="264"/>
+        <location filename="../fem/src/femapp.cpp" line="273"/>
         <source>No folders matched the folder pattern. </source>
         <translation>没有文件夹匹配到</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="268"/>
+        <location filename="../fem/src/femapp.cpp" line="277"/>
         <source>Multiple folders matched the folder pattern. Please ensure only one folder matches.</source>
         <translation>匹配到多个文件夹，请确保只有一个文件夹匹配</translation>
     </message>
@@ -101,90 +91,105 @@
         <translation type="vanished">没有匹配到任何文件</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="207"/>
+        <location filename="../fem/src/femapp.cpp" line="172"/>
+        <source>Open Project...</source>
+        <translation>打开项目...</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/femapp.cpp" line="174"/>
+        <source>Save As...</source>
+        <translation>另存为...</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/femapp.cpp" line="176"/>
+        <source>Exit</source>
+        <translation>退出</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/femapp.cpp" line="216"/>
         <source>Unsaved Changes</source>
         <translation>未保存的修改</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="208"/>
+        <location filename="../fem/src/femapp.cpp" line="217"/>
         <source>You have unsaved changes. Do you want to save before closing?</source>
         <translation>你有没有保存的修改，是否保存？</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="294"/>
+        <location filename="../fem/src/femapp.cpp" line="303"/>
         <source>No filenames matched the filename pattern.</source>
         <translation>没有文件名匹配</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="300"/>
+        <location filename="../fem/src/femapp.cpp" line="309"/>
         <source>Multiple filenames matched the filename pattern. Please ensure only one filename matches.</source>
         <translation>多个文件匹配到，请确保只有一个文件匹配</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="355"/>
+        <location filename="../fem/src/femapp.cpp" line="364"/>
         <source>No sheets matched the sheet pattern. </source>
         <translation>没有表名匹配</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="361"/>
+        <location filename="../fem/src/femapp.cpp" line="370"/>
         <source>Multiple sheets matched the sheet pattern. Please ensure only one sheet matches.</source>
         <translation>匹配到多个表，请检查文件以匹配单个表</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="394"/>
+        <location filename="../fem/src/femapp.cpp" line="403"/>
         <source>Failed to read Excel file: </source>
         <translation>读取 Excel 文件失败</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="521"/>
+        <location filename="../fem/src/femapp.cpp" line="530"/>
         <source>Open FEM Config File</source>
         <translation>打开 FEM 配置文件</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="522"/>
-        <location filename="../fem/src/femapp.cpp" line="551"/>
+        <location filename="../fem/src/femapp.cpp" line="531"/>
+        <location filename="../fem/src/femapp.cpp" line="560"/>
         <source>FEM Config Files (*.fem);;All Files (*)</source>
         <translation>FEM项目文件 (*.fem);;全部文件 (*)</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="533"/>
-        <location filename="../fem/src/femapp.cpp" line="558"/>
+        <location filename="../fem/src/femapp.cpp" line="542"/>
+        <location filename="../fem/src/femapp.cpp" line="567"/>
         <source>Failed to generate FEM config content.</source>
         <translation>生成 FEM 配置内容失败</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="541"/>
-        <location filename="../fem/src/femapp.cpp" line="566"/>
+        <location filename="../fem/src/femapp.cpp" line="550"/>
+        <location filename="../fem/src/femapp.cpp" line="575"/>
         <source>Failed to save FEM config file.</source>
         <translation>保存 FEM 文件失败</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="550"/>
+        <location filename="../fem/src/femapp.cpp" line="559"/>
         <source>Save FEM Config File As</source>
         <translation>保存 FEM 配置文件到</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="576"/>
+        <location filename="../fem/src/femapp.cpp" line="585"/>
         <source>Select Folder</source>
         <translation>选择文件夹</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="510"/>
+        <location filename="../fem/src/femapp.cpp" line="519"/>
         <source>Failed to parse raw FEM config content.</source>
         <translation>解析配置文件失败，请检查文件格式</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="19"/>
+        <location filename="../fem/src/femapp.cpp" line="20"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="23"/>
+        <location filename="../fem/src/femapp.cpp" line="24"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="27"/>
+        <location filename="../fem/src/femapp.cpp" line="28"/>
         <source>Info</source>
         <translation>提示</translation>
     </message>
@@ -197,160 +202,157 @@
         <translation type="unfinished">项目设置</translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="49"/>
         <source>Load</source>
-        <translation type="unfinished">加载</translation>
+        <translation type="obsolete">加载</translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="56"/>
         <source>Save</source>
-        <translation type="unfinished">保存</translation>
+        <translation type="obsolete">保存</translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="63"/>
         <source>Save As</source>
-        <translation type="unfinished">另存为</translation>
+        <translation type="obsolete">另存为</translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="74"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="49"/>
         <source>Folder</source>
         <translation type="unfinished">文件夹</translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="97"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="72"/>
         <source>Browse</source>
         <translation type="unfinished">浏览</translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="110"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="85"/>
         <source>Match</source>
         <translation type="unfinished">匹配</translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="121"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="96"/>
         <source>File</source>
         <translation type="unfinished">文件</translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="135"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="110"/>
         <source>Sheet</source>
         <translation type="unfinished">表</translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="149"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="124"/>
         <source>Refresh Editor</source>
         <translation type="unfinished">刷新编辑器</translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="156"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="131"/>
         <source>Dry Run</source>
         <translation type="unfinished">模拟运行</translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="172"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="147"/>
         <source>Dose</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="180"/>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="290"/>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="400"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="155"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="265"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="375"/>
         <source>Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="188"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="163"/>
         <source>LowHigh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="200"/>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="310"/>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="420"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="175"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="285"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="395"/>
         <source>Unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="208"/>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="428"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="183"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="403"/>
         <source>mJ/cm2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="220"/>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="330"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="195"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="305"/>
         <source>Center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="234"/>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="344"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="209"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="319"/>
         <source>Step</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="252"/>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="362"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="227"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="337"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="266"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="241"/>
         <source>Cols</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="282"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="257"/>
         <source>Focus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="298"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="273"/>
         <source>Focus2DoseLinear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="318"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="293"/>
         <source>um</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="376"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="351"/>
         <source>Rows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="392"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="367"/>
         <source>FEM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="408"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="383"/>
         <source>NegPos2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="440"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="415"/>
         <source>Target</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="454"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="429"/>
         <source>Spec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="470"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="445"/>
         <source>Text</source>
         <translation type="unfinished">文本编辑</translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="478"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="453"/>
         <source>Reset</source>
         <translation type="unfinished">重置</translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="485"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="460"/>
         <source>Apply</source>
         <translation type="unfinished">应用</translation>
     </message>
@@ -371,10 +373,6 @@
         <location filename="../XLSXEditor/src/XLSXEditor.ui" line="29"/>
         <source>Select All</source>
         <translation>全选</translation>
-    </message>
-    <message>
-        <source>Restore</source>
-        <translation type="obsolete">恢复全部</translation>
     </message>
     <message>
         <location filename="../XLSXEditor/src/XLSXEditor.ui" line="39"/>

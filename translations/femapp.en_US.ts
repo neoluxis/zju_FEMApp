@@ -13,106 +13,131 @@
     <name>FemApp</name>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="14"/>
-        <location filename="../fem/src/femapp.cpp" line="459"/>
-        <location filename="../fem/src/femapp.cpp" line="466"/>
+        <location filename="../fem/src/femapp.cpp" line="468"/>
+        <location filename="../fem/src/femapp.cpp" line="475"/>
         <source>FemApp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="19"/>
+        <location filename="../fem/src/femapp.cpp" line="20"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="23"/>
+        <location filename="../fem/src/femapp.cpp" line="24"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="27"/>
+        <location filename="../fem/src/femapp.cpp" line="28"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="207"/>
+        <location filename="../fem/src/femapp.cpp" line="171"/>
+        <source>File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fem/src/femapp.cpp" line="172"/>
+        <source>Open Project...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fem/src/femapp.cpp" line="173"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fem/src/femapp.cpp" line="174"/>
+        <source>Save As...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fem/src/femapp.cpp" line="176"/>
+        <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../fem/src/femapp.cpp" line="216"/>
         <source>Unsaved Changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="208"/>
+        <location filename="../fem/src/femapp.cpp" line="217"/>
         <source>You have unsaved changes. Do you want to save before closing?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="264"/>
+        <location filename="../fem/src/femapp.cpp" line="273"/>
         <source>No folders matched the folder pattern. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="268"/>
+        <location filename="../fem/src/femapp.cpp" line="277"/>
         <source>Multiple folders matched the folder pattern. Please ensure only one folder matches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="294"/>
+        <location filename="../fem/src/femapp.cpp" line="303"/>
         <source>No filenames matched the filename pattern.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="300"/>
+        <location filename="../fem/src/femapp.cpp" line="309"/>
         <source>Multiple filenames matched the filename pattern. Please ensure only one filename matches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="355"/>
+        <location filename="../fem/src/femapp.cpp" line="364"/>
         <source>No sheets matched the sheet pattern. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="361"/>
+        <location filename="../fem/src/femapp.cpp" line="370"/>
         <source>Multiple sheets matched the sheet pattern. Please ensure only one sheet matches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="394"/>
+        <location filename="../fem/src/femapp.cpp" line="403"/>
         <source>Failed to read Excel file: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="521"/>
+        <location filename="../fem/src/femapp.cpp" line="530"/>
         <source>Open FEM Config File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="522"/>
-        <location filename="../fem/src/femapp.cpp" line="551"/>
+        <location filename="../fem/src/femapp.cpp" line="531"/>
+        <location filename="../fem/src/femapp.cpp" line="560"/>
         <source>FEM Config Files (*.fem);;All Files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="533"/>
-        <location filename="../fem/src/femapp.cpp" line="558"/>
+        <location filename="../fem/src/femapp.cpp" line="542"/>
+        <location filename="../fem/src/femapp.cpp" line="567"/>
         <source>Failed to generate FEM config content.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="541"/>
-        <location filename="../fem/src/femapp.cpp" line="566"/>
+        <location filename="../fem/src/femapp.cpp" line="550"/>
+        <location filename="../fem/src/femapp.cpp" line="575"/>
         <source>Failed to save FEM config file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="550"/>
+        <location filename="../fem/src/femapp.cpp" line="559"/>
         <source>Save FEM Config File As</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="576"/>
+        <location filename="../fem/src/femapp.cpp" line="585"/>
         <source>Select Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="510"/>
+        <location filename="../fem/src/femapp.cpp" line="519"/>
         <source>Failed to parse raw FEM config content.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -126,159 +151,144 @@
     </message>
     <message>
         <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="49"/>
-        <source>Load</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="56"/>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="63"/>
-        <source>Save As</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="74"/>
         <source>Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="97"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="72"/>
         <source>Browse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="110"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="85"/>
         <source>Match</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="121"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="96"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="135"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="110"/>
         <source>Sheet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="149"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="124"/>
         <source>Refresh Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="156"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="131"/>
         <source>Dry Run</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="172"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="147"/>
         <source>Dose</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="180"/>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="290"/>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="400"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="155"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="265"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="375"/>
         <source>Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="188"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="163"/>
         <source>LowHigh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="200"/>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="310"/>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="420"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="175"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="285"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="395"/>
         <source>Unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="208"/>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="428"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="183"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="403"/>
         <source>mJ/cm2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="220"/>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="330"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="195"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="305"/>
         <source>Center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="234"/>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="344"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="209"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="319"/>
         <source>Step</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="252"/>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="362"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="227"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="337"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="266"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="241"/>
         <source>Cols</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="282"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="257"/>
         <source>Focus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="298"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="273"/>
         <source>Focus2DoseLinear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="318"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="293"/>
         <source>um</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="376"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="351"/>
         <source>Rows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="392"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="367"/>
         <source>FEM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="408"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="383"/>
         <source>NegPos2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="440"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="415"/>
         <source>Target</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="454"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="429"/>
         <source>Spec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="470"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="445"/>
         <source>Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="478"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="453"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="485"/>
+        <location filename="../ProjectControlWidget/src/projectcontrolwidget.ui" line="460"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
