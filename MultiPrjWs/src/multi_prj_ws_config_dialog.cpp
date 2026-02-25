@@ -1,5 +1,6 @@
 #include "cc/neolux/fem/mpw/multi_prj_ws_config_dialog.h"
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QFileDialog>
 #include <QFileInfo>
@@ -10,6 +11,12 @@
 #include "ui_multiprjws_config.h"
 
 namespace cc::neolux::fem::mpw {
+
+namespace {
+QString trConfig(const char* text) {
+    return QCoreApplication::translate("MultiPrjWsConfigDialog", text);
+}
+}  // namespace
 
 MultiPrjWsConfigDialog::MultiPrjWsConfigDialog(QWidget* parent)
     : QDialog(parent), ui(new Ui::MultiPrjWsConfigDialog) {
@@ -108,9 +115,9 @@ void MultiPrjWsConfigDialog::addProject() {
     const QFileInfo workspaceInfo(workspaceFilePath_);
     const QDir workspaceDir = workspaceInfo.absoluteDir();
 
-    const QString selectedPath =
-        QFileDialog::getOpenFileName(this, tr("Select FEM Project"), workspaceDir.absolutePath(),
-                                     tr("FEM Config Files (*.fem);;All Files (*)"));
+    const QString selectedPath = QFileDialog::getOpenFileName(
+        this, trConfig("Select FEM Project"), workspaceDir.absolutePath(),
+        trConfig("FEM Config Files (*.fem);;All Files (*)"));
     if (selectedPath.isEmpty()) {
         return;
     }
@@ -160,7 +167,7 @@ void MultiPrjWsConfigDialog::removeSelectedProject() {
 bool MultiPrjWsConfigDialog::saveWorkspace() {
     QString errorMessage;
     if (!MultiProjectWorkspace::WriteFile(workspaceFilePath_, data_, &errorMessage)) {
-        QMessageBox::critical(this, tr("Error"), errorMessage);
+        QMessageBox::critical(this, trConfig("Error"), errorMessage);
         return false;
     }
 
