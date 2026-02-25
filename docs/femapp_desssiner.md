@@ -351,8 +351,10 @@ cmake --build build -j
 # 为 Windows 构建时，因为不会自动在 MINGW 目录中寻找 DLL, 所以需要手动复制需要的 DLL 文件到 exe 目录。
 # 为了保持整洁，可以考虑在新的文件夹中设置
 mkdir -pv package
+mkdir -pv package/translations
 cp -r build/FemApp.exe package/
 cp -r /usr/x86_64-w64-mingw32/lib/qt6/plugins/* package
+cp -r translations/*.qm package/translations
 
 export DLLPATH=/usr/x86_64-w64-mingw32/bin:/usr/x86_64-w64-mingw32/lib:./build
 x86_64-w64-mingw32-dllcopy package/FemApp.exe ./dll.txt --verbose -r
