@@ -1,5 +1,14 @@
 # FEM App
 
+## Modules
+
+- `FemApp`: 主程序入口与流程控制（配置加载、匹配、编辑流程编排）
+- `ProjectControlWidget`: 项目配置 UI 子包（项目操作 + Dose/Focus/FEM/Text）
+- `FEMConfig`: `.fem` 配置解析、匹配与序列化
+- `XLSXEditor`: 图片与描述编辑控件
+- `MiniXLSX`: xlsx 读写基础能力
+- `FileAssocLib`: Windows 文件关联支持
+
 ## Build
 
 Deps install
@@ -50,10 +59,7 @@ Package
 
 ```bash
 mkdir -pv package
-cp -rv ./build/{FemApp.exe,*.dll,platforms,transla┌─[neolux@neoluxeische] - [~/workspace/FEM/FemApp/XLSXEditor] - [2026-02-24 10:44:37]
-└─[0] <git:(main 952a97d) > ./build/XLSXEditor_test assets/test.xlsx
-Running in REAL-DELETE mode (will delete pictures and definitions)
-OpenXLSXWrapper::open error: Path xl/sharedStrings.xml does not exist in zip archive.tions} package
+cp -rv ./build/{FemApp.exe,*.dll,platforms,translations} package
 windeployqt6 package/FemApp.exe # Installed in system or in Wine or Copy from Windows
 zip package.zip package -r
 ```

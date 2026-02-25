@@ -17,9 +17,8 @@
         <translation type="obsolete">恢复</translation>
     </message>
     <message>
-        <location filename="../XLSXEditor/src/DataItem.cpp" line="41"/>
         <source>Double-click to keep/remove</source>
-        <translation>双击以保留/删除</translation>
+        <translation type="vanished">双击以保留/删除</translation>
     </message>
 </context>
 <context>
@@ -175,17 +174,17 @@
         <translation>解析配置文件失败，请检查文件格式</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="20"/>
+        <location filename="../fem/src/femapp.cpp" line="19"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="24"/>
+        <location filename="../fem/src/femapp.cpp" line="23"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="28"/>
+        <location filename="../fem/src/femapp.cpp" line="27"/>
         <source>Info</source>
         <translation>提示</translation>
     </message>
@@ -365,7 +364,6 @@
     </message>
     <message>
         <location filename="../XLSXEditor/src/XLSXEditor.ui" line="22"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="743"/>
         <source>Preview</source>
         <translation>预览</translation>
     </message>
@@ -380,65 +378,8 @@
     </message>
     <message>
         <location filename="../XLSXEditor/src/XLSXEditor.ui" line="39"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="358"/>
         <source>Save</source>
         <translation>保存</translation>
-    </message>
-    <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="95"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="101"/>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="116"/>
-        <source>Error</source>
-        <translation>错误</translation>
-    </message>
-    <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="95"/>
-        <source>Failed to open XLSX file.</source>
-        <translation>打开 XLSX 文件失败</translation>
-    </message>
-    <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="101"/>
-        <source>Failed to prepare picture reader.</source>
-        <translation>准备图片读取器失败</translation>
-    </message>
-    <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="116"/>
-        <source>Sheet not found: %1</source>
-        <translation>表未找到: %1</translation>
-    </message>
-    <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="358"/>
-        <source>Data saved to XLSX.</source>
-        <translation>数据已保存到 XLSX。</translation>
-    </message>
-    <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="360"/>
-        <source>Save Error</source>
-        <translation>保存错误</translation>
-    </message>
-    <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="360"/>
-        <source>Failed to save data to XLSX.</source>
-        <translation>保存数据到 XLSX 失败。</translation>
-    </message>
-    <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="439"/>
-        <source>Saving... %p%</source>
-        <translation>保存中... %p%</translation>
-    </message>
-    <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="743"/>
-        <source>Show All</source>
-        <translation>显示全部</translation>
-    </message>
-    <message>
-        <source>Data restored.</source>
-        <translation type="obsolete">数据已恢复。</translation>
-    </message>
-    <message>
-        <location filename="../XLSXEditor/src/XLSXEditor.cpp" line="711"/>
-        <source>Image Preview</source>
-        <translation>图片预览</translation>
     </message>
 </context>
 </TS>
