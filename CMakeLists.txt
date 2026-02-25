@@ -42,25 +42,25 @@ endif()
 add_subdirectory(MiniXLSX)
 add_subdirectory(FileAssocLib)
 add_subdirectory(XLSXEditor)
+add_subdirectory(ProjectControlWidget)
 
 # Add source files
 set(SOURCES
-        fem/src/main.cpp
-        fem/src/xlsx_proc.cpp
-        fem/src/femapp.cpp
-        fem/src/femapp_slots.cpp
+    fem/src/main.cpp
+    fem/src/xlsx_proc.cpp
+    fem/src/femapp.cpp
     fem/src/xlsx_editor_module.cpp
 )
 
 set(HEADERS
-        fem/include/
+    fem/include/
 )
 
 #set(UI_HEADERS
 #        fem/include/ui_mainwindow.h
 #)
 set(UI_FILES
-        fem/src/mainwindow.ui
+    fem/src/mainwindow.ui
 )
 
 
@@ -80,20 +80,22 @@ target_link_options(FemApp PRIVATE -Wl,--allow-multiple-definition)
 
 # Include directories
 target_include_directories(FemApp PRIVATE
-        ${HEADERS}
-        ${CMAKE_SOURCE_DIR}/FEMConfig/include
-        ${CMAKE_SOURCE_DIR}/FileAssocLib/include
+    ${HEADERS}
+    ${CMAKE_SOURCE_DIR}/FEMConfig/include
+    ${CMAKE_SOURCE_DIR}/FileAssocLib/include
     ${CMAKE_SOURCE_DIR}/XLSXEditor/include
+    ${CMAKE_SOURCE_DIR}/ProjectControlWidget/include
 )
 
 # Link libraries
 target_link_libraries(FemApp PRIVATE
-        Qt6::Core
-        Qt6::Widgets
-        FEMConfig
-        # OpenXLSX
-        MiniXLSX
+    Qt6::Core
+    Qt6::Widgets
+    FEMConfig
+    # OpenXLSX
+    MiniXLSX
     XLSXEditor
+    ProjectControlWidget
 )
 
 if(NOT FEMAPP_LINUX_BUILD_DEMO)
@@ -107,28 +109,33 @@ endif()
 # 生成 / 更新 .ts 文件 (use Qt-provided lupdate)
 # 扫描主项目和 XLSXEditor 的所有源文件
 add_custom_target(update_translations
-        COMMAND $<TARGET_FILE:Qt6::lupdate>
-        -recursive
-        fem/include
-        fem/src
-        XLSXEditor/include
-        XLSXEditor/src
-        -ts ${TRANSLATION_TS}
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        COMMENT "Update Qt translation files (.ts) for all modules"
+    COMMAND $<TARGET_FILE:Qt6::lupdate>
+    -recursive
+    fem/include
+    fem/src
+    XLSXEditor/include
+    XLSXEditor/src
+    ProjectControlWidget/include
+    ProjectControlWidget/src
+    -ts ${TRANSLATION_TS}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Update Qt translation files (.ts) for all modules"
 )
 
 # 编译 .ts -> .qm (use Qt-provided lrelease)
 add_custom_target(compile_translations
-        COMMAND $<TARGET_FILE:Qt6::lrelease> ${TRANSLATION_TS}
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        COMMENT "Compile Qt translation files (.qm)"
+    COMMAND $<TARGET_FILE:Qt6::lrelease> ${TRANSLATION_TS}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Compile Qt translation files (.qm)"
 )
+
+# Ensure .ts are refreshed before compiling .qm
+add_dependencies(compile_translations update_translations)
 
 # 添加到 FemApp 编译依赖
 add_dependencies(FemApp
-        update_translations
-        compile_translations
+    update_translations
+    compile_translations
 )
 
 
@@ -166,10 +173,10 @@ endif()
 
 # Move translation files to output directory after build
 add_custom_command(TARGET FemApp POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:FemApp>/translations
-        COMMAND ${CMAKE_COMMAND}
-                -DSRC_DIR=${CMAKE_SOURCE_DIR}/translations
-                -DDST_DIR=$<TARGET_FILE_DIR:FemApp>/translations
-                -P ${CMAKE_SOURCE_DIR}/cmake/CopyQm.cmake
-        COMMENT "Copying translation files to output directory"
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:FemApp>/translations
+    COMMAND ${CMAKE_COMMAND}
+        -DSRC_DIR=${CMAKE_SOURCE_DIR}/translations
+        -DDST_DIR=$<TARGET_FILE_DIR:FemApp>/translations
+        -P ${CMAKE_SOURCE_DIR}/cmake/CopyQm.cmake
+    COMMENT "Copying translation files to output directory"
 )

@@ -5,6 +5,7 @@
 
 #include "cc/neolux/FEMConfig/FEMConfig.h"
 #include "cc/neolux/fem/xlsx_editor_module.h"
+#include "cc/neolux/projectcontrol/project_control_widget.h"
 #include "ui_mainwindow.h"
 
 class FemApp : public QWidget {
@@ -46,43 +47,6 @@ protected:
     void changeEvent(QEvent* event) override;
     void closeEvent(QCloseEvent* event) override;
 
-    // ----------- Slots can be defined here if needed -----------
-private slots:
-    void onLoadClicked();
-    void onSaveClicked();
-    void onSaveAsClicked();
-    void onBrowseClicked();
-    void onMatchClicked();
-
-    void onFolderEdited(const QString& text);
-
-    void onFileChanged(const QString& text);
-    void onSheetChanged(const QString& text);
-
-    void onDModeChanged(const QString& text);
-    void onDUnitChanged(const QString& text);
-    void onDCenterChanged(double value);
-    void onDStepChanged(double value);
-    void onDNoChanged(int value);
-    void onDColsEdited();
-
-    void onFModeChanged(const QString& text);
-    void onFUnitChanged(const QString& text);
-    void onFCenterChanged(double value);
-    void onFStepChanged(double value);
-    void onFNoChanged(int value);
-    void onFRowsEdited();
-
-    void onFEMModeChanged(const QString& text);
-    void onFEMUnitChanged(const QString& text);
-    void onFEMTargChanged(double value);
-    void onFEMSpecChanged(double value);
-
-    void onRawFileEdited();
-    void onTxtResetClicked();
-    void onTxtApplyClicked();
-    void onRefreshEditorClicked();
-
 private:
     Ui::FemApp ui;
     cc::neolux::femconfig::FEMData femdata;  // Instance of FEMConfig
@@ -90,9 +54,19 @@ private:
     bool isModified = false;                 // Track if file has been modified
     bool isLoading = false;                  // Flag to prevent marking as modified during file load
     std::unique_ptr<cc::neolux::fem::XlsxEditorModule> xlsxEditorModule;
+    cc::neolux::projectcontrol::ProjectControlWidget* projectControlWidget = nullptr;
 
     void updateFileLabel();    // Update labelFEMFile with current filename and modification status
     void markAsModified();     // Mark file as modified and update label
     void clearModifiedFlag();  // Clear modified flag and update label
     void refreshXlsxEditor();  // Refresh XLSX editor content
+    void applyRawConfigText();
+    void loadConfigFromDialog();
+    void saveCurrentConfig();
+    void saveCurrentConfigAs();
+    void browseFolder();
+    void matchFolderPattern();
+    void setFolderPattern(const QString& text);
+    void setFilenamePattern(const QString& text);
+    void setSheetPattern(const QString& text);
 };

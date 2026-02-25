@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ProjectControlWidget</class>
+ <widget class="QWidget" name="ProjectControlWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>292</width>
+    <height>693</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="vboxProjectControl">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="hboxHeader">
+     <item>
+      <widget class="QLabel" name="labelSetting">
+       <property name="text">
+        <string>Project Setting</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelFEMFile">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hbPeoject">
+     <item>
+      <widget class="QPushButton" name="btnLoad">
+       <property name="text">
+        <string>Load</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnSave">
+       <property name="text">
+        <string>Save</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnSaveas">
+       <property name="text">
+        <string>Save As</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hbFolder">
+     <item>
+      <widget class="QLabel" name="lblFolder">
+       <property name="text">
+        <string>Folder</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lnFolder">
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnFolderBrowse">
+       <property name="maximumSize">
+        <size>
+         <width>60</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Browse</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnFolderMatch">
+       <property name="maximumSize">
+        <size>
+         <width>60</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Match</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hbFile" stretch="0,1">
+     <item>
+      <widget class="QLabel" name="lblFile">
+       <property name="text">
+        <string>File</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cbFile"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hbSheet" stretch="0,1">
+     <item>
+      <widget class="QLabel" name="lblSheet">
+       <property name="text">
+        <string>Sheet</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cbSheet"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hboxRefEdit">
+     <item>
+      <widget class="QPushButton" name="btnRefreshEditor">
+       <property name="text">
+        <string>Refresh Editor</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="chkDryRun">
+       <property name="text">
+        <string>Dry Run</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="Dose">
+      <attribute name="title">
+       <string>Dose</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="vboxDose" stretch="0,0,0,0,0,0,1">
+       <item>
+        <layout class="QHBoxLayout" name="hbDMode">
+         <item>
+          <widget class="QLabel" name="lblDMode">
+           <property name="text">
+            <string>Mode</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cbDMode">
+           <item>
+            <property name="text">
+             <string>LowHigh</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hbDUnit">
+         <item>
+          <widget class="QLabel" name="lblDUnit">
+           <property name="text">
+            <string>Unit</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cbDUnit">
+           <item>
+            <property name="text">
+             <string>mJ/cm2</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hbDCenter">
+         <item>
+          <widget class="QLabel" name="lblDCenter">
+           <property name="text">
+            <string>Center</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="dspnDCenter"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hbDStep">
+         <item>
+          <widget class="QLabel" name="lblDStep">
+           <property name="text">
+            <string>Step</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="dspnDStep">
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hbDNo">
+         <item>
+          <widget class="QLabel" name="lblDNo">
+           <property name="text">
+            <string>No</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="spnDNo"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hbDCols">
+         <item>
+          <widget class="QLabel" name="lblDCols">
+           <property name="text">
+            <string>Cols</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lnDCols"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hbzDose"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="Focus">
+      <attribute name="title">
+       <string>Focus</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="vboxFocus" stretch="0,0,0,0,0,0,1">
+       <item>
+        <layout class="QHBoxLayout" name="hbFMode">
+         <item>
+          <widget class="QLabel" name="lblFMode">
+           <property name="text">
+            <string>Mode</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cbFMode">
+           <item>
+            <property name="text">
+             <string>Focus2DoseLinear</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hbFUnit">
+         <item>
+          <widget class="QLabel" name="lblFUnit">
+           <property name="text">
+            <string>Unit</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cbFUnit">
+           <item>
+            <property name="text">
+             <string>um</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hb3FCenter">
+         <item>
+          <widget class="QLabel" name="lblFCenter">
+           <property name="text">
+            <string>Center</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="dspnFCenter"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hbFStep">
+         <item>
+          <widget class="QLabel" name="lblFStep">
+           <property name="text">
+            <string>Step</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="dspnFStep">
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hbFNo">
+         <item>
+          <widget class="QLabel" name="lblFNo">
+           <property name="text">
+            <string>No</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="spnFNo"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hbFRows">
+         <item>
+          <widget class="QLabel" name="lblFRols">
+           <property name="text">
+            <string>Rows</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lnFRows"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hbzFocus"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="FEM">
+      <attribute name="title">
+       <string>FEM</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="vboxFEM" stretch="0,0,0,0,1">
+       <item>
+        <layout class="QHBoxLayout" name="hbFEMMode">
+         <item>
+          <widget class="QLabel" name="lblFEMMode">
+           <property name="text">
+            <string>Mode</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cbFEMMode">
+           <item>
+            <property name="text">
+             <string>NegPos2</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hbFEMUnit">
+         <item>
+          <widget class="QLabel" name="lblFEMUnit">
+           <property name="text">
+            <string>Unit</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cbFEMUnit">
+           <item>
+            <property name="text">
+             <string>mJ/cm2</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hbFEMTarg">
+         <item>
+          <widget class="QLabel" name="lblFEMTarg">
+           <property name="text">
+            <string>Target</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="dspnFEMTarg"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hFEMSpec">
+         <item>
+          <widget class="QLabel" name="lblFEMSpec">
+           <property name="text">
+            <string>Spec</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="dspnFEMSpec"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hbzFEM"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="Text">
+      <attribute name="title">
+       <string>Text</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="vboxText">
+       <item>
+        <layout class="QHBoxLayout" name="hbText">
+         <item>
+          <widget class="QPushButton" name="btnTxtReset">
+           <property name="text">
+            <string>Reset</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnTxtApply">
+           <property name="text">
+            <string>Apply</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QPlainTextEdit" name="txtConfigRaw"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

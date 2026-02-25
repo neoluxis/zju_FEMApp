@@ -2,13 +2,15 @@
 
 #include <QCloseEvent>
 #include <QDir>
+#include <QFileDialog>
 #include <QMessageBox>
 #include <QShortcut>
-#include <QSizePolicy>
+#include <QVBoxLayout>
+#include <sstream>
+#include <string>
 
 #include "QDebug"
 #include "cc/neolux/fem/xlsx_proc.h"
-#include "iostream"
 
 using cc::neolux::femconfig::FEMConfig;
 namespace app = cc::neolux::fem;
@@ -30,73 +32,162 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
     ui.setupUi(this);
 
     ui.gridLayout_2->setAlignment(ui.vboxSettings, Qt::AlignTop | Qt::AlignLeft);
-    ui.cbFile->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
-    ui.cbFile->setMinimumContentsLength(12);
-    ui.cbFile->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-    ui.cbSheet->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
-    ui.cbSheet->setMinimumContentsLength(12);
-    ui.cbSheet->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+
+    auto* projectControlLayout = new QVBoxLayout(ui.projectControlHost);
+    projectControlLayout->setContentsMargins(0, 0, 0, 0);
+    projectControlWidget =
+        new cc::neolux::projectcontrol::ProjectControlWidget(ui.projectControlHost);
+    projectControlLayout->addWidget(projectControlWidget);
 
     xlsxEditorModule = std::make_unique<cc::neolux::fem::XlsxEditorModule>(ui.vboxSheetEdit);
-    xlsxEditorModule->setDryRun(ui.chkDryRun->isChecked());
+    xlsxEditorModule->setDryRun(projectControlWidget->isDryRunChecked());
 
-    connect(ui.btnLoad, &QPushButton::clicked, this, &FemApp::onLoadClicked);
-    connect(ui.btnSave, &QPushButton::clicked, this, &FemApp::onSaveClicked);
-    connect(ui.btnSaveas, &QPushButton::clicked, this, &FemApp::onSaveAsClicked);
-    connect(ui.btnFolderBrowse, &QPushButton::clicked, this, &FemApp::onBrowseClicked);
-    connect(ui.btnFolderMatch, &QPushButton::clicked, this, &FemApp::onMatchClicked);
-    connect(ui.lnFolder, &QLineEdit::textEdited, this, &FemApp::onFolderEdited);
-    connect(ui.cbFile, &QComboBox::currentTextChanged, this, &FemApp::onFileChanged);
-    connect(ui.cbSheet, &QComboBox::currentTextChanged, this, &FemApp::onSheetChanged);
+    connect(projectControlWidget, &cc::neolux::projectcontrol::ProjectControlWidget::loadClicked,
+            this, [this]() { loadConfigFromDialog(); });
+    connect(projectControlWidget, &cc::neolux::projectcontrol::ProjectControlWidget::saveClicked,
+            this, [this]() { saveCurrentConfig(); });
+    connect(projectControlWidget, &cc::neolux::projectcontrol::ProjectControlWidget::saveAsClicked,
+            this, [this]() { saveCurrentConfigAs(); });
+    connect(projectControlWidget,
+            &cc::neolux::projectcontrol::ProjectControlWidget::folderBrowseClicked, this,
+            [this]() { browseFolder(); });
+    connect(projectControlWidget,
+            &cc::neolux::projectcontrol::ProjectControlWidget::folderMatchClicked, this,
+            [this]() { matchFolderPattern(); });
+    connect(projectControlWidget, &cc::neolux::projectcontrol::ProjectControlWidget::folderEdited,
+            this, [this](const QString& text) { setFolderPattern(text); });
+    connect(projectControlWidget, &cc::neolux::projectcontrol::ProjectControlWidget::fileChanged,
+            this, [this](const QString& text) { setFilenamePattern(text); });
+    connect(projectControlWidget, &cc::neolux::projectcontrol::ProjectControlWidget::sheetChanged,
+            this, [this](const QString& text) { setSheetPattern(text); });
 
-    connect(ui.cbDMode, &QComboBox::currentTextChanged, this, &FemApp::onDModeChanged);
-    connect(ui.cbDUnit, &QComboBox::currentTextChanged, this, &FemApp::onDUnitChanged);
-    connect(ui.dspnDCenter, qOverload<double>(&QDoubleSpinBox::valueChanged), this,
-            &FemApp::onDCenterChanged);
-    connect(ui.dspnDStep, qOverload<double>(&QDoubleSpinBox::valueChanged), this,
-            &FemApp::onDStepChanged);
-    connect(ui.spnDNo, qOverload<int>(&QSpinBox::valueChanged), this, &FemApp::onDNoChanged);
-    connect(ui.lnDCols, &QLineEdit::editingFinished, this, &FemApp::onDColsEdited);
+    connect(projectControlWidget,
+            &cc::neolux::projectcontrol::ProjectControlWidget::doseModeChanged, this,
+            [this](const QString& text) {
+                femdata.dose.mode = text.toUtf8().toStdString();
+                markAsModified();
+            });
+    connect(projectControlWidget,
+            &cc::neolux::projectcontrol::ProjectControlWidget::doseUnitChanged, this,
+            [this](const QString& text) {
+                femdata.dose.unit = text.toUtf8().toStdString();
+                markAsModified();
+            });
+    connect(projectControlWidget,
+            &cc::neolux::projectcontrol::ProjectControlWidget::doseCenterChanged, this,
+            [this](double value) {
+                femdata.dose.center = value;
+                markAsModified();
+            });
+    connect(projectControlWidget,
+            &cc::neolux::projectcontrol::ProjectControlWidget::doseStepChanged, this,
+            [this](double value) {
+                femdata.dose.step = value;
+                markAsModified();
+            });
+    connect(projectControlWidget, &cc::neolux::projectcontrol::ProjectControlWidget::doseNoChanged,
+            this, [this](int value) {
+                femdata.dose.no = value;
+                markAsModified();
+            });
+    connect(projectControlWidget, &cc::neolux::projectcontrol::ProjectControlWidget::doseColsEdited,
+            this, [this]() {
+                femdata.dose.cols = projectControlWidget->doseColsText().toUtf8().toStdString();
+                markAsModified();
+            });
 
-    connect(ui.cbFMode, &QComboBox::currentTextChanged, this, &FemApp::onFModeChanged);
-    connect(ui.cbFUnit, &QComboBox::currentTextChanged, this, &FemApp::onFUnitChanged);
-    connect(ui.dspnFCenter, qOverload<double>(&QDoubleSpinBox::valueChanged), this,
-            &FemApp::onFCenterChanged);
-    connect(ui.dspnFStep, qOverload<double>(&QDoubleSpinBox::valueChanged), this,
-            &FemApp::onFStepChanged);
-    connect(ui.spnFNo, qOverload<int>(&QSpinBox::valueChanged), this, &FemApp::onFNoChanged);
-    connect(ui.lnFRows, &QLineEdit::editingFinished, this, &FemApp::onFRowsEdited);
+    connect(projectControlWidget,
+            &cc::neolux::projectcontrol::ProjectControlWidget::focusModeChanged, this,
+            [this](const QString& text) {
+                femdata.focus.mode = text.toUtf8().toStdString();
+                markAsModified();
+            });
+    connect(projectControlWidget,
+            &cc::neolux::projectcontrol::ProjectControlWidget::focusUnitChanged, this,
+            [this](const QString& text) {
+                femdata.focus.unit = text.toUtf8().toStdString();
+                markAsModified();
+            });
+    connect(projectControlWidget,
+            &cc::neolux::projectcontrol::ProjectControlWidget::focusCenterChanged, this,
+            [this](double value) {
+                femdata.focus.center = value;
+                markAsModified();
+            });
+    connect(projectControlWidget,
+            &cc::neolux::projectcontrol::ProjectControlWidget::focusStepChanged, this,
+            [this](double value) {
+                femdata.focus.step = value;
+                markAsModified();
+            });
+    connect(projectControlWidget, &cc::neolux::projectcontrol::ProjectControlWidget::focusNoChanged,
+            this, [this](int value) {
+                femdata.focus.no = value;
+                markAsModified();
+            });
+    connect(projectControlWidget,
+            &cc::neolux::projectcontrol::ProjectControlWidget::focusRowsEdited, this, [this]() {
+                femdata.focus.rows = projectControlWidget->focusRowsText().toUtf8().toStdString();
+                markAsModified();
+            });
 
-    connect(ui.cbFEMMode, &QComboBox::currentTextChanged, this, &FemApp::onFEMModeChanged);
-    connect(ui.cbFEMUnit, &QComboBox::currentTextChanged, this, &FemApp::onFEMUnitChanged);
-    connect(ui.dspnFEMTarg, qOverload<double>(&QDoubleSpinBox::valueChanged), this,
-            &FemApp::onFEMTargChanged);
-    connect(ui.dspnFEMSpec, qOverload<double>(&QDoubleSpinBox::valueChanged), this,
-            &FemApp::onFEMSpecChanged);
+    connect(projectControlWidget, &cc::neolux::projectcontrol::ProjectControlWidget::femModeChanged,
+            this, [this](const QString& text) {
+                femdata.fem.mode = text.toUtf8().toStdString();
+                markAsModified();
+            });
+    connect(projectControlWidget, &cc::neolux::projectcontrol::ProjectControlWidget::femUnitChanged,
+            this, [this](const QString& text) {
+                femdata.fem.unit = text.toUtf8().toStdString();
+                markAsModified();
+            });
+    connect(projectControlWidget,
+            &cc::neolux::projectcontrol::ProjectControlWidget::femTargetChanged, this,
+            [this](double value) {
+                femdata.fem.target = value;
+                markAsModified();
+            });
+    connect(projectControlWidget, &cc::neolux::projectcontrol::ProjectControlWidget::femSpecChanged,
+            this, [this](double value) {
+                femdata.fem.spec = value;
+                markAsModified();
+            });
 
-    connect(ui.btnTxtReset, &QPushButton::clicked, this, &FemApp::onTxtResetClicked);
-    connect(ui.btnTxtApply, &QPushButton::clicked, this, &FemApp::onTxtApplyClicked);
-    connect(ui.txtConfigRaw, &QPlainTextEdit::textChanged, this, &FemApp::onRawFileEdited);
-    connect(ui.btnRefreshEditor, &QPushButton::clicked, this, &FemApp::onRefreshEditorClicked);
-    connect(ui.chkDryRun, &QCheckBox::toggled, this, [this](bool checked) {
-        if (xlsxEditorModule) {
-            xlsxEditorModule->setDryRun(checked);
-        }
-    });
+    connect(projectControlWidget,
+            &cc::neolux::projectcontrol::ProjectControlWidget::txtResetClicked, this, [this]() {
+                projectControlWidget->setRawConfigText(
+                    QString::fromUtf8(this->femdata.rawContent.c_str()));
+            });
+    connect(projectControlWidget,
+            &cc::neolux::projectcontrol::ProjectControlWidget::txtApplyClicked, this,
+            [this]() { applyRawConfigText(); });
+    connect(projectControlWidget, &cc::neolux::projectcontrol::ProjectControlWidget::rawTextEdited,
+            this, [this]() { markAsModified(); });
+    connect(projectControlWidget,
+            &cc::neolux::projectcontrol::ProjectControlWidget::refreshEditorClicked, this,
+            [this]() { refreshXlsxEditor(); });
+    connect(projectControlWidget, &cc::neolux::projectcontrol::ProjectControlWidget::dryRunToggled,
+            this, [this](bool checked) {
+                if (xlsxEditorModule) {
+                    xlsxEditorModule->setDryRun(checked);
+                }
+            });
 
     // Setup keyboard shortcuts
     // Ctrl+Q to exit
     new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this, [this]() { this->close(); });
 
     // Ctrl+S to save
-    new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_S), this, [this]() { this->onSaveClicked(); });
+    new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_S), this,
+                  [this]() { this->saveCurrentConfig(); });
 
     // Ctrl+Shift+S to save as
     new QShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_S), this,
-                  [this]() { this->onSaveAsClicked(); });
+                  [this]() { this->saveCurrentConfigAs(); });
 
     // Alt+S to apply text edit
-    new QShortcut(QKeySequence(Qt::ALT | Qt::Key_S), this, [this]() { this->onTxtApplyClicked(); });
+    new QShortcut(QKeySequence(Qt::ALT | Qt::Key_S), this,
+                  [this]() { this->applyRawConfigText(); });
 
     // Initialize label
     updateFileLabel();
@@ -119,7 +210,7 @@ void FemApp::closeEvent(QCloseEvent* event) {
 
         if (result == QMessageBox::Save) {
             // Save the file
-            onSaveClicked();
+            saveCurrentConfig();
             event->accept();
         } else if (result == QMessageBox::Discard) {
             // Discard changes and close
@@ -223,9 +314,9 @@ std::string FemApp::getFileMatched(std::string folder) {
     qInfo() << "Matched filename: " << matchedFilename;
 
     // 在ComboBox中选中匹配的文件
-    int index = ui.cbFile->findText(matchedFilename);
+    int index = projectControlWidget->findFileText(matchedFilename);
     if (index >= 0) {
-        ui.cbFile->setCurrentIndex(index);
+        projectControlWidget->setFileIndex(index);
     } else {
         qWarning() << "Matched file not found in combo box:" << matchedFilename;
     }
@@ -236,13 +327,13 @@ std::string FemApp::getFileMatched(std::string folder) {
 
 QString FemApp::getCurrentSelectedFile() {
     // 获取当前选中项的完整路径
-    QString fullPath = ui.cbFile->currentData().toString();
+    QString fullPath = projectControlWidget->currentFileData();
     return fullPath;
 }
 
 void FemApp::updateFileList(const std::string& folder) {
     // 清空现有项
-    ui.cbFile->clear();
+    projectControlWidget->clearFiles();
 
     // 遍历文件夹并添加文件名及其路径到ComboBox
     QDir dir(QString::fromUtf8(folder.c_str()));
@@ -250,7 +341,7 @@ void FemApp::updateFileList(const std::string& folder) {
     for (const QString& file : files) {
         QString fullpath = dir.absoluteFilePath(file);
         // 将文件名添加到ComboBox，并设置userData为完整路径
-        ui.cbFile->addItem(file, fullpath);
+        projectControlWidget->addFileItem(file, fullpath);
     }
 }
 
@@ -271,12 +362,12 @@ std::string FemApp::getSheetMatched(std::string filename) {
         return "";
     }
 
-    // 把工作表填入 ui.cbSheet 中，并默认选中匹配到的一个
+    // 填入工作表列表，并默认选中匹配到的项
     this->updateSheetList(filename);
     QString matchedSheet = QString::fromUtf8(sheets.front().c_str());
-    int index = ui.cbSheet->findText(matchedSheet);
+    int index = projectControlWidget->findSheetText(matchedSheet);
     if (index >= 0) {
-        ui.cbSheet->setCurrentIndex(index);
+        projectControlWidget->setSheetIndex(index);
     } else {
         qWarning() << "Matched sheet not found in combo box:" << matchedSheet;
     }
@@ -285,7 +376,7 @@ std::string FemApp::getSheetMatched(std::string filename) {
 }
 
 void FemApp::updateSheetList(const std::string& filename) {
-    this->ui.cbSheet->clear();
+    projectControlWidget->clearSheets();
 
     // Skip if filename is empty to avoid attempting to open non-existent files
     if (filename.empty()) {
@@ -297,7 +388,7 @@ void FemApp::updateSheetList(const std::string& filename) {
         auto all_sheets = xlsxproc.GetSheetNames(filename);
         for (const auto& sheet : all_sheets) {
             QString qSheetName = QString::fromUtf8(sheet.c_str());
-            this->ui.cbSheet->addItem(qSheetName);
+            projectControlWidget->addSheetItem(qSheetName);
         }
     } catch (const std::exception& e) {
         qWarning() << tr("Failed to read Excel file: ") << e.what();
@@ -309,14 +400,14 @@ void FemApp::onLoadFile() {
     isLoading = true;
 
     // 先把原始内容填入文本框，即便出错也能修改重加载
-    this->ui.txtConfigRaw->setPlainText(QString::fromUtf8(this->femdata.rawContent.c_str()));
+    projectControlWidget->setRawConfigText(QString::fromUtf8(this->femdata.rawContent.c_str()));
 
     auto folder = getFolderMatched();
     if (folder.empty()) {
         isLoading = false;
         return;
     }
-    this->ui.lnFolder->setText(QString::fromUtf8(folder.c_str()));
+    projectControlWidget->setFolderText(QString::fromUtf8(folder.c_str()));
 
     // 处理文件名通配符
     auto filename = getFileMatched(folder);
@@ -334,28 +425,28 @@ void FemApp::onLoadFile() {
 
     // =======================
     // Dose
-    this->ui.cbDMode->setCurrentText(QString::fromUtf8(this->femdata.dose.mode.c_str()));
-    this->ui.cbDUnit->setCurrentText(QString::fromUtf8(this->femdata.dose.unit.c_str()));
-    this->ui.dspnDCenter->setValue(
+    projectControlWidget->setDoseModeText(QString::fromUtf8(this->femdata.dose.mode.c_str()));
+    projectControlWidget->setDoseUnitText(QString::fromUtf8(this->femdata.dose.unit.c_str()));
+    projectControlWidget->setDoseCenterValue(
         static_cast<int>(this->femdata.dose.center));  // TODO: 需要询问此处数据类型，改控件和代码
-    this->ui.dspnDStep->setValue(this->femdata.dose.step);
-    this->ui.spnDNo->setValue(this->femdata.dose.no);
-    this->ui.lnDCols->setText(QString::fromUtf8(this->femdata.dose.cols.c_str()));
+    projectControlWidget->setDoseStepValue(this->femdata.dose.step);
+    projectControlWidget->setDoseNoValue(this->femdata.dose.no);
+    projectControlWidget->setDoseColsText(QString::fromUtf8(this->femdata.dose.cols.c_str()));
 
     // Focus
-    this->ui.cbFMode->setCurrentText(QString::fromUtf8(this->femdata.focus.mode.c_str()));
-    this->ui.cbFUnit->setCurrentText(QString::fromUtf8(this->femdata.focus.unit.c_str()));
-    this->ui.dspnFCenter->setValue(
+    projectControlWidget->setFocusModeText(QString::fromUtf8(this->femdata.focus.mode.c_str()));
+    projectControlWidget->setFocusUnitText(QString::fromUtf8(this->femdata.focus.unit.c_str()));
+    projectControlWidget->setFocusCenterValue(
         static_cast<int>(this->femdata.focus.center));  // TODO: 需要询问此处数据类型，改控件和代码
-    this->ui.dspnFStep->setValue(this->femdata.focus.step);
-    this->ui.spnFNo->setValue(this->femdata.focus.no);
-    this->ui.lnFRows->setText(QString::fromUtf8(this->femdata.focus.rows.c_str()));
+    projectControlWidget->setFocusStepValue(this->femdata.focus.step);
+    projectControlWidget->setFocusNoValue(this->femdata.focus.no);
+    projectControlWidget->setFocusRowsText(QString::fromUtf8(this->femdata.focus.rows.c_str()));
 
     // FEM
-    this->ui.cbFEMMode->setCurrentText(QString::fromUtf8(this->femdata.fem.mode.c_str()));
-    this->ui.cbFEMUnit->setCurrentText(QString::fromUtf8(this->femdata.fem.unit.c_str()));
-    this->ui.dspnFEMTarg->setValue(static_cast<int>(this->femdata.fem.target));
-    this->ui.dspnFEMSpec->setValue(static_cast<int>(this->femdata.fem.spec));
+    projectControlWidget->setFemModeText(QString::fromUtf8(this->femdata.fem.mode.c_str()));
+    projectControlWidget->setFemUnitText(QString::fromUtf8(this->femdata.fem.unit.c_str()));
+    projectControlWidget->setFemTargetValue(static_cast<int>(this->femdata.fem.target));
+    projectControlWidget->setFemSpecValue(static_cast<int>(this->femdata.fem.spec));
 
     // Clear loading flag after all controls are updated
     isLoading = false;
@@ -380,7 +471,7 @@ void FemApp::updateFileLabel() {
         }
     }
 
-    ui.labelFEMFile->setText(displayText);
+    projectControlWidget->setFileDisplayText(displayText);
     this->setWindowTitle(windowTitle);
 }
 
@@ -388,9 +479,9 @@ void FemApp::refreshXlsxEditor() {
     if (!xlsxEditorModule) {
         return;
     }
-    xlsxEditorModule->setDryRun(ui.chkDryRun->isChecked());
+    xlsxEditorModule->setDryRun(projectControlWidget->isDryRunChecked());
     QString filePath = getCurrentSelectedFile();
-    QString sheetName = ui.cbSheet->currentText();
+    QString sheetName = projectControlWidget->currentSheetText();
     QString cols = QString::fromUtf8(femdata.dose.cols.c_str());
     QString rows = QString::fromUtf8(femdata.focus.rows.c_str());
     QString range;
@@ -412,8 +503,127 @@ void FemApp::clearModifiedFlag() {
     updateFileLabel();
 }
 
-void FemApp::onRefreshEditorClicked() {
-    refreshXlsxEditor();
+void FemApp::applyRawConfigText() {
+    std::string text = projectControlWidget->rawConfigText().toUtf8().toStdString();
+    auto* newdata = new cc::neolux::femconfig::FEMData();
+    if (!cc::neolux::femconfig::FEMConfig::ParseContent(text, *newdata)) {
+        showError(this, tr("Failed to parse raw FEM config content."));
+        delete newdata;
+        return;
+    }
+    this->femdata = *newdata;
+    delete newdata;
+    this->onLoadFile();
+}
+
+void FemApp::loadConfigFromDialog() {
+    QString femconfig_path =
+        QFileDialog::getOpenFileName(this, tr("Open FEM Config File"), QDir::currentPath(),
+                                     tr("FEM Config Files (*.fem);;All Files (*)"));
+    if (femconfig_path.isEmpty()) {
+        return;
+    }
+    this->loadFEMConfig(femconfig_path);
+    qInfo() << "Loaded FEM config file from " << femconfig_path;
+}
+
+void FemApp::saveCurrentConfig() {
+    std::ostringstream oss;
+    if (!cc::neolux::femconfig::FEMConfig::dumpFEMData(femdata, oss)) {
+        showError(this, tr("Failed to generate FEM config content."));
+        return;
+    }
+    femdata.rawContent = oss.str();
+    projectControlWidget->setRawConfigText(QString::fromUtf8(femdata.rawContent.c_str()));
+
+    if (!cc::neolux::femconfig::FEMConfig::dumpFEMData(
+            femdata, this->femc_info->absoluteFilePath().toUtf8().toStdString())) {
+        showError(this, tr("Failed to save FEM config file."));
+        return;
+    }
+    clearModifiedFlag();
+    qInfo() << "Saved FEM config file to " << this->femc_info->absoluteFilePath();
+}
+
+void FemApp::saveCurrentConfigAs() {
+    QString femconfig_path =
+        QFileDialog::getSaveFileName(this, tr("Save FEM Config File As"), QDir::currentPath(),
+                                     tr("FEM Config Files (*.fem);;All Files (*)"));
+    if (femconfig_path.isEmpty()) {
+        return;
+    }
+
+    std::ostringstream oss;
+    if (!cc::neolux::femconfig::FEMConfig::dumpFEMData(femdata, oss)) {
+        showError(this, tr("Failed to generate FEM config content."));
+        return;
+    }
+    femdata.rawContent = oss.str();
+    projectControlWidget->setRawConfigText(QString::fromUtf8(femdata.rawContent.c_str()));
+
+    if (!cc::neolux::femconfig::FEMConfig::dumpFEMData(femdata,
+                                                       femconfig_path.toUtf8().toStdString())) {
+        showError(this, tr("Failed to save FEM config file."));
+        return;
+    }
+    currentFilePath = femconfig_path;
+    clearModifiedFlag();
+    qInfo() << "Saved FEM config file to " << femconfig_path;
+}
+
+void FemApp::browseFolder() {
+    QString dir = QFileDialog::getExistingDirectory(
+        this, tr("Select Folder"), QDir::currentPath(),
+        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if (dir.isEmpty()) {
+        return;
+    }
+    QDir cwd = QDir::current();
+    QString relativePath = cwd.relativeFilePath(dir);
+    projectControlWidget->setFolderText(relativePath);
+    femdata.folderPattern = relativePath.toUtf8().toStdString();
+    updateFileList(relativePath.toUtf8().toStdString());
+    qInfo() << "Folder selected: " << dir;
+}
+
+void FemApp::matchFolderPattern() {
+    std::string folder = getFolderMatched();
+    if (folder.empty()) {
+        return;
+    }
+    projectControlWidget->setFolderText(QString::fromUtf8(folder.c_str()));
+    femdata.folderPattern = folder;
+    updateFileList(folder);
+    qInfo() << "Folder matched: " << QString::fromUtf8(folder.c_str());
+}
+
+void FemApp::setFolderPattern(const QString& text) {
+    femdata.folderPattern = text.toUtf8().toStdString();
+    markAsModified();
+    qInfo() << "Folder pattern changed to " << text;
+}
+
+void FemApp::setFilenamePattern(const QString& text) {
+    femdata.filenamePattern = text.toUtf8().toStdString();
+    markAsModified();
+    qInfo() << "File pattern changed to " << text;
+
+    if (isLoading) {
+        return;
+    }
+
+    QString selectedFile = getCurrentSelectedFile();
+    if (!selectedFile.isEmpty()) {
+        auto sheet = getSheetMatched(selectedFile.toUtf8().toStdString());
+        if (!sheet.empty()) {
+            qInfo() << "Sheet auto-selected: " << QString::fromUtf8(sheet.c_str());
+        }
+    }
+}
+
+void FemApp::setSheetPattern(const QString& text) {
+    femdata.sheetPattern = text.toUtf8().toStdString();
+    markAsModified();
 }
 
 FemApp::~FemApp() = default;
