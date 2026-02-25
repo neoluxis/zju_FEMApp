@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "cc/neolux/FEMConfig/FEMConfig.h"
+#include "cc/neolux/fem/mpw/multi_prj_ws_widget.h"
 #include "cc/neolux/fem/recent/recent_project_history.h"
 #include "cc/neolux/fem/xlsx_editor_module.h"
 #include "cc/neolux/projectcontrol/project_control_widget.h"
@@ -25,6 +26,7 @@ public:
     bool loadFEMConfig();
 
     bool loadFEMConfig(const QString& filePath);
+    bool loadMultiProjectWorkspace(const QString& filePath);
 
     std::string getFolderMatched();
 
@@ -54,6 +56,7 @@ private:
     bool isLoading = false;                  // Flag to prevent marking as modified during file load
     std::unique_ptr<cc::neolux::fem::XlsxEditorModule> xlsxEditorModule;
     cc::neolux::projectcontrol::ProjectControlWidget* projectControlWidget = nullptr;
+    cc::neolux::fem::mpw::MultiPrjWsWidget* multiPrjWsWidget = nullptr;
     cc::neolux::fem::recent::RecentProjectHistory recentProjectHistory;
     QMenu* recentMenu = nullptr;
 

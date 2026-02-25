@@ -35,6 +35,11 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
 
     ui.gridLayout_2->setAlignment(ui.vboxSettings, Qt::AlignTop | Qt::AlignLeft);
 
+    auto* multiPrjWsLayout = new QVBoxLayout(ui.multiPrjWsHost);
+    multiPrjWsLayout->setContentsMargins(0, 0, 0, 0);
+    multiPrjWsWidget = new cc::neolux::fem::mpw::MultiPrjWsWidget(ui.multiPrjWsHost);
+    multiPrjWsLayout->addWidget(multiPrjWsWidget);
+
     auto* projectControlLayout = new QVBoxLayout(ui.projectControlHost);
     projectControlLayout->setContentsMargins(0, 0, 0, 0);
     projectControlWidget =
@@ -168,6 +173,8 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
                     xlsxEditorModule->setDryRun(checked);
                 }
             });
+    connect(multiPrjWsWidget, &cc::neolux::fem::mpw::MultiPrjWsWidget::projectActivated, this,
+            [this](const QString& projectFilePath) { loadFEMConfig(projectFilePath); });
 
     auto* fileMenu = ui.menuBar->addMenu(tr("File"));
     auto* actionOpenProject = fileMenu->addAction(tr("Open Project..."));
@@ -274,6 +281,24 @@ bool FemApp::loadFEMConfig(const QString& filePath) {
     refreshRecentMenu();
 
     this->onLoadFile();
+    return true;
+}
+
+bool FemApp::loadMultiProjectWorkspace(const QString& filePath) {
+    if (!multiPrjWsWidget) {
+        return false;
+    }
+
+    QString errorMessage;
+    if (!multiPrjWsWidget->loadWorkspaceFile(filePath, &errorMessage)) {
+        showError(this, errorMessage);
+        return false;
+    }
+
+    const QString firstProjectPath = multiPrjWsWidget->firstEnabledProjectPath();
+    if (!firstProjectPath.isEmpty()) {
+        return loadFEMConfig(firstProjectPath);
+    }
     return true;
 }
 

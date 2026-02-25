@@ -44,6 +44,7 @@ add_subdirectory(FileAssocLib)
 add_subdirectory(XLSXEditor)
 add_subdirectory(ProjectControlWidget)
 add_subdirectory(Recent)
+add_subdirectory(MultiPrjWs)
 
 # Add source files
 set(SOURCES
@@ -87,6 +88,7 @@ target_include_directories(FemApp PRIVATE
     ${CMAKE_SOURCE_DIR}/XLSXEditor/include
     ${CMAKE_SOURCE_DIR}/ProjectControlWidget/include
     ${CMAKE_SOURCE_DIR}/Recent/include
+    ${CMAKE_SOURCE_DIR}/MultiPrjWs/include
 )
 
 # Link libraries
@@ -99,6 +101,7 @@ target_link_libraries(FemApp PRIVATE
     XLSXEditor
     ProjectControlWidget
     Recent
+    MultiPrjWs
 )
 
 if(NOT FEMAPP_LINUX_BUILD_DEMO)
@@ -120,6 +123,8 @@ add_custom_target(update_translations
     XLSXEditor/src
     ProjectControlWidget/include
     ProjectControlWidget/src
+    MultiPrjWs/include
+    MultiPrjWs/src
     -ts ${TRANSLATION_TS}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMENT "Update Qt translation files (.ts) for all modules"

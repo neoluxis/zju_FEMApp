@@ -7,6 +7,7 @@
 #include "cc/neolux/fem/FileAssociation.h"
 #endif
 #include "cc/neolux/FEMConfig/FEMConfig.h"
+#include "cc/neolux/fem/mpw/multi_project_workspace.h"
 #include "cc/neolux/fem/recent/recent_project_history.h"
 #include "femapp.h"
 
@@ -53,7 +54,11 @@ int main(int argc, char* argv[]) {
     cc::neolux::fem::recent::RecentProjectHistory recentHistory;
     if (argc > 1) {
         QString qFilePath = QString::fromLocal8Bit(argv[1]);
-        w.loadFEMConfig(qFilePath);
+        if (cc::neolux::fem::mpw::MultiProjectWorkspace::IsValidWorkspaceFile(qFilePath)) {
+            w.loadMultiProjectWorkspace(qFilePath);
+        } else {
+            w.loadFEMConfig(qFilePath);
+        }
     } else {
         const QString latestProject = recentHistory.latestProject();
         if (!latestProject.isEmpty()) {
