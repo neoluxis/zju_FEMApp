@@ -130,7 +130,7 @@ void MultiPrjWsWidget::addProject() {
 
     WorkspaceProjectItem item;
     item.projectFilePath = absolutePath;
-    item.displayName = QFileInfo(absolutePath).completeBaseName();
+    item.displayName = QFileInfo(absolutePath).fileName();
     item.enabled = true;
     data_.projects.append(item);
     openedProjectIndex_ = data_.projects.size() - 1;

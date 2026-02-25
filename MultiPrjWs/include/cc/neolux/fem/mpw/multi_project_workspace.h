@@ -9,6 +9,7 @@ namespace cc::neolux::fem::mpw {
 struct WorkspaceProjectItem {
     QString projectFilePath;
     QString displayName;
+    QString note;
     bool enabled = true;
 };
 

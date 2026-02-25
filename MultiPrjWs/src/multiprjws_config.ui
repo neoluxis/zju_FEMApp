@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MultiPrjWsConfigDialog</class>
+ <widget class="QDialog" name="MultiPrjWsConfigDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>480</height>
+   </rect>
+  </property>
+    <property name="windowTitle">
+     <string>Workspace Config</string>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" rowspan="8">
+        <widget class="QListWidget" name="lstProjects"/>
+     </item>
+     <item row="0" column="1">
+        <widget class="QLabel" name="lblPathTitle">
+         <property name="text">
+            <string>Project Path</string>
+         </property>
+        </widget>
+     </item>
+     <item row="1" column="1">
+        <widget class="QLineEdit" name="lnProjectPath">
+         <property name="readOnly">
+            <bool>true</bool>
+         </property>
+        </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="lblDisplayNameTitle">
+       <property name="text">
+        <string>Display Name</string>
+       </property>
+      </widget>
+      </item>
+      <item row="3" column="1">
+      <widget class="QLineEdit" name="lnDisplayName"/>
+      </item>
+      <item row="4" column="1">
+        <widget class="QLabel" name="lblNoteTitle">
+         <property name="text">
+            <string>Note</string>
+         </property>
+        </widget>
+     </item>
+      <item row="5" column="1">
+        <widget class="QPlainTextEdit" name="txtNote"/>
+     </item>
+      <item row="6" column="1">
+        <layout class="QHBoxLayout" name="hboxEditBtns">
+         <item>
+            <widget class="QPushButton" name="btnAddProject">
+             <property name="text">
+                <string>Add Project</string>
+             </property>
+            </widget>
+         </item>
+         <item>
+            <widget class="QPushButton" name="btnRemoveProject">
+             <property name="text">
+                <string>Remove Project</string>
+             </property>
+            </widget>
+         </item>
+        </layout>
+     </item>
+   <item row="7" column="1">
+        <layout class="QHBoxLayout" name="hboxBottomBtns">
+         <item>
+            <widget class="QPushButton" name="btnSave">
+             <property name="text">
+                <string>Save</string>
+             </property>
+            </widget>
+         </item>
+         <item>
+            <widget class="QPushButton" name="btnClose">
+             <property name="text">
+                <string>Close</string>
+             </property>
+            </widget>
+         </item>
+        </layout>
+     </item>
+    </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "cc/neolux/FEMConfig/FEMConfig.h"
+#include "cc/neolux/fem/mpw/multi_prj_ws_config_dialog.h"
 #include "cc/neolux/fem/mpw/multi_prj_ws_widget.h"
 #include "cc/neolux/fem/recent/recent_project_history.h"
 #include "cc/neolux/fem/xlsx_editor_module.h"
@@ -28,6 +29,7 @@ public:
     bool loadFEMConfig(const QString& filePath);
     bool openSingleProject(const QString& filePath);
     bool loadMultiProjectWorkspace(const QString& filePath);
+    void openMultiProjectWorkspaceConfig();
 
     std::string getFolderMatched();
 
@@ -60,7 +62,9 @@ private:
     cc::neolux::fem::mpw::MultiPrjWsWidget* multiPrjWsWidget = nullptr;
     cc::neolux::fem::recent::RecentProjectHistory recentProjectHistory;
     QMenu* recentMenu = nullptr;
+    QAction* workspaceConfigAction = nullptr;
     bool workspaceMode = false;
+    QString currentWorkspaceFilePath;
 
     void updateFileLabel();  // Update labelFEMFile with current filename and modification status
     void setWorkspaceMode(bool enabled);

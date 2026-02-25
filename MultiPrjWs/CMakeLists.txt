@@ -11,9 +11,12 @@ find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 set(SOURCES
     src/multi_project_workspace.cpp
     src/multi_prj_ws_widget.cpp
+    src/multi_prj_ws_config_dialog.cpp
     src/multiprjws.ui
+    src/multiprjws_config.ui
     include/cc/neolux/fem/mpw/multi_project_workspace.h
     include/cc/neolux/fem/mpw/multi_prj_ws_widget.h
+    include/cc/neolux/fem/mpw/multi_prj_ws_config_dialog.h
 )
 
 add_library(MultiPrjWs SHARED ${SOURCES})

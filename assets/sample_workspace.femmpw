@@ -1,21 +1,23 @@
 {
-  "format": "femmpw",
-  "version": 1,
-  "name": "Sample Multi Project Workspace",
-  "tags": [
-    "sample",
-    "mpw"
-  ],
-  "projects": [
-    {
-      "path": "./project.fem",
-      "displayName": "Main Project",
-      "enabled": true
-    },
-    {
-      "path": "./wrong_config.fem",
-      "displayName": "Backup Config",
-      "enabled": false
-    }
-  ]
+    "format": "femmpw",
+    "name": "Sample Multi Project Workspace",
+    "projects": [
+        {
+            "displayName": "",
+            "enabled": true,
+            "note": "lklk",
+            "path": "./project.fem"
+        },
+        {
+            "displayName": "Backup Config",
+            "enabled": false,
+            "note": "",
+            "path": "./wrong_config.fem"
+        }
+    ],
+    "tags": [
+        "sample",
+        "mpw"
+    ],
+    "version": 1
 }

@@ -12,6 +12,7 @@ public:
     void addProject(const QString& filePath);
     QStringList recentProjects() const;
     QString latestProject() const;
+    void clear();
 
 private:
     int maxItems_;

@@ -13,6 +13,7 @@
 #include <string>
 
 #include "QDebug"
+#include "cc/neolux/fem/mpw/multi_project_workspace.h"
 #include "cc/neolux/fem/xlsx_proc.h"
 
 using cc::neolux::femconfig::FEMConfig;
@@ -180,6 +181,7 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
 
     auto* fileMenu = ui.menuBar->addMenu(tr("File"));
     auto* actionOpenProject = fileMenu->addAction(tr("Open Project..."));
+    workspaceConfigAction = fileMenu->addAction(tr("Workspace Config..."));
     recentMenu = fileMenu->addMenu(tr("Recent"));
     auto* actionSaveProject = fileMenu->addAction(tr("Save"));
     auto* actionSaveProjectAs = fileMenu->addAction(tr("Save As..."));
@@ -187,6 +189,8 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
     auto* actionExit = fileMenu->addAction(tr("Exit"));
 
     connect(actionOpenProject, &QAction::triggered, this, [this]() { loadConfigFromDialog(); });
+    connect(workspaceConfigAction, &QAction::triggered, this,
+            [this]() { openMultiProjectWorkspaceConfig(); });
     connect(actionSaveProject, &QAction::triggered, this, [this]() { saveCurrentConfig(); });
     connect(actionSaveProjectAs, &QAction::triggered, this, [this]() { saveCurrentConfigAs(); });
     connect(actionExit, &QAction::triggered, this, [this]() { close(); });
@@ -259,6 +263,7 @@ bool FemApp::loadFEMConfig() {
 
 bool FemApp::openSingleProject(const QString& filePath) {
     setWorkspaceMode(false);
+    currentWorkspaceFilePath.clear();
     return loadFEMConfig(filePath);
 }
 
@@ -302,9 +307,12 @@ bool FemApp::loadMultiProjectWorkspace(const QString& filePath) {
     }
 
     setWorkspaceMode(true);
+    currentWorkspaceFilePath = QFileInfo(filePath).absoluteFilePath();
+    recentProjectHistory.addProject(currentWorkspaceFilePath);
+    refreshRecentMenu();
 
     QString errorMessage;
-    if (!multiPrjWsWidget->loadWorkspaceFile(filePath, &errorMessage)) {
+    if (!multiPrjWsWidget->loadWorkspaceFile(currentWorkspaceFilePath, &errorMessage)) {
         showError(this, errorMessage);
         return false;
     }
@@ -320,10 +328,41 @@ bool FemApp::loadMultiProjectWorkspace(const QString& filePath) {
     return true;
 }
 
+void FemApp::openMultiProjectWorkspaceConfig() {
+    if (currentWorkspaceFilePath.isEmpty()) {
+        showWarning(this, tr("No workspace is currently opened."));
+        return;
+    }
+
+    cc::neolux::fem::mpw::MultiPrjWsConfigDialog dialog(this);
+    QString errorMessage;
+    if (!dialog.loadWorkspace(currentWorkspaceFilePath, &errorMessage)) {
+        showError(this, errorMessage);
+        return;
+    }
+
+    connect(&dialog, &cc::neolux::fem::mpw::MultiPrjWsConfigDialog::workspaceSaved, this,
+            [this](const QString& workspaceFilePath) {
+                QString reloadError;
+                if (!multiPrjWsWidget->loadWorkspaceFile(workspaceFilePath, &reloadError)) {
+                    showError(this, reloadError);
+                    return;
+                }
+                if (!currentFilePath.isEmpty()) {
+                    multiPrjWsWidget->markProjectOpened(currentFilePath);
+                }
+            });
+
+    dialog.exec();
+}
+
 void FemApp::setWorkspaceMode(bool enabled) {
     workspaceMode = enabled;
     if (ui.multiPrjWsHost) {
         ui.multiPrjWsHost->setVisible(enabled);
+    }
+    if (workspaceConfigAction) {
+        workspaceConfigAction->setEnabled(enabled);
     }
 }
 
@@ -573,13 +612,51 @@ void FemApp::refreshRecentMenu() {
 
     recentMenu->clear();
     const QStringList projects = recentProjectHistory.recentProjects();
-    for (const QString& projectPath : projects) {
-        QAction* action = recentMenu->addAction(projectPath);
-        connect(action, &QAction::triggered, this,
-                [this, projectPath]() { openSingleProject(projectPath); });
+
+    QStringList workspacePaths;
+    QStringList projectPaths;
+    for (const QString& path : projects) {
+        if (cc::neolux::fem::mpw::MultiProjectWorkspace::IsValidWorkspaceFile(path)) {
+            workspacePaths.append(path);
+        } else {
+            projectPaths.append(path);
+        }
     }
 
-    recentMenu->setEnabled(!projects.isEmpty());
+    auto addGroup = [this](const QString& title, const QStringList& paths) {
+        if (paths.isEmpty()) {
+            return;
+        }
+
+        QAction* header = recentMenu->addAction(title);
+        header->setEnabled(false);
+        for (const QString& path : paths) {
+            QAction* action = recentMenu->addAction(path);
+            connect(action, &QAction::triggered, this, [this, path]() {
+                if (cc::neolux::fem::mpw::MultiProjectWorkspace::IsValidWorkspaceFile(path)) {
+                    loadMultiProjectWorkspace(path);
+                } else {
+                    openSingleProject(path);
+                }
+            });
+        }
+    };
+
+    addGroup(tr("Workspace"), workspacePaths);
+    if (!workspacePaths.isEmpty() && !projectPaths.isEmpty()) {
+        recentMenu->addSeparator();
+    }
+    addGroup(tr("Project"), projectPaths);
+
+    recentMenu->addSeparator();
+    QAction* clearAction = recentMenu->addAction(tr("Clear"));
+    clearAction->setEnabled(!projects.isEmpty());
+    connect(clearAction, &QAction::triggered, this, [this]() {
+        recentProjectHistory.clear();
+        refreshRecentMenu();
+    });
+
+    recentMenu->setEnabled(true);
 }
 
 void FemApp::refreshXlsxEditor() {

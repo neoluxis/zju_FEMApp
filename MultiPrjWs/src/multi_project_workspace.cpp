@@ -17,6 +17,7 @@ constexpr const char* kTagsKey = "tags";
 constexpr const char* kProjectsKey = "projects";
 constexpr const char* kPathKey = "path";
 constexpr const char* kDisplayNameKey = "displayName";
+constexpr const char* kNoteKey = "note";
 constexpr const char* kEnabledKey = "enabled";
 }  // namespace
 
@@ -96,6 +97,7 @@ bool MultiProjectWorkspace::ParseContent(const QByteArray& content, MultiProject
         WorkspaceProjectItem item;
         item.projectFilePath = itemObject.value(kPathKey).toString();
         item.displayName = itemObject.value(kDisplayNameKey).toString();
+        item.note = itemObject.value(kNoteKey).toString();
         item.enabled =
             itemObject.contains(kEnabledKey) ? itemObject.value(kEnabledKey).toBool() : true;
 
@@ -125,6 +127,7 @@ QByteArray MultiProjectWorkspace::DumpContent(const MultiProjectWorkspaceData& d
         QJsonObject p;
         p.insert(kPathKey, item.projectFilePath);
         p.insert(kDisplayNameKey, item.displayName);
+        p.insert(kNoteKey, item.note);
         p.insert(kEnabledKey, item.enabled);
         projects.append(p);
     }
