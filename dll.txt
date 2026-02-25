@@ -32,3 +32,4 @@ libFEMConfig.dll
 libXLSXEditor.dll
 libFileAssocLib.dll
 libProjectControlWidget.dll
+libRecent.dll
