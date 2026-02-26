@@ -83,6 +83,8 @@ private:
     void createNewProject();
     void createNewWorkspace();
     void loadConfigFromDialog();
+    void showAboutDialog();
+    void clearAppCache();
     void saveCurrentConfig();
     void saveCurrentConfigAs();
     void browseFolder();

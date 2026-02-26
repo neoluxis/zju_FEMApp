@@ -14,6 +14,7 @@
 
 #include "QDebug"
 #include "cc/neolux/fem/mpw/multi_project_workspace.h"
+#include "cc/neolux/fem/version/app_info.h"
 #include "cc/neolux/fem/xlsx_proc.h"
 
 using cc::neolux::femconfig::FEMConfig;
@@ -235,6 +236,10 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
     toggleProjectTabsAction->setCheckable(true);
     toggleProjectTabsAction->setChecked(true);
 
+    auto* appMenu = ui.menuBar->addMenu(tr("App"));
+    auto* actionAbout = appMenu->addAction(tr("About"));
+    auto* actionClearCache = appMenu->addAction(tr("Clear Cache"));
+
     connect(actionNewProject, &QAction::triggered, this, [this]() { createNewProject(); });
     connect(actionNewWorkspace, &QAction::triggered, this, [this]() { createNewWorkspace(); });
     connect(actionOpenProject, &QAction::triggered, this, [this]() { loadConfigFromDialog(); });
@@ -243,6 +248,8 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
     connect(actionSaveProject, &QAction::triggered, this, [this]() { saveCurrentConfig(); });
     connect(actionSaveProjectAs, &QAction::triggered, this, [this]() { saveCurrentConfigAs(); });
     connect(actionExit, &QAction::triggered, this, [this]() { close(); });
+    connect(actionAbout, &QAction::triggered, this, [this]() { showAboutDialog(); });
+    connect(actionClearCache, &QAction::triggered, this, [this]() { clearAppCache(); });
     connect(toggleProjectTabsAction, &QAction::toggled, this,
             [this](bool checked) { setProjectTabsVisible(checked); });
 
@@ -965,6 +972,35 @@ void FemApp::loadConfigFromDialog() {
 
     this->openSingleProject(femconfig_path);
     qInfo() << "Loaded FEM config file from " << femconfig_path;
+}
+
+void FemApp::showAboutDialog() {
+    const QString appName = QString::fromUtf8(cc::neolux::fem::version::kAppName);
+    const QString version = QString::fromUtf8(cc::neolux::fem::version::kVersion);
+    const QString company = QString::fromUtf8(cc::neolux::fem::version::kCompany);
+    const QString description = QString::fromUtf8(cc::neolux::fem::version::kDescription);
+    const QString copyright = QString::fromUtf8(cc::neolux::fem::version::kCopyright);
+
+    const QString aboutText = tr("%1\nVersion: %2\nCompany: %3\n\n%4\n\n%5")
+                                  .arg(appName, version, company, description, copyright);
+    QMessageBox::about(this, tr("About %1").arg(appName), aboutText);
+}
+
+void FemApp::clearAppCache() {
+    const int button = QMessageBox::question(
+        this, tr("Clear Cache"), tr("Clear application cache (recent list and UI settings)?"),
+        QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+    if (button != QMessageBox::Yes) {
+        return;
+    }
+
+    recentProjectHistory.clear();
+    refreshRecentMenu();
+
+    QSettings settings("neolux", "FemApp");
+    settings.clear();
+
+    showInfo(this, tr("Application cache has been cleared."));
 }
 
 void FemApp::saveCurrentConfig() {

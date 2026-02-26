@@ -45,6 +45,7 @@ add_subdirectory(XLSXEditor)
 add_subdirectory(ProjectControlWidget)
 add_subdirectory(Recent)
 add_subdirectory(MultiPrjWs)
+add_subdirectory(Versions)
 
 # Add source files
 set(SOURCES
@@ -102,6 +103,7 @@ target_link_libraries(FemApp PRIVATE
     ProjectControlWidget
     Recent
     MultiPrjWs
+    Versions
 )
 
 if(NOT FEMAPP_LINUX_BUILD_DEMO)
