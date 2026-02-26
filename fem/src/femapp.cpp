@@ -217,41 +217,43 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
     connect(multiPrjWsWidget, &cc::neolux::fem::mpw::MultiPrjWsWidget::configRequested, this,
             [this]() { openMultiProjectWorkspaceConfig(); });
 
-    auto* fileMenu = ui.menuBar->addMenu(tr("File"));
-    auto* newMenu = fileMenu->addMenu(tr("New"));
-    auto* actionNewProject = newMenu->addAction(tr("Project"));
-    auto* actionNewWorkspace = newMenu->addAction(tr("Workspace"));
-    fileMenu->addSeparator();
-
-    auto* actionOpenProject = fileMenu->addAction(tr("Open Project..."));
-    workspaceConfigAction = fileMenu->addAction(tr("Workspace Config..."));
-    recentMenu = fileMenu->addMenu(tr("Recent"));
-    auto* actionSaveProject = fileMenu->addAction(tr("Save"));
-    auto* actionSaveProjectAs = fileMenu->addAction(tr("Save As..."));
-    fileMenu->addSeparator();
-    auto* actionExit = fileMenu->addAction(tr("Exit"));
-
-    auto* viewMenu = ui.menuBar->addMenu(tr("View"));
-    toggleProjectTabsAction = viewMenu->addAction(tr("Show Project Tabs"));
-    toggleProjectTabsAction->setCheckable(true);
-    toggleProjectTabsAction->setChecked(true);
-
-    auto* appMenu = ui.menuBar->addMenu(tr("App"));
-    auto* actionAbout = appMenu->addAction(tr("About"));
-    auto* actionClearCache = appMenu->addAction(tr("Clear Cache"));
-
-    connect(actionNewProject, &QAction::triggered, this, [this]() { createNewProject(); });
-    connect(actionNewWorkspace, &QAction::triggered, this, [this]() { createNewWorkspace(); });
-    connect(actionOpenProject, &QAction::triggered, this, [this]() { loadConfigFromDialog(); });
-    connect(workspaceConfigAction, &QAction::triggered, this,
+    globalMenuController =
+        std::make_unique<cc::neolux::fem::GlobalMenuController>(ui.menuBar, this);
+    connect(globalMenuController.get(), &cc::neolux::fem::GlobalMenuController::newProjectRequested,
+            this, [this]() { createNewProject(); });
+    connect(globalMenuController.get(),
+            &cc::neolux::fem::GlobalMenuController::newWorkspaceRequested, this,
+            [this]() { createNewWorkspace(); });
+    connect(globalMenuController.get(), &cc::neolux::fem::GlobalMenuController::openRequested, this,
+            [this]() { loadConfigFromDialog(); });
+    connect(globalMenuController.get(),
+            &cc::neolux::fem::GlobalMenuController::workspaceConfigRequested, this,
             [this]() { openMultiProjectWorkspaceConfig(); });
-    connect(actionSaveProject, &QAction::triggered, this, [this]() { saveCurrentConfig(); });
-    connect(actionSaveProjectAs, &QAction::triggered, this, [this]() { saveCurrentConfigAs(); });
-    connect(actionExit, &QAction::triggered, this, [this]() { close(); });
-    connect(actionAbout, &QAction::triggered, this, [this]() { showAboutDialog(); });
-    connect(actionClearCache, &QAction::triggered, this, [this]() { clearAppCache(); });
-    connect(toggleProjectTabsAction, &QAction::toggled, this,
-            [this](bool checked) { setProjectTabsVisible(checked); });
+    connect(globalMenuController.get(), &cc::neolux::fem::GlobalMenuController::saveRequested, this,
+            [this]() { saveCurrentConfig(); });
+    connect(globalMenuController.get(), &cc::neolux::fem::GlobalMenuController::saveAsRequested,
+            this, [this]() { saveCurrentConfigAs(); });
+    connect(globalMenuController.get(), &cc::neolux::fem::GlobalMenuController::exitRequested, this,
+            [this]() { close(); });
+    connect(globalMenuController.get(), &cc::neolux::fem::GlobalMenuController::aboutRequested,
+            this, [this]() { showAboutDialog(); });
+    connect(globalMenuController.get(), &cc::neolux::fem::GlobalMenuController::clearCacheRequested,
+            this, [this]() { clearAppCache(); });
+    connect(globalMenuController.get(), &cc::neolux::fem::GlobalMenuController::projectTabsToggled,
+            this, [this](bool checked) { setProjectTabsVisible(checked); });
+    connect(globalMenuController.get(), &cc::neolux::fem::GlobalMenuController::recentPathRequested,
+            this, [this](const QString& path) {
+                if (cc::neolux::fem::mpw::MultiProjectWorkspace::IsValidWorkspaceFile(path)) {
+                    loadMultiProjectWorkspace(path);
+                } else {
+                    openSingleProject(path);
+                }
+            });
+    connect(globalMenuController.get(),
+            &cc::neolux::fem::GlobalMenuController::clearRecentRequested, this, [this]() {
+                recentProjectHistory.clear();
+                refreshRecentMenu();
+            });
 
     refreshRecentMenu();
 
@@ -488,15 +490,14 @@ void FemApp::setWorkspaceMode(bool enabled) {
         ui.tabProjectWorkspace->setTabEnabled(kWorkspaceTabIndex, enabled);
         ui.tabProjectWorkspace->setCurrentIndex(enabled ? kWorkspaceTabIndex : kProjectTabIndex);
     }
-    if (workspaceConfigAction) {
-        workspaceConfigAction->setEnabled(enabled);
+    if (globalMenuController) {
+        globalMenuController->setWorkspaceConfigEnabled(enabled);
     }
 }
 
 void FemApp::setProjectTabsVisible(bool visible) {
-    if (toggleProjectTabsAction && toggleProjectTabsAction->isChecked() != visible) {
-        toggleProjectTabsAction->setChecked(visible);
-        return;
+    if (globalMenuController && globalMenuController->isProjectTabsChecked() != visible) {
+        globalMenuController->setProjectTabsChecked(visible, false);
     }
 
     if (ui.tabProjectWorkspace) {
@@ -776,11 +777,10 @@ void FemApp::updateFileLabel() {
 }
 
 void FemApp::refreshRecentMenu() {
-    if (!recentMenu) {
+    if (!globalMenuController) {
         return;
     }
 
-    recentMenu->clear();
     const QStringList projects = recentProjectHistory.recentProjects();
 
     QStringList workspacePaths;
@@ -793,40 +793,7 @@ void FemApp::refreshRecentMenu() {
         }
     }
 
-    auto addGroup = [this](const QString& title, const QStringList& paths) {
-        if (paths.isEmpty()) {
-            return;
-        }
-
-        QAction* header = recentMenu->addAction(title);
-        header->setEnabled(false);
-        for (const QString& path : paths) {
-            QAction* action = recentMenu->addAction(path);
-            connect(action, &QAction::triggered, this, [this, path]() {
-                if (cc::neolux::fem::mpw::MultiProjectWorkspace::IsValidWorkspaceFile(path)) {
-                    loadMultiProjectWorkspace(path);
-                } else {
-                    openSingleProject(path);
-                }
-            });
-        }
-    };
-
-    addGroup(tr("Workspace"), workspacePaths);
-    if (!workspacePaths.isEmpty() && !projectPaths.isEmpty()) {
-        recentMenu->addSeparator();
-    }
-    addGroup(tr("Project"), projectPaths);
-
-    recentMenu->addSeparator();
-    QAction* clearAction = recentMenu->addAction(tr("Clear"));
-    clearAction->setEnabled(!projects.isEmpty());
-    connect(clearAction, &QAction::triggered, this, [this]() {
-        recentProjectHistory.clear();
-        refreshRecentMenu();
-    });
-
-    recentMenu->setEnabled(true);
+    globalMenuController->setRecentProjects(workspacePaths, projectPaths);
 }
 
 void FemApp::refreshXlsxEditor() {

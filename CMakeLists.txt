@@ -52,7 +52,9 @@ set(SOURCES
     fem/src/main.cpp
     fem/src/xlsx_proc.cpp
     fem/src/femapp.cpp
+    fem/src/global_menu_controller.cpp
     fem/src/xlsx_editor_module.cpp
+    fem/include/cc/neolux/fem/global_menu_controller.h
 )
 
 set(HEADERS
@@ -118,6 +120,7 @@ endif()
 # 扫描主项目和 XLSXEditor 的所有源文件
 add_custom_target(update_translations
     COMMAND $<TARGET_FILE:Qt6::lupdate>
+    -no-obsolete
     -recursive
     fem/include
     fem/src

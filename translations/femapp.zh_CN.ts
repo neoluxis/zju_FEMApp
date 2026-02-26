@@ -13,201 +13,131 @@
     <name>FemApp</name>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="14"/>
-        <location filename="../fem/src/femapp.cpp" line="759"/>
-        <location filename="../fem/src/femapp.cpp" line="766"/>
+        <location filename="../fem/src/femapp.cpp" line="762"/>
+        <location filename="../fem/src/femapp.cpp" line="769"/>
         <source>FemApp</source>
         <translation>FemApp</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="229"/>
-        <source>Save</source>
-        <translation>保存</translation>
-    </message>
-    <message>
-        <location filename="../fem/src/femapp.cpp" line="220"/>
-        <source>File</source>
-        <translation>文件</translation>
-    </message>
-    <message>
-        <location filename="../fem/src/femapp.cpp" line="544"/>
+        <location filename="../fem/src/femapp.cpp" line="547"/>
         <source>No folders matched the folder pattern. </source>
         <translation>没有文件夹匹配到</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="551"/>
+        <location filename="../fem/src/femapp.cpp" line="554"/>
         <source>Multiple folders matched the folder pattern. Please ensure only one folder matches.</source>
         <translation>匹配到多个文件夹，请确保只有一个文件夹匹配</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="226"/>
-        <source>Open Project...</source>
-        <translation>打开项目...</translation>
-    </message>
-    <message>
-        <location filename="../fem/src/femapp.cpp" line="221"/>
-        <source>New</source>
-        <translation>新建</translation>
-    </message>
-    <message>
-        <location filename="../fem/src/femapp.cpp" line="227"/>
-        <source>Workspace Config...</source>
-        <translation>工作区配置...</translation>
-    </message>
-    <message>
-        <location filename="../fem/src/femapp.cpp" line="228"/>
-        <source>Recent</source>
-        <translation>最近打开</translation>
-    </message>
-    <message>
-        <location filename="../fem/src/femapp.cpp" line="230"/>
-        <source>Save As...</source>
-        <translation>另存为...</translation>
-    </message>
-    <message>
-        <location filename="../fem/src/femapp.cpp" line="232"/>
-        <source>Exit</source>
-        <translation>退出</translation>
-    </message>
-    <message>
-        <location filename="../fem/src/femapp.cpp" line="239"/>
-        <source>App</source>
-        <translation>应用</translation>
-    </message>
-    <message>
-        <location filename="../fem/src/femapp.cpp" line="240"/>
-        <source>About</source>
-        <translation>关于</translation>
-    </message>
-    <message>
-        <location filename="../fem/src/femapp.cpp" line="241"/>
-        <location filename="../fem/src/femapp.cpp" line="992"/>
+        <location filename="../fem/src/femapp.cpp" line="960"/>
         <source>Clear Cache</source>
         <translation>清除缓存</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="234"/>
-        <source>View</source>
-        <translation>视图</translation>
-    </message>
-    <message>
-        <location filename="../fem/src/femapp.cpp" line="235"/>
-        <source>Show Project Tabs</source>
-        <translation>显示项目标签页</translation>
-    </message>
-    <message>
-        <location filename="../fem/src/femapp.cpp" line="291"/>
+        <location filename="../fem/src/femapp.cpp" line="295"/>
         <source>Unsaved Changes</source>
         <translation>未保存的修改</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="292"/>
+        <location filename="../fem/src/femapp.cpp" line="296"/>
         <source>You have unsaved changes. Do you want to save before closing?</source>
         <translation>你有没有保存的修改，是否保存？</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="339"/>
+        <location filename="../fem/src/femapp.cpp" line="343"/>
         <source>Config file path is empty.</source>
         <translation>配置文件路径为空。</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="346"/>
-        <location filename="../fem/src/femapp.cpp" line="405"/>
+        <location filename="../fem/src/femapp.cpp" line="350"/>
+        <location filename="../fem/src/femapp.cpp" line="409"/>
         <source>Config file does not exist: </source>
         <translation>配置文件不存在：</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="378"/>
+        <location filename="../fem/src/femapp.cpp" line="382"/>
         <source>Failed to read FEM config file.</source>
         <translation>读取 FEM 配置文件失败。</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="459"/>
+        <location filename="../fem/src/femapp.cpp" line="463"/>
         <source>No workspace is currently opened.</source>
         <translation>当前没有打开的工作区。</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="579"/>
+        <location filename="../fem/src/femapp.cpp" line="582"/>
         <source>No filenames matched the filename pattern.</source>
         <translation>没有文件名匹配</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="591"/>
+        <location filename="../fem/src/femapp.cpp" line="594"/>
         <source>Multiple filenames matched the filename pattern. Please ensure only one filename matches.</source>
         <translation>多个文件匹配到，请确保只有一个文件匹配</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="650"/>
+        <location filename="../fem/src/femapp.cpp" line="653"/>
         <source>No sheets matched the sheet pattern. </source>
         <translation>没有表名匹配</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="656"/>
+        <location filename="../fem/src/femapp.cpp" line="659"/>
         <source>Multiple sheets matched the sheet pattern. Please ensure only one sheet matches.</source>
         <translation>匹配到多个表，请检查文件以匹配单个表</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="690"/>
+        <location filename="../fem/src/femapp.cpp" line="693"/>
         <source>Failed to read Excel file: </source>
         <translation>读取 Excel 文件失败</translation>
     </message>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="49"/>
-        <location filename="../fem/src/femapp.cpp" line="223"/>
-        <location filename="../fem/src/femapp.cpp" line="815"/>
         <source>Workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="27"/>
-        <location filename="../fem/src/femapp.cpp" line="222"/>
-        <location filename="../fem/src/femapp.cpp" line="819"/>
         <source>Project</source>
         <translation>项目</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="822"/>
-        <source>Clear</source>
-        <translation>清空</translation>
-    </message>
-    <message>
-        <location filename="../fem/src/femapp.cpp" line="962"/>
+        <location filename="../fem/src/femapp.cpp" line="931"/>
         <source>Open FEM Config File</source>
         <translation>打开 FEM 配置文件</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="876"/>
-        <location filename="../fem/src/femapp.cpp" line="1034"/>
+        <location filename="../fem/src/femapp.cpp" line="845"/>
+        <location filename="../fem/src/femapp.cpp" line="1001"/>
         <source>FEM Config Files (*.fem);;All Files (*)</source>
         <translation>FEM项目文件 (*.fem);;全部文件 (*)</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="875"/>
+        <location filename="../fem/src/femapp.cpp" line="844"/>
         <source>Create New FEM Project</source>
         <translation>创建新 FEM 项目</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="890"/>
-        <location filename="../fem/src/femapp.cpp" line="930"/>
+        <location filename="../fem/src/femapp.cpp" line="859"/>
+        <location filename="../fem/src/femapp.cpp" line="899"/>
         <source>Failed to create FEM config file.</source>
         <translation>创建 FEM 配置文件失败。</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="901"/>
+        <location filename="../fem/src/femapp.cpp" line="870"/>
         <source>Create New Workspace File</source>
         <translation>创建新工作区文件</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="902"/>
+        <location filename="../fem/src/femapp.cpp" line="871"/>
         <source>Workspace Files (*.femmpw);;All Files (*)</source>
         <translation>工作区文件 (*.femmpw);;全部文件 (*)</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="963"/>
+        <location filename="../fem/src/femapp.cpp" line="932"/>
         <source>FEM/Workspace Files (*.fem *.femmpw);;All Files (*)</source>
         <translation>FEM/工作区文件 (*.fem *.femmpw);;全部文件 (*)</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="985"/>
+        <location filename="../fem/src/femapp.cpp" line="953"/>
         <source>%1
 Version: %2
 Company: %3
@@ -215,47 +145,53 @@ Company: %3
 %4
 
 %5</source>
-        <translation type="unfinished"></translation>
+        <translation>%1
+版本: %2
+公司: %3
+
+%4
+
+%5</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="987"/>
+        <location filename="../fem/src/femapp.cpp" line="955"/>
         <source>About %1</source>
         <translation>关于 %1</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="993"/>
+        <location filename="../fem/src/femapp.cpp" line="960"/>
         <source>Clear application cache (recent list and UI settings)?</source>
         <translation>清除应用程序缓存（最近列表和UI设置）？</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="1005"/>
+        <location filename="../fem/src/femapp.cpp" line="972"/>
         <source>Application cache has been cleared.</source>
         <translation>应用程序缓存已清除。</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="1016"/>
-        <location filename="../fem/src/femapp.cpp" line="1041"/>
+        <location filename="../fem/src/femapp.cpp" line="983"/>
+        <location filename="../fem/src/femapp.cpp" line="1008"/>
         <source>Failed to generate FEM config content.</source>
         <translation>生成 FEM 配置内容失败</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="1024"/>
-        <location filename="../fem/src/femapp.cpp" line="1049"/>
+        <location filename="../fem/src/femapp.cpp" line="991"/>
+        <location filename="../fem/src/femapp.cpp" line="1016"/>
         <source>Failed to save FEM config file.</source>
         <translation>保存 FEM 文件失败</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="1033"/>
+        <location filename="../fem/src/femapp.cpp" line="1000"/>
         <source>Save FEM Config File As</source>
         <translation>保存 FEM 配置文件到</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="1061"/>
+        <location filename="../fem/src/femapp.cpp" line="1028"/>
         <source>Select Folder</source>
         <translation>选择文件夹</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="864"/>
+        <location filename="../fem/src/femapp.cpp" line="833"/>
         <source>Failed to parse raw FEM config content.</source>
         <translation>解析配置文件失败，请检查文件格式</translation>
     </message>
@@ -273,6 +209,91 @@ Company: %3
         <location filename="../fem/src/femapp.cpp" line="64"/>
         <source>Info</source>
         <translation>提示</translation>
+    </message>
+</context>
+<context>
+    <name>GlobalMenuController</name>
+    <message>
+        <location filename="../fem/src/global_menu_controller.cpp" line="13"/>
+        <source>File</source>
+        <translation type="unfinished">文件</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/global_menu_controller.cpp" line="15"/>
+        <source>New</source>
+        <translation type="unfinished">新建</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/global_menu_controller.cpp" line="17"/>
+        <location filename="../fem/src/global_menu_controller.cpp" line="119"/>
+        <source>Project</source>
+        <translation type="unfinished">项目</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/global_menu_controller.cpp" line="19"/>
+        <location filename="../fem/src/global_menu_controller.cpp" line="115"/>
+        <source>Workspace</source>
+        <translation type="unfinished">工作区</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/global_menu_controller.cpp" line="23"/>
+        <source>Open Project...</source>
+        <translation type="unfinished">打开项目...</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/global_menu_controller.cpp" line="25"/>
+        <source>Workspace Config...</source>
+        <translation type="unfinished">工作区配置...</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/global_menu_controller.cpp" line="27"/>
+        <source>Recent</source>
+        <translation type="unfinished">最近打开</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/global_menu_controller.cpp" line="29"/>
+        <source>Save</source>
+        <translation type="unfinished">保存</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/global_menu_controller.cpp" line="31"/>
+        <source>Save As...</source>
+        <translation type="unfinished">另存为...</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/global_menu_controller.cpp" line="34"/>
+        <source>Exit</source>
+        <translation type="unfinished">退出</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/global_menu_controller.cpp" line="37"/>
+        <source>View</source>
+        <translation type="unfinished">视图</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/global_menu_controller.cpp" line="39"/>
+        <source>Show Project Tabs</source>
+        <translation type="unfinished">显示项目标签页</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/global_menu_controller.cpp" line="44"/>
+        <source>App</source>
+        <translation type="unfinished">应用</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/global_menu_controller.cpp" line="46"/>
+        <source>About</source>
+        <translation type="unfinished">关于</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/global_menu_controller.cpp" line="48"/>
+        <source>Clear Cache</source>
+        <translation type="unfinished">清除缓存</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/global_menu_controller.cpp" line="123"/>
+        <source>Clear</source>
+        <translation type="unfinished">清空</translation>
     </message>
 </context>
 <context>
@@ -308,29 +329,9 @@ Company: %3
         <translation>移除项目</translation>
     </message>
     <message>
-        <source>Save</source>
-        <translation type="vanished">保存</translation>
-    </message>
-    <message>
         <location filename="../MultiPrjWs/src/multiprjws_config.ui" line="77"/>
         <source>Close</source>
         <translation>关闭</translation>
-    </message>
-    <message>
-        <source>Select FEM Project</source>
-        <translation type="vanished">选择 FEM 项目</translation>
-    </message>
-    <message>
-        <source>FEM Config Files (*.fem);;All Files (*)</source>
-        <translation type="vanished">FEM项目文件 (*.fem);;全部文件 (*)</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="vanished">错误</translation>
-    </message>
-    <message>
-        <source>Workspace saved.</source>
-        <translation type="vanished">工作区已保存。</translation>
     </message>
 </context>
 <context>
@@ -349,22 +350,6 @@ Company: %3
         <location filename="../MultiPrjWs/src/multiprjws.ui" line="32"/>
         <source>Config</source>
         <translation>配置</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation type="vanished">添加</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation type="vanished">移除</translation>
-    </message>
-    <message>
-        <source>Select FEM Project</source>
-        <translation type="vanished">选择 FEM 项目</translation>
-    </message>
-    <message>
-        <source>FEM Config Files (*.fem);;All Files (*)</source>
-        <translation type="vanished">FEM项目文件 (*.fem);;全部文件 (*)</translation>
     </message>
 </context>
 <context>

@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "cc/neolux/FEMConfig/FEMConfig.h"
+#include "cc/neolux/fem/global_menu_controller.h"
 #include "cc/neolux/fem/mpw/multi_prj_ws_config_dialog.h"
 #include "cc/neolux/fem/mpw/multi_prj_ws_widget.h"
 #include "cc/neolux/fem/recent/recent_project_history.h"
@@ -58,12 +59,10 @@ private:
     bool isModified = false;                 // Track if file has been modified
     bool isLoading = false;                  // Flag to prevent marking as modified during file load
     std::unique_ptr<cc::neolux::fem::XlsxEditorModule> xlsxEditorModule;
+    std::unique_ptr<cc::neolux::fem::GlobalMenuController> globalMenuController;
     cc::neolux::projectcontrol::ProjectControlWidget* projectControlWidget = nullptr;
     cc::neolux::fem::mpw::MultiPrjWsWidget* multiPrjWsWidget = nullptr;
     cc::neolux::fem::recent::RecentProjectHistory recentProjectHistory;
-    QMenu* recentMenu = nullptr;
-    QAction* workspaceConfigAction = nullptr;
-    QAction* toggleProjectTabsAction = nullptr;
     bool workspaceMode = false;
     QString currentWorkspaceFilePath;
     bool relaxPatternMatchValidation = false;
