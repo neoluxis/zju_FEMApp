@@ -10,6 +10,7 @@ libharfbuzz-0.dll
 libiconv-2.dll
 libintl-8.dll
 libOpenXLSX.dll
+libOpenXLSXd.dll
 libpcre2-16-0.dll
 libpcre2-8-0.dll
 libpng16-16.dll
