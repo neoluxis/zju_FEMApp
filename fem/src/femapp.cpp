@@ -4,7 +4,6 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QFileInfo>
-#include <QMenuBar>
 #include <QMessageBox>
 #include <QSettings>
 #include <QShortcut>
@@ -14,7 +13,6 @@
 
 #include "QDebug"
 #include "cc/neolux/fem/mpw/multi_project_workspace.h"
-#include "cc/neolux/fem/version/app_info.h"
 #include "cc/neolux/fem/xlsx_proc.h"
 
 using cc::neolux::femconfig::FEMConfig;
@@ -217,31 +215,26 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
     connect(multiPrjWsWidget, &cc::neolux::fem::mpw::MultiPrjWsWidget::configRequested, this,
             [this]() { openMultiProjectWorkspaceConfig(); });
 
-    globalMenuController =
-        std::make_unique<cc::neolux::fem::GlobalMenuController>(ui.menuBar, this);
-    connect(globalMenuController.get(), &cc::neolux::fem::GlobalMenuController::newProjectRequested,
+    appMenuCoordinator =
+        std::make_unique<cc::neolux::fem::AppMenuCoordinator>(ui.menuBar, this, this);
+    connect(appMenuCoordinator.get(), &cc::neolux::fem::AppMenuCoordinator::newProjectRequested,
             this, [this]() { createNewProject(); });
-    connect(globalMenuController.get(),
-            &cc::neolux::fem::GlobalMenuController::newWorkspaceRequested, this,
-            [this]() { createNewWorkspace(); });
-    connect(globalMenuController.get(), &cc::neolux::fem::GlobalMenuController::openRequested, this,
+    connect(appMenuCoordinator.get(), &cc::neolux::fem::AppMenuCoordinator::newWorkspaceRequested,
+            this, [this]() { createNewWorkspace(); });
+    connect(appMenuCoordinator.get(), &cc::neolux::fem::AppMenuCoordinator::openRequested, this,
             [this]() { loadConfigFromDialog(); });
-    connect(globalMenuController.get(),
-            &cc::neolux::fem::GlobalMenuController::workspaceConfigRequested, this,
+    connect(appMenuCoordinator.get(),
+            &cc::neolux::fem::AppMenuCoordinator::workspaceConfigRequested, this,
             [this]() { openMultiProjectWorkspaceConfig(); });
-    connect(globalMenuController.get(), &cc::neolux::fem::GlobalMenuController::saveRequested, this,
+    connect(appMenuCoordinator.get(), &cc::neolux::fem::AppMenuCoordinator::saveRequested, this,
             [this]() { saveCurrentConfig(); });
-    connect(globalMenuController.get(), &cc::neolux::fem::GlobalMenuController::saveAsRequested,
-            this, [this]() { saveCurrentConfigAs(); });
-    connect(globalMenuController.get(), &cc::neolux::fem::GlobalMenuController::exitRequested, this,
+    connect(appMenuCoordinator.get(), &cc::neolux::fem::AppMenuCoordinator::saveAsRequested, this,
+            [this]() { saveCurrentConfigAs(); });
+    connect(appMenuCoordinator.get(), &cc::neolux::fem::AppMenuCoordinator::exitRequested, this,
             [this]() { close(); });
-    connect(globalMenuController.get(), &cc::neolux::fem::GlobalMenuController::aboutRequested,
-            this, [this]() { showAboutDialog(); });
-    connect(globalMenuController.get(), &cc::neolux::fem::GlobalMenuController::clearCacheRequested,
-            this, [this]() { clearAppCache(); });
-    connect(globalMenuController.get(), &cc::neolux::fem::GlobalMenuController::projectTabsToggled,
+    connect(appMenuCoordinator.get(), &cc::neolux::fem::AppMenuCoordinator::projectTabsToggled,
             this, [this](bool checked) { setProjectTabsVisible(checked); });
-    connect(globalMenuController.get(), &cc::neolux::fem::GlobalMenuController::recentPathRequested,
+    connect(appMenuCoordinator.get(), &cc::neolux::fem::AppMenuCoordinator::recentPathRequested,
             this, [this](const QString& path) {
                 if (cc::neolux::fem::mpw::MultiProjectWorkspace::IsValidWorkspaceFile(path)) {
                     loadMultiProjectWorkspace(path);
@@ -249,13 +242,7 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
                     openSingleProject(path);
                 }
             });
-    connect(globalMenuController.get(),
-            &cc::neolux::fem::GlobalMenuController::clearRecentRequested, this, [this]() {
-                recentProjectHistory.clear();
-                refreshRecentMenu();
-            });
-
-    refreshRecentMenu();
+    appMenuCoordinator->setWorkspaceMode(false);
 
     // Setup keyboard shortcuts
     // Ctrl+Q to exit
@@ -362,8 +349,9 @@ bool FemApp::loadFEMConfig(const QString& filePath) {
         const QString recentTarget = (workspaceMode && !currentWorkspaceFilePath.isEmpty())
                                          ? currentWorkspaceFilePath
                                          : currentFilePath;
-        recentProjectHistory.addProject(recentTarget);
-        refreshRecentMenu();
+        if (appMenuCoordinator) {
+            appMenuCoordinator->addRecentPath(recentTarget);
+        }
 
         relaxPatternMatchValidation = true;
         skipAutoRefreshEditorOnce = true;
@@ -388,8 +376,9 @@ bool FemApp::loadFEMConfig(const QString& filePath) {
     const QString recentTarget = (workspaceMode && !currentWorkspaceFilePath.isEmpty())
                                      ? currentWorkspaceFilePath
                                      : currentFilePath;
-    recentProjectHistory.addProject(recentTarget);
-    refreshRecentMenu();
+    if (appMenuCoordinator) {
+        appMenuCoordinator->addRecentPath(recentTarget);
+    }
 
     this->onLoadFile();
     return true;
@@ -415,8 +404,9 @@ bool FemApp::loadMultiProjectWorkspace(const QString& filePath) {
 
         currentWorkspaceFilePath = workspaceFilePath;
         setWorkspaceMode(true);
-        recentProjectHistory.addProject(currentWorkspaceFilePath);
-        refreshRecentMenu();
+        if (appMenuCoordinator) {
+            appMenuCoordinator->addRecentPath(currentWorkspaceFilePath);
+        }
 
         femdata = BuildDefaultFemData();
         std::ostringstream oss;
@@ -442,8 +432,9 @@ bool FemApp::loadMultiProjectWorkspace(const QString& filePath) {
 
     currentWorkspaceFilePath = workspaceFilePath;
     setWorkspaceMode(true);
-    recentProjectHistory.addProject(currentWorkspaceFilePath);
-    refreshRecentMenu();
+    if (appMenuCoordinator) {
+        appMenuCoordinator->addRecentPath(currentWorkspaceFilePath);
+    }
 
     const QString firstProjectPath = multiPrjWsWidget->firstEnabledProjectPath();
     if (!firstProjectPath.isEmpty()) {
@@ -490,14 +481,14 @@ void FemApp::setWorkspaceMode(bool enabled) {
         ui.tabProjectWorkspace->setTabEnabled(kWorkspaceTabIndex, enabled);
         ui.tabProjectWorkspace->setCurrentIndex(enabled ? kWorkspaceTabIndex : kProjectTabIndex);
     }
-    if (globalMenuController) {
-        globalMenuController->setWorkspaceConfigEnabled(enabled);
+    if (appMenuCoordinator) {
+        appMenuCoordinator->setWorkspaceMode(enabled);
     }
 }
 
 void FemApp::setProjectTabsVisible(bool visible) {
-    if (globalMenuController && globalMenuController->isProjectTabsChecked() != visible) {
-        globalMenuController->setProjectTabsChecked(visible, false);
+    if (appMenuCoordinator && appMenuCoordinator->isProjectTabsChecked() != visible) {
+        appMenuCoordinator->setProjectTabsChecked(visible, false);
     }
 
     if (ui.tabProjectWorkspace) {
@@ -776,26 +767,6 @@ void FemApp::updateFileLabel() {
     this->setWindowTitle(windowTitle);
 }
 
-void FemApp::refreshRecentMenu() {
-    if (!globalMenuController) {
-        return;
-    }
-
-    const QStringList projects = recentProjectHistory.recentProjects();
-
-    QStringList workspacePaths;
-    QStringList projectPaths;
-    for (const QString& path : projects) {
-        if (cc::neolux::fem::mpw::MultiProjectWorkspace::IsValidWorkspaceFile(path)) {
-            workspacePaths.append(path);
-        } else {
-            projectPaths.append(path);
-        }
-    }
-
-    globalMenuController->setRecentProjects(workspacePaths, projectPaths);
-}
-
 void FemApp::refreshXlsxEditor() {
     if (!xlsxEditorModule) {
         return;
@@ -941,35 +912,6 @@ void FemApp::loadConfigFromDialog() {
     qInfo() << "Loaded FEM config file from " << femconfig_path;
 }
 
-void FemApp::showAboutDialog() {
-    const QString appName = QString::fromUtf8(cc::neolux::fem::version::kAppName);
-    const QString version = QString::fromUtf8(cc::neolux::fem::version::kVersion);
-    const QString company = QString::fromUtf8(cc::neolux::fem::version::kCompany);
-    const QString description = QString::fromUtf8(cc::neolux::fem::version::kDescription);
-    const QString copyright = QString::fromUtf8(cc::neolux::fem::version::kCopyright);
-
-    const QString aboutText = tr("%1\nVersion: %2\nCompany: %3\n\n%4\n\n%5")
-                                  .arg(appName, version, company, description, copyright);
-    QMessageBox::about(this, tr("About %1").arg(appName), aboutText);
-}
-
-void FemApp::clearAppCache() {
-    const int button = QMessageBox::question(
-        this, tr("Clear Cache"), tr("Clear application cache (recent list and UI settings)?"),
-        QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
-    if (button != QMessageBox::Yes) {
-        return;
-    }
-
-    recentProjectHistory.clear();
-    refreshRecentMenu();
-
-    QSettings settings("neolux", "FemApp");
-    settings.clear();
-
-    showInfo(this, tr("Application cache has been cleared."));
-}
-
 void FemApp::saveCurrentConfig() {
     if (currentFilePath.isEmpty()) {
         saveCurrentConfigAs();
@@ -1015,8 +957,9 @@ void FemApp::saveCurrentConfigAs() {
         return;
     }
     currentFilePath = QFileInfo(femconfig_path).absoluteFilePath();
-    recentProjectHistory.addProject(currentFilePath);
-    refreshRecentMenu();
+    if (appMenuCoordinator) {
+        appMenuCoordinator->addRecentPath(currentFilePath);
+    }
     clearModifiedFlag();
     qInfo() << "Saved FEM config file to " << femconfig_path;
 }

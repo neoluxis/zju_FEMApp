@@ -1,13 +1,11 @@
 #pragma once
 
-#include <QMenu>
 #include <memory>
 
 #include "cc/neolux/FEMConfig/FEMConfig.h"
-#include "cc/neolux/fem/global_menu_controller.h"
+#include "cc/neolux/fem/app_menu_coordinator.h"
 #include "cc/neolux/fem/mpw/multi_prj_ws_config_dialog.h"
 #include "cc/neolux/fem/mpw/multi_prj_ws_widget.h"
-#include "cc/neolux/fem/recent/recent_project_history.h"
 #include "cc/neolux/fem/xlsx_editor_module.h"
 #include "cc/neolux/projectcontrol/project_control_widget.h"
 #include "ui_mainwindow.h"
@@ -59,10 +57,9 @@ private:
     bool isModified = false;                 // Track if file has been modified
     bool isLoading = false;                  // Flag to prevent marking as modified during file load
     std::unique_ptr<cc::neolux::fem::XlsxEditorModule> xlsxEditorModule;
-    std::unique_ptr<cc::neolux::fem::GlobalMenuController> globalMenuController;
+    std::unique_ptr<cc::neolux::fem::AppMenuCoordinator> appMenuCoordinator;
     cc::neolux::projectcontrol::ProjectControlWidget* projectControlWidget = nullptr;
     cc::neolux::fem::mpw::MultiPrjWsWidget* multiPrjWsWidget = nullptr;
-    cc::neolux::fem::recent::RecentProjectHistory recentProjectHistory;
     bool workspaceMode = false;
     QString currentWorkspaceFilePath;
     bool relaxPatternMatchValidation = false;
@@ -74,7 +71,6 @@ private:
     bool isProjectTabsVisible() const;
     void restoreWindowGeometryState();
     void saveWindowGeometryState();
-    void refreshRecentMenu();
     void markAsModified();     // Mark file as modified and update label
     void clearModifiedFlag();  // Clear modified flag and update label
     void refreshXlsxEditor();  // Refresh XLSX editor content
@@ -82,8 +78,6 @@ private:
     void createNewProject();
     void createNewWorkspace();
     void loadConfigFromDialog();
-    void showAboutDialog();
-    void clearAppCache();
     void saveCurrentConfig();
     void saveCurrentConfigAs();
     void browseFolder();

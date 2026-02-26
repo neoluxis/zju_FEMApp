@@ -51,9 +51,11 @@ add_subdirectory(Versions)
 set(SOURCES
     fem/src/main.cpp
     fem/src/xlsx_proc.cpp
+    fem/src/app_menu_coordinator.cpp
     fem/src/femapp.cpp
     fem/src/global_menu_controller.cpp
     fem/src/xlsx_editor_module.cpp
+    fem/include/cc/neolux/fem/app_menu_coordinator.h
     fem/include/cc/neolux/fem/global_menu_controller.h
 )
 
