@@ -20,6 +20,9 @@ using cc::neolux::femconfig::FEMConfig;
 namespace app = cc::neolux::fem;
 
 namespace {
+constexpr int kProjectTabIndex = 0;
+constexpr int kWorkspaceTabIndex = 1;
+
 cc::neolux::femconfig::FEMData BuildDefaultFemData() {
     cc::neolux::femconfig::FEMData data;
     data.folderPattern = ".";
@@ -63,8 +66,6 @@ void FemApp::showInfo(QWidget* parent, const QString& text) {
 // TODO: 1. 回写 .fem 文件时，规范化。给folder, filename, sheet 添加上双引号。并为此双引号修复解析器
 FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModified(false) {
     ui.setupUi(this);
-
-    ui.gridLayout_2->setAlignment(ui.vboxSettings, Qt::AlignTop | Qt::AlignLeft);
 
     auto* multiPrjWsLayout = new QVBoxLayout(ui.multiPrjWsHost);
     multiPrjWsLayout->setContentsMargins(0, 0, 0, 0);
@@ -305,9 +306,18 @@ bool FemApp::loadFEMConfig() {
 }
 
 bool FemApp::openSingleProject(const QString& filePath) {
+    const bool previousWorkspaceMode = workspaceMode;
+    const QString previousWorkspaceFilePath = currentWorkspaceFilePath;
+
     setWorkspaceMode(false);
     currentWorkspaceFilePath.clear();
-    return loadFEMConfig(filePath);
+    if (loadFEMConfig(filePath)) {
+        return true;
+    }
+
+    setWorkspaceMode(previousWorkspaceMode);
+    currentWorkspaceFilePath = previousWorkspaceFilePath;
+    return false;
 }
 
 bool FemApp::loadFEMConfig(const QString& filePath) {
@@ -374,21 +384,23 @@ bool FemApp::loadMultiProjectWorkspace(const QString& filePath) {
         return false;
     }
 
-    setWorkspaceMode(true);
-    currentWorkspaceFilePath = QFileInfo(filePath).absoluteFilePath();
-    recentProjectHistory.addProject(currentWorkspaceFilePath);
-    refreshRecentMenu();
+    const QString workspaceFilePath = QFileInfo(filePath).absoluteFilePath();
 
-    QFileInfo workspaceInfo(currentWorkspaceFilePath);
+    QFileInfo workspaceInfo(workspaceFilePath);
     if (!workspaceInfo.exists() || !workspaceInfo.isFile()) {
-        showError(this, tr("Config file does not exist: ") + currentWorkspaceFilePath);
+        showError(this, tr("Config file does not exist: ") + workspaceFilePath);
         return false;
     }
 
     if (workspaceInfo.size() == 0) {
         cc::neolux::fem::mpw::MultiProjectWorkspaceData emptyWorkspaceData;
         emptyWorkspaceData.workspaceName = workspaceInfo.completeBaseName();
-        multiPrjWsWidget->setWorkspaceData(emptyWorkspaceData, currentWorkspaceFilePath);
+        multiPrjWsWidget->setWorkspaceData(emptyWorkspaceData, workspaceFilePath);
+
+        currentWorkspaceFilePath = workspaceFilePath;
+        setWorkspaceMode(true);
+        recentProjectHistory.addProject(currentWorkspaceFilePath);
+        refreshRecentMenu();
 
         femdata = BuildDefaultFemData();
         std::ostringstream oss;
@@ -407,10 +419,15 @@ bool FemApp::loadMultiProjectWorkspace(const QString& filePath) {
     }
 
     QString errorMessage;
-    if (!multiPrjWsWidget->loadWorkspaceFile(currentWorkspaceFilePath, &errorMessage)) {
+    if (!multiPrjWsWidget->loadWorkspaceFile(workspaceFilePath, &errorMessage)) {
         showError(this, errorMessage);
         return false;
     }
+
+    currentWorkspaceFilePath = workspaceFilePath;
+    setWorkspaceMode(true);
+    recentProjectHistory.addProject(currentWorkspaceFilePath);
+    refreshRecentMenu();
 
     const QString firstProjectPath = multiPrjWsWidget->firstEnabledProjectPath();
     if (!firstProjectPath.isEmpty()) {
@@ -453,8 +470,9 @@ void FemApp::openMultiProjectWorkspaceConfig() {
 
 void FemApp::setWorkspaceMode(bool enabled) {
     workspaceMode = enabled;
-    if (ui.multiPrjWsHost) {
-        ui.multiPrjWsHost->setVisible(enabled);
+    if (ui.tabProjectWorkspace) {
+        ui.tabProjectWorkspace->setTabEnabled(kWorkspaceTabIndex, enabled);
+        ui.tabProjectWorkspace->setCurrentIndex(enabled ? kWorkspaceTabIndex : kProjectTabIndex);
     }
     if (workspaceConfigAction) {
         workspaceConfigAction->setEnabled(enabled);
