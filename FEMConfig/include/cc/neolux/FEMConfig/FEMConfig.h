@@ -71,6 +71,11 @@ struct FEMCONFIG_API FEMData {
 class FEMCONFIG_API FEMConfig {
 public:
     /**
+     * @brief 创建默认 FEM 项目配置数据
+     */
+    static FEMData BuildDefaultFemData();
+
+    /**
      * @brief 读取并解析 .fem 文件
      */
     static bool ReadFile(const std::string& filePath, FEMData& data);

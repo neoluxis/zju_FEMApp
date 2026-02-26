@@ -21,33 +21,6 @@ namespace app = cc::neolux::fem;
 namespace {
 constexpr int kProjectTabIndex = 0;
 constexpr int kWorkspaceTabIndex = 1;
-
-cc::neolux::femconfig::FEMData BuildDefaultFemData() {
-    cc::neolux::femconfig::FEMData data;
-    data.folderPattern = ".";
-    data.filenamePattern = "*.xlsx";
-    data.sheetPattern = "*";
-
-    data.dose.mode = "LowHigh";
-    data.dose.unit = "mJ/cm2";
-    data.dose.center = 0;
-    data.dose.step = 0.05;
-    data.dose.no = 23;
-    data.dose.cols = "B:K";
-
-    data.focus.mode = "NegPos2";
-    data.focus.unit = "um";
-    data.focus.center = 0;
-    data.focus.step = 0.03;
-    data.focus.no = 29;
-    data.focus.rows = "3:60";
-
-    data.fem.mode = "Focus2DoseLinear";
-    data.fem.unit = "mJ/cm2";
-    data.fem.target = 80;
-    data.fem.spec = 5;
-    return data;
-}
 }  // namespace
 
 void FemApp::showError(QWidget* parent, const QString& text) {
@@ -62,7 +35,6 @@ void FemApp::showInfo(QWidget* parent, const QString& text) {
     QMessageBox::information(parent, tr("Info"), text, QMessageBox::Ok);
 }
 
-// TODO: 1. 回写 .fem 文件时，规范化。给folder, filename, sheet 添加上双引号。并为此双引号修复解析器
 FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModified(false) {
     ui.setupUi(this);
 
@@ -260,6 +232,13 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
     new QShortcut(QKeySequence(Qt::ALT | Qt::Key_S), this,
                   [this]() { this->applyRawConfigText(); });
 
+    // Ctrl+W to close
+    new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this, [this]() { this->close(); });
+
+    // Ctrl+O to open
+    new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_O), this,
+                  [this]() { this->loadConfigFromDialog(); });
+
     restoreWindowGeometryState();
 
     // Initialize label
@@ -337,7 +316,7 @@ bool FemApp::loadFEMConfig(const QString& filePath) {
     }
 
     if (fileInfo.size() == 0) {
-        femdata = BuildDefaultFemData();
+        femdata = FEMConfig::BuildDefaultFemData();
         std::ostringstream oss;
         if (cc::neolux::femconfig::FEMConfig::dumpFEMData(femdata, oss)) {
             femdata.rawContent = oss.str();
@@ -408,7 +387,7 @@ bool FemApp::loadMultiProjectWorkspace(const QString& filePath) {
             appMenuCoordinator->addRecentPath(currentWorkspaceFilePath);
         }
 
-        femdata = BuildDefaultFemData();
+        femdata = FEMConfig::BuildDefaultFemData();
         std::ostringstream oss;
         if (cc::neolux::femconfig::FEMConfig::dumpFEMData(femdata, oss)) {
             femdata.rawContent = oss.str();
@@ -822,7 +801,7 @@ void FemApp::createNewProject() {
     }
     const QString absoluteProjectPath = QFileInfo(projectPath).absoluteFilePath();
 
-    cc::neolux::femconfig::FEMData newData = BuildDefaultFemData();
+    cc::neolux::femconfig::FEMData newData = FEMConfig::BuildDefaultFemData();
     if (!cc::neolux::femconfig::FEMConfig::dumpFEMData(
             newData, absoluteProjectPath.toUtf8().toStdString())) {
         showError(this, tr("Failed to create FEM config file."));
@@ -862,7 +841,7 @@ void FemApp::createNewWorkspace() {
         absoluteProjectPath = workspaceDir.filePath(projectName);
     }
 
-    cc::neolux::femconfig::FEMData newProjectData = BuildDefaultFemData();
+    cc::neolux::femconfig::FEMData newProjectData = FEMConfig::BuildDefaultFemData();
     if (!cc::neolux::femconfig::FEMConfig::dumpFEMData(
             newProjectData, absoluteProjectPath.toUtf8().toStdString())) {
         showError(this, tr("Failed to create FEM config file."));
@@ -898,7 +877,8 @@ void FemApp::createNewWorkspace() {
 void FemApp::loadConfigFromDialog() {
     QString femconfig_path =
         QFileDialog::getOpenFileName(this, tr("Open FEM Config File"), QDir::currentPath(),
-                                     tr("FEM/Workspace Files (*.fem *.femmpw);;All Files (*)"));
+                                     tr("FEM Analysis Project Files (*.fem);;FEM Multi-Project "
+                                        "Workspace Files (*.femmpw);;All Files (*)"));
     if (femconfig_path.isEmpty()) {
         return;
     }

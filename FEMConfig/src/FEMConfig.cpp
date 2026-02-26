@@ -16,6 +16,33 @@
 namespace fs = std::filesystem;
 
 namespace cc::neolux::femconfig {
+FEMData FEMConfig::BuildDefaultFemData() {
+    FEMData data;
+    data.folderPattern = ".";
+    data.filenamePattern = "*.xlsx";
+    data.sheetPattern = "*";
+
+    data.dose.mode = "LowHigh";
+    data.dose.unit = "mJ/cm2";
+    data.dose.center = 0;
+    data.dose.step = 0.05;
+    data.dose.no = 23;
+    data.dose.cols = "B:K";
+
+    data.focus.mode = "NegPos2";
+    data.focus.unit = "um";
+    data.focus.center = 0;
+    data.focus.step = 0.03;
+    data.focus.no = 29;
+    data.focus.rows = "3:60";
+
+    data.fem.mode = "Focus2DoseLinear";
+    data.fem.unit = "mJ/cm2";
+    data.fem.target = 80;
+    data.fem.spec = 5;
+    return data;
+}
+
 /**
  * @brief 去除字符串首尾空白
  */
