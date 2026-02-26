@@ -230,6 +230,11 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
     fileMenu->addSeparator();
     auto* actionExit = fileMenu->addAction(tr("Exit"));
 
+    auto* viewMenu = ui.menuBar->addMenu(tr("View"));
+    toggleProjectTabsAction = viewMenu->addAction(tr("Show Project Tabs"));
+    toggleProjectTabsAction->setCheckable(true);
+    toggleProjectTabsAction->setChecked(true);
+
     connect(actionNewProject, &QAction::triggered, this, [this]() { createNewProject(); });
     connect(actionNewWorkspace, &QAction::triggered, this, [this]() { createNewWorkspace(); });
     connect(actionOpenProject, &QAction::triggered, this, [this]() { loadConfigFromDialog(); });
@@ -238,6 +243,8 @@ FemApp::FemApp(QWidget* parent) : QWidget(parent), currentFilePath(""), isModifi
     connect(actionSaveProject, &QAction::triggered, this, [this]() { saveCurrentConfig(); });
     connect(actionSaveProjectAs, &QAction::triggered, this, [this]() { saveCurrentConfigAs(); });
     connect(actionExit, &QAction::triggered, this, [this]() { close(); });
+    connect(toggleProjectTabsAction, &QAction::toggled, this,
+            [this](bool checked) { setProjectTabsVisible(checked); });
 
     refreshRecentMenu();
 
@@ -479,6 +486,24 @@ void FemApp::setWorkspaceMode(bool enabled) {
     }
 }
 
+void FemApp::setProjectTabsVisible(bool visible) {
+    if (toggleProjectTabsAction && toggleProjectTabsAction->isChecked() != visible) {
+        toggleProjectTabsAction->setChecked(visible);
+        return;
+    }
+
+    if (ui.tabProjectWorkspace) {
+        ui.tabProjectWorkspace->setVisible(visible);
+    }
+}
+
+bool FemApp::isProjectTabsVisible() const {
+    if (ui.tabProjectWorkspace) {
+        return ui.tabProjectWorkspace->isVisible();
+    }
+    return false;
+}
+
 void FemApp::restoreWindowGeometryState() {
     QSettings settings("neolux", "FemApp");
     const QByteArray geometry = settings.value("ui/mainWindowGeometry").toByteArray();
@@ -489,12 +514,16 @@ void FemApp::restoreWindowGeometryState() {
     const int stateValue =
         settings.value("ui/mainWindowState", static_cast<int>(Qt::WindowNoState)).toInt();
     setWindowState(static_cast<Qt::WindowStates>(stateValue));
+
+    const bool projectTabsVisible = settings.value("ui/projectTabsVisible", true).toBool();
+    setProjectTabsVisible(projectTabsVisible);
 }
 
 void FemApp::saveWindowGeometryState() {
     QSettings settings("neolux", "FemApp");
     settings.setValue("ui/mainWindowGeometry", saveGeometry());
     settings.setValue("ui/mainWindowState", static_cast<int>(windowState()));
+    settings.setValue("ui/projectTabsVisible", isProjectTabsVisible());
 }
 
 std::string FemApp::getFolderMatched() {

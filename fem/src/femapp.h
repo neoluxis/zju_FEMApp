@@ -63,6 +63,7 @@ private:
     cc::neolux::fem::recent::RecentProjectHistory recentProjectHistory;
     QMenu* recentMenu = nullptr;
     QAction* workspaceConfigAction = nullptr;
+    QAction* toggleProjectTabsAction = nullptr;
     bool workspaceMode = false;
     QString currentWorkspaceFilePath;
     bool relaxPatternMatchValidation = false;
@@ -70,6 +71,8 @@ private:
 
     void updateFileLabel();  // Update labelFEMFile with current filename and modification status
     void setWorkspaceMode(bool enabled);
+    void setProjectTabsVisible(bool visible);
+    bool isProjectTabsVisible() const;
     void restoreWindowGeometryState();
     void saveWindowGeometryState();
     void refreshRecentMenu();

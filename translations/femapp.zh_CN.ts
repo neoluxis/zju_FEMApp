@@ -13,8 +13,8 @@
     <name>FemApp</name>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="14"/>
-        <location filename="../fem/src/femapp.cpp" line="723"/>
-        <location filename="../fem/src/femapp.cpp" line="730"/>
+        <location filename="../fem/src/femapp.cpp" line="752"/>
+        <location filename="../fem/src/femapp.cpp" line="759"/>
         <source>FemApp</source>
         <translation>FemApp</translation>
     </message>
@@ -29,12 +29,12 @@
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="508"/>
+        <location filename="../fem/src/femapp.cpp" line="537"/>
         <source>No folders matched the folder pattern. </source>
         <translation>没有文件夹匹配到</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="515"/>
+        <location filename="../fem/src/femapp.cpp" line="544"/>
         <source>Multiple folders matched the folder pattern. Please ensure only one folder matches.</source>
         <translation>匹配到多个文件夹，请确保只有一个文件夹匹配</translation>
     </message>
@@ -69,141 +69,151 @@
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="277"/>
+        <location filename="../fem/src/femapp.cpp" line="233"/>
+        <source>View</source>
+        <translation>视图</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/femapp.cpp" line="234"/>
+        <source>Show Project Tabs</source>
+        <translation>显示项目标签页</translation>
+    </message>
+    <message>
+        <location filename="../fem/src/femapp.cpp" line="284"/>
         <source>Unsaved Changes</source>
         <translation>未保存的修改</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="278"/>
+        <location filename="../fem/src/femapp.cpp" line="285"/>
         <source>You have unsaved changes. Do you want to save before closing?</source>
         <translation>你有没有保存的修改，是否保存？</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="325"/>
+        <location filename="../fem/src/femapp.cpp" line="332"/>
         <source>Config file path is empty.</source>
         <translation>配置文件路径为空。</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="332"/>
-        <location filename="../fem/src/femapp.cpp" line="391"/>
+        <location filename="../fem/src/femapp.cpp" line="339"/>
+        <location filename="../fem/src/femapp.cpp" line="398"/>
         <source>Config file does not exist: </source>
         <translation>配置文件不存在：</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="364"/>
+        <location filename="../fem/src/femapp.cpp" line="371"/>
         <source>Failed to read FEM config file.</source>
         <translation>读取 FEM 配置文件失败。</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="445"/>
+        <location filename="../fem/src/femapp.cpp" line="452"/>
         <source>No workspace is currently opened.</source>
         <translation>当前没有打开的工作区。</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="543"/>
+        <location filename="../fem/src/femapp.cpp" line="572"/>
         <source>No filenames matched the filename pattern.</source>
         <translation>没有文件名匹配</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="555"/>
+        <location filename="../fem/src/femapp.cpp" line="584"/>
         <source>Multiple filenames matched the filename pattern. Please ensure only one filename matches.</source>
         <translation>多个文件匹配到，请确保只有一个文件匹配</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="614"/>
+        <location filename="../fem/src/femapp.cpp" line="643"/>
         <source>No sheets matched the sheet pattern. </source>
         <translation>没有表名匹配</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="620"/>
+        <location filename="../fem/src/femapp.cpp" line="649"/>
         <source>Multiple sheets matched the sheet pattern. Please ensure only one sheet matches.</source>
         <translation>匹配到多个表，请检查文件以匹配单个表</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="654"/>
+        <location filename="../fem/src/femapp.cpp" line="683"/>
         <source>Failed to read Excel file: </source>
         <translation>读取 Excel 文件失败</translation>
     </message>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="49"/>
         <location filename="../fem/src/femapp.cpp" line="222"/>
-        <location filename="../fem/src/femapp.cpp" line="779"/>
+        <location filename="../fem/src/femapp.cpp" line="808"/>
         <source>Workspace</source>
         <translation>工作区</translation>
     </message>
     <message>
         <location filename="../fem/src/mainwindow.ui" line="27"/>
         <location filename="../fem/src/femapp.cpp" line="221"/>
-        <location filename="../fem/src/femapp.cpp" line="783"/>
+        <location filename="../fem/src/femapp.cpp" line="812"/>
         <source>Project</source>
         <translation>项目</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="786"/>
+        <location filename="../fem/src/femapp.cpp" line="815"/>
         <source>Clear</source>
         <translation>清空</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="926"/>
+        <location filename="../fem/src/femapp.cpp" line="955"/>
         <source>Open FEM Config File</source>
         <translation>打开 FEM 配置文件</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="840"/>
-        <location filename="../fem/src/femapp.cpp" line="967"/>
+        <location filename="../fem/src/femapp.cpp" line="869"/>
+        <location filename="../fem/src/femapp.cpp" line="996"/>
         <source>FEM Config Files (*.fem);;All Files (*)</source>
         <translation>FEM项目文件 (*.fem);;全部文件 (*)</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="839"/>
+        <location filename="../fem/src/femapp.cpp" line="868"/>
         <source>Create New FEM Project</source>
         <translation>创建新 FEM 项目</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="854"/>
-        <location filename="../fem/src/femapp.cpp" line="894"/>
+        <location filename="../fem/src/femapp.cpp" line="883"/>
+        <location filename="../fem/src/femapp.cpp" line="923"/>
         <source>Failed to create FEM config file.</source>
         <translation>创建 FEM 配置文件失败。</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="865"/>
+        <location filename="../fem/src/femapp.cpp" line="894"/>
         <source>Create New Workspace File</source>
         <translation>创建新工作区文件</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="866"/>
+        <location filename="../fem/src/femapp.cpp" line="895"/>
         <source>Workspace Files (*.femmpw);;All Files (*)</source>
         <translation>工作区文件 (*.femmpw);;全部文件 (*)</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="927"/>
+        <location filename="../fem/src/femapp.cpp" line="956"/>
         <source>FEM/Workspace Files (*.fem *.femmpw);;All Files (*)</source>
         <translation>FEM/工作区文件 (*.fem *.femmpw);;全部文件 (*)</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="949"/>
-        <location filename="../fem/src/femapp.cpp" line="974"/>
+        <location filename="../fem/src/femapp.cpp" line="978"/>
+        <location filename="../fem/src/femapp.cpp" line="1003"/>
         <source>Failed to generate FEM config content.</source>
         <translation>生成 FEM 配置内容失败</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="957"/>
-        <location filename="../fem/src/femapp.cpp" line="982"/>
+        <location filename="../fem/src/femapp.cpp" line="986"/>
+        <location filename="../fem/src/femapp.cpp" line="1011"/>
         <source>Failed to save FEM config file.</source>
         <translation>保存 FEM 文件失败</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="966"/>
+        <location filename="../fem/src/femapp.cpp" line="995"/>
         <source>Save FEM Config File As</source>
         <translation>保存 FEM 配置文件到</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="994"/>
+        <location filename="../fem/src/femapp.cpp" line="1023"/>
         <source>Select Folder</source>
         <translation>选择文件夹</translation>
     </message>
     <message>
-        <location filename="../fem/src/femapp.cpp" line="828"/>
+        <location filename="../fem/src/femapp.cpp" line="857"/>
         <source>Failed to parse raw FEM config content.</source>
         <translation>解析配置文件失败，请检查文件格式</translation>
     </message>
