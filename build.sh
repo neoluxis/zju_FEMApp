@@ -74,7 +74,7 @@ function help() {
     echo "  --help                      Show this help message and exit"
     echo "  --build-dir=DIR             Specify the build directory (default: build; env: BUILD_DIR)"
     echo "  --pack-dir=DIR              Specify the packaging directory (default: package; env: PACK_DIR)"
-    echo "  --clean[-build, -package]   Clean the directories and exit"
+    echo "  --clean[-build, -package, -zip]   Clean the directories and exit"
     echo "  --no-clean                  Do not clean the build and packaging directories before building"
     echo "  --setup                     Setup the build environment and exit"
     echo "  --build                Build the project and exit"
@@ -184,6 +184,11 @@ fi
 if [[ "$clean_package" == true ]]; then
     rm -rfv "$PACK_DIR" | wc -l | awk '{print "Removed: " $1 " items"}'
     log_info "Cleaned package directory: $PACK_DIR"
+    exit 0
+fi
+if [[ "$clean_zip" == true ]]; then
+    find . -maxdepth 1 -type f -name "femapp_package_v*.zip" -print0 | xargs -0 rm -fv | wc -l | awk '{print "Removed: " $1 " items"}'
+    log_info "Cleaned zip packages in current directory"
     exit 0
 fi
 
