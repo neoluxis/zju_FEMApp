@@ -25,4 +25,4 @@ cp -r translations/*.qm $PACK_DIR/translations
 env DLLPATH=/usr/x86_64-w64-mingw32/bin:/usr/x86_64-w64-mingw32/lib:$BUILD_DIR \
 x86_64-w64-mingw32-dllcopy $PACK_DIR/FemApp.exe ./dll.txt --verbose -r
 
-zip -j femapp_package_v$(date +%Y%m%d).zip $PACK_DIR/*
+zip -r femapp_package_v$(date +%Y%m%d).zip $PACK_DIR/*
