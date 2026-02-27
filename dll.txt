@@ -26,6 +26,7 @@ Qt6Network.dll
 Qt6Svg.dll
 Qt6Widgets.dll
 zlib1.dll
+libjpeg-8.dll
 
 libKFZippa.dll
 libMiniXLSX.dll
